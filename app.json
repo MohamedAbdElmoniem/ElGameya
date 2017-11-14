@@ -1,0 +1,10 @@
+{
+  "name": "myrnapp",
+  "displayName": "myrnapp",
+  "expo": {
+    "slug": "myrnapp",
+    "name": "myrnapp",
+    "sdkVersion": "17.0.0",
+    "entryPoint": "c:\\gm3yaWithFB\\.vscode\\exponentIndex.js"
+  }
+}
