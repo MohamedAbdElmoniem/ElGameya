@@ -25,7 +25,7 @@ import AppIntro from './Components/AppIntro';
 import Tabbed from './Components/Tabbed';
 import {BackAndroid} from 'react-native'
 
-export default class myrnapp extends Component {
+export default class elgameya extends Component {
 
 
     componentDidMount() {
@@ -87,4 +87,4 @@ const SimpleApp = StackNavigator({
 });
 
 
-AppRegistry.registerComponent('myrnapp', () => SimpleApp);
+AppRegistry.registerComponent('elgameya', () => SimpleApp);

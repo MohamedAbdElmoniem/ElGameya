@@ -51,7 +51,7 @@ import { ProgressDialog } from 'react-native-simple-dialogs';
 export default class HomeComponent extends Component {
 
     static navigationOptions = {
-        title: "El-Gam'eya",
+        title: "ElGameya",
         header: null,
         drawerLabel: 'Profile',
         tabBarLabel: 'Profile',
@@ -611,7 +611,7 @@ export default class HomeComponent extends Component {
 
 
     componentDidMount() {
-       
+
 
 
         AsyncStorage.getItem('adminId', (err, result) => {
@@ -717,10 +717,10 @@ export default class HomeComponent extends Component {
 
                 <ProgressDialog
                     visible={this.state.progressVisible}
-                    title="El-Gameya"
+                    title="ElGameya"
                     message="Please, wait..."
                 />
-                <Modal  backButtonClose={true}   onClosed={() => {
+                <Modal backButtonClose={true} onClosed={() => {
                     this.refs.myCycles.open();
 
                 }} backdropPressToClose={true} style={[styles.modal, styles.modalReminder, { zIndex: 10, position: "absolute" }]} position={"center"} ref={"ModalReminder"}
@@ -876,7 +876,7 @@ export default class HomeComponent extends Component {
                 </Content>
 
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"modal2"} swipeToClose={false}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"modal2"} swipeToClose={false}
                     isDisabled={this.state.isDisabled} onOpened={this.openCyclesModal}>
                     <Container>
                         <Content>
@@ -900,7 +900,7 @@ export default class HomeComponent extends Component {
                 </Modal>
 
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3, { zIndex: 5, position: "absolute" }]} position={"center"} ref={"myCycles"} swipeToClose={false}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3, { zIndex: 5, position: "absolute" }]} position={"center"} ref={"myCycles"} swipeToClose={false}
                     isDisabled={this.state.isDisabled} onOpened={this.handleOpenMyCycles}>
                     <Container>
                         <Content>
@@ -909,7 +909,7 @@ export default class HomeComponent extends Component {
                     </Container>
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalNotifications"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalNotifications"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -924,7 +924,7 @@ export default class HomeComponent extends Component {
                     </Container>
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"pendingRequests"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"pendingRequests"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -939,7 +939,8 @@ export default class HomeComponent extends Component {
                     </Container>
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modalInvite]} position={"center"} ref={"inviteModal"}
+                <Modal backButtonClose={true}
+                    style={[styles.modal, styles.modalInvite]} position={"center"} ref={"inviteModal"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>

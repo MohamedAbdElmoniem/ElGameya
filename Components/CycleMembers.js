@@ -655,10 +655,10 @@ export default class CycleMembers extends Component {
         const { navigate } = this.props.navigation;
         let cycleInfo = this.props.navigation.state.params.cycleid;
         let shareOptions = {
-            title: "Gamyeia app",
+            title: "ElGameya app",
             message: "i would like to invite you to join cycle : " + cycleInfo.cyclE_NAME + " and pay : " + cycleInfo.totaL_AMOUNT + " -- download the app from store",
             url: "https://play.google.com/store",
-            subject: "Gamyeia app" //  for email
+            subject: "ElGameya app" //  for email
         };
         return (
             <Container>

@@ -249,7 +249,7 @@ export default class Followers extends Component {
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{color: '#FFF'}}/>
                 <ProgressDialog
                     visible={this.state.progressVisible}
-                    title="El-Gamyeia"
+                    title="ElGameya"
                     message="Please, wait..."
                 />
                 <Content>

@@ -55,7 +55,7 @@ var myback = Back1;
 
 class  CyclesHome extends Component {
     static navigationOptions = {
-        title: "El-Gam'eya",
+        title: "ElGameya",
         header: null,
         drawerLabel: 'Home',
         tabBarLabel: 'Home',
@@ -940,7 +940,7 @@ class  CyclesHome extends Component {
                 />
                 <ProgressDialog
                     visible={this.state.progressVisible}
-                    title="El-Gamyeia"
+                    title="ElGameya"
                     message="Please, wait..."
                 />
 
@@ -1030,7 +1030,7 @@ class  CyclesHome extends Component {
                     </View>
                 </Content>
                 <Modal backButtonClose={true}   style={[styles.modal, styles.modalCreate]} position={"center"} ref={"modal3"}
-                    isDisabled={this.state.isDisabled} swipeToClose={true}>
+                    isDisabled={this.state.isDisabled} swipeToClose={false}>
                     <Content>
                         <Grid>
                             <Row>
@@ -1157,7 +1157,7 @@ class  CyclesHome extends Component {
                                     <List>
                                         <ListItem icon>
                                             <Body>
-                                                <Text>Privacy</Text>
+                                                <Text>Public</Text>
                                             </Body>
                                             <Right>
                                                 <Switch thumbTintColor="#262261" onValueChange={(val) => {
@@ -1189,7 +1189,7 @@ class  CyclesHome extends Component {
 
 
                 <Modal  backButtonClose={true}   style={[styles.modal, styles.modalJoin]} position={"center"} ref={"modalSearch"}
-                    swipeToClose={true}
+                    swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
                         <Content>

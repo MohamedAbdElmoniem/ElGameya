@@ -40,7 +40,7 @@ import getTheme from '../native-base-theme/components';
 export default class RegisterationComponent extends Component {
 
     static navigationOptions = {
-        title: "El-Gam'eya",
+        title: "ElGameya",
         header: null
     }
 

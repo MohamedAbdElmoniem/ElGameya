@@ -429,7 +429,7 @@ export default class Messages extends Component {
             <Container>
                 <ProgressDialog
                     visible={this.state.progressVisible}
-                    title="El-Gamyeia"
+                    title="ElGameya"
                     message="Please, wait..."
                 />
                 <Content>

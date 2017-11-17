@@ -194,13 +194,13 @@ export default class LoginComponent extends Component {
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
                 <ProgressDialog
                     visible={this.state.progressVisible}
-                    title="El-Gamyeia"
+                    title="ElGameya"
                     message="Please, wait..."
                 />
                 <Content>
                     <Header style={{ backgroundColor: "#9E1F64" }}>
                         <Body>
-                            <Title>El-Gam'eya</Title>
+                            <Title>ElGameya</Title>
                         </Body>
                     </Header>
                     <Grid>
