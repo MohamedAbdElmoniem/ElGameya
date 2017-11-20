@@ -520,11 +520,13 @@ export default class HomeComponent extends Component {
     handleShowNotifications = () => {
 
         this.setState({ progressVisible: true });
+        let component = this;
 
         let renderedNotifications = [];
         axios({
-            method: "GET",
+            method: "POST",
             url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
+            data:JSON.stringify({Id:component.props.navigation.state.params.id}),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -535,23 +537,36 @@ export default class HomeComponent extends Component {
                 if (notifications.length > 0) {
 
                     for (let x = 0; x < notifications.length; x++) {
+                            renderedNotifications.push(
+                                <Card key={x}>
+
+                                    <CardItem>
+                                        <Body>
+                                            <Text>{notifications[x].notificatioN_MSG}</Text>
+                                        </Body>
+                                    </CardItem>
+                                    <View style={{ height: "10%", marginLeft: 5, justifyContent: "flex-start", marginTop: 5, alignItems: "flex-start", flex: 1, marginBottom: 5 }}>
+                                        <View>
+                                            <Badge style={{ backgroundColor: "#A4A4A4", width: "100%", justifyContent: "center", alignItems: "center" }}>
+                                                <Text style={{ fontSize: 12, color: "black" }}>
+                                                    {notifications[x].notificatioN_DATE}
+                                                </Text>
+                                            </Badge>
+                                        </View>
+                                    </View>
+                                </Card>
+                            )
+
+                    }
+                    if (renderedNotifications.length === 0) {
                         renderedNotifications.push(
-                            <Card key={x}>
+                            <Card key={0}>
 
                                 <CardItem>
                                     <Body>
-                                        <Text>{notifications[x].notificatioN_MSG}</Text>
+                                        <Text>There's no Notifications</Text>
                                     </Body>
                                 </CardItem>
-                                <View style={{ height: "10%", marginLeft: 5, justifyContent: "flex-start", marginTop: 5, alignItems: "flex-start", flex: 1, marginBottom: 5 }}>
-                                    <View>
-                                        <Badge style={{ backgroundColor: "#A4A4A4", width: "100%", justifyContent: "center", alignItems: "center" }}>
-                                            <Text style={{ fontSize: 12, color: "black" }}>
-                                                {notifications[x].notificatioN_DATE}
-                                            </Text>
-                                        </Badge>
-                                    </View>
-                                </View>
                             </Card>
                         )
                     }
@@ -698,10 +713,10 @@ export default class HomeComponent extends Component {
 
 
         let shareOptions = {
-            title: "Gamyeia app",
+            title: "ElGameya app",
             message: "share it with your friends",
-            url: "http://facebook.github.io/react-native/",
-            subject: "share app" //  for email
+            url: "https://play.google.com/store/apps/details?id=com.myrnapp",
+            subject: "ElGameya ap" //  for email
         };
 
 

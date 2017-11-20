@@ -840,11 +840,13 @@ class  CyclesHome extends Component {
     handleShowNotifications = () => {
 
         this.setState({ progressVisible: true });
-
+        let component = this;
+        let id = component.props.navigation.state.params.id;
         let renderedNotifications = [];
         axios({
-            method: "GET",
+            method: "POST",
             url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
+            data:JSON.stringify({Id:id}),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -873,6 +875,18 @@ class  CyclesHome extends Component {
                                         </Badge>
                                     </View>
                                 </View>
+                            </Card>
+                        )
+                    }
+                    if (renderedNotifications.length === 0) {
+                        renderedNotifications.push(
+                            <Card key={0}>
+
+                                <CardItem>
+                                    <Body>
+                                        <Text>There's no Notifications</Text>
+                                    </Body>
+                                </CardItem>
                             </Card>
                         )
                     }

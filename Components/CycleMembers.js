@@ -10,9 +10,9 @@ React, {
 import {
     AppRegistry,
     StyleSheet,
-    Text,BackHandler,
+    Text, BackHandler,
     View,
-    TouchableOpacity, Switch, AsyncStorage, Dimensions
+    TouchableOpacity, Switch, AsyncStorage, Dimensions, Image
 } from 'react-native';
 import { Button } from 'native-base';
 import {
@@ -66,12 +66,13 @@ export default class CycleMembers extends Component {
             remindersFlag: false,
             arrayOfReminders: [],
             ReceiverId: "",
-            message: ""
+            message: "",
+            noMembers: true
 
         }
 
         this.handleBackButton = this.handleBackButton.bind(this);
-        
+
 
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
@@ -86,14 +87,14 @@ export default class CycleMembers extends Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
 
-    
+
     componentWillUnmount() {
-    
+
         BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
 
     }
 
-    
+
     handleBackButton() {
         let component = this;
         const { navigate } = component.props.navigation;
@@ -145,7 +146,17 @@ export default class CycleMembers extends Component {
                             </ListItem>
                         )
                     }
-                    this.setState({ renderedMembers: renderedMembers }, () => {
+                    this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
+                        // this.refs.ModalMembers.open();
+                    })
+                }
+                else {
+                    renderedMembers.push(
+                        <ListItem key={0} style={{ height: 50 }}>
+                            <Body><Text>No members</Text></Body>
+                        </ListItem>
+                    )
+                    this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
                         // this.refs.ModalMembers.open();
                     })
                 }
@@ -176,8 +187,8 @@ export default class CycleMembers extends Component {
         })
             .then((resp) => {
                 console.log(resp)
+                debugger;
                 if (resp.data.users.length > 0) {
-                    debugger;
                     for (let x = 0; x < resp.data.users.length; x++) {
                         renderedMembers.push(
                             <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
@@ -205,7 +216,17 @@ export default class CycleMembers extends Component {
                             </ListItem>
                         )
                     }
-                    this.setState({ renderedMembers: renderedMembers }, () => {
+                    this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
+                        // this.refs.ModalMembers.open();
+                    })
+                }
+                else {
+                    renderedMembers.push(
+                        <ListItem key={0} style={{ height: 50 }}>
+                            <Body><Text>No members</Text></Body>
+                        </ListItem>
+                    )
+                    this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
                         // this.refs.ModalMembers.open();
                     })
                 }
@@ -680,7 +701,7 @@ export default class CycleMembers extends Component {
                     </View>
                 </PopupDialog>
 
-                <Modal backButtonClose={true}   style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -691,7 +712,7 @@ export default class CycleMembers extends Component {
 
                 </Modal>
 
-                <Modal backButtonClose={true}   style={[styles.modal, styles.modalReminder, { zIndex: 10, position: "absolute" }]} position={"center"} ref={"ModalReminder"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalReminder, { zIndex: 10, position: "absolute" }]} position={"center"} ref={"ModalReminder"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -735,7 +756,7 @@ export default class CycleMembers extends Component {
                             </Button>
                         </Left>
                         <Body>
-                            <Title>My Cycles</Title>
+                            <Title>{this.props.navigation.state.params.cycleid.cyclE_NAME}</Title>
                         </Body>
                         <Right>
                             <Icon onPress={() => {
@@ -776,22 +797,28 @@ export default class CycleMembers extends Component {
 
                     <Grid>
                         <Row>
-                            <Col></Col>
+
+                            {this.state.noMembers === true ? <Col>{this.state.renderedMembers}</Col> : <Col></Col>}
+
                             <Col></Col>
                             <Col>
+                            <TouchableOpacity onPress={() => {
+                                            Share.open(shareOptions);
+                                        }} >
                                 <View style={{ alignItems: "center" }}>
-                                    <Icon name="md-add-circle" onPress={() => {
-                                        Share.open(shareOptions);
-                                    }} />
+                                    <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                        source={require('../imgs/addMembers.png')} />
                                     <Text>Add Members</Text>
                                 </View>
+                                </TouchableOpacity>
                             </Col>
                         </Row>
                     </Grid>
 
-                    <List>
+                    {this.state.noMembers ? <List></List> :
+                     <List>
                         {this.state.renderedMembers}
-                    </List>
+                    </List>}
 
 
                 </Content>
