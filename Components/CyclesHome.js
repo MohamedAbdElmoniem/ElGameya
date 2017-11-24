@@ -41,7 +41,6 @@ import StarRating from 'react-native-star-rating';
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
 import axios from 'axios'
-import PageOne from './LoginComponent'
 import Modal from 'react-native-modalbox';
 var moment = require('moment');
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -320,7 +319,6 @@ class  CyclesHome extends Component {
         else {
             let cycleData = {}
             this.setState({ progressVisible: true })
-            debugger;
             cycleData =
                 {
                     CYCLE_NAME: this.state.cycleName,
@@ -1025,8 +1023,9 @@ class  CyclesHome extends Component {
                             </Text>
 
                             <TouchableOpacity onPress={() => {
-                                this.setState({ selectedStartDate: "", selectedEndDate: "" })
-                                this.refs.modalSearch.open();
+                             const {navigate} = this.props.navigation;
+                             navigate("AllCycles", { userid: this.props.navigation.state.params.id});
+                             
                             }}>
                                 <View style={styles.HollowCircle}>
                                     <View style={styles.cycleButton}>

@@ -110,7 +110,6 @@ export default class Messages extends Component {
                     console.log(resp);
 
                     let users = resp.data.userMessages;
-                    debugger;
                     for (let x = 0; x < users.length; x++) {
                         if (users[x].id.toString() == userData.ReceiverId) {
 
