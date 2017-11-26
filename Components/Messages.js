@@ -81,9 +81,8 @@ export default class Messages extends Component {
 
     }
 
-    componentDidMount()
-    {
-    
+    componentDidMount() {
+
     }
 
 
@@ -111,27 +110,24 @@ export default class Messages extends Component {
 
                     let users = resp.data.userMessages;
                     for (let x = 0; x < users.length; x++) {
-                        if (users[x].id.toString() == userData.ReceiverId) {
+                        
 
-                        }
-                        else {
-                            followersArray.push(<ListItem icon key={x} onPress={() => {
-                                this.openModalMsg(users[x].id, users[x].full_name)
-                            }}>
-                                <Left>
-                                    <Icon name="md-contact" style={{ color: "black" }}  />
-                                </Left>
-                                <Body>
-                                    <Text>{users[x].full_name}</Text>
-                                </Body>
-                                <Right>
-                                    <Badge success style={{ backgroundColor: "#262261" }}>
-                                        <Text style={{ color: "white" }}>open Chat</Text>
-                                    </Badge>
-                                </Right>
-                            </ListItem>)
+                        followersArray.push(<ListItem icon key={x} onPress={() => {
+                            this.openModalMsg(users[x].id, users[x].full_name)
+                        }}>
+                            <Left>
+                                <Icon name="md-contact" style={{ color: "black" }} />
+                            </Left>
+                            <Body>
+                                <Text>{users[x].full_name}</Text>
+                            </Body>
+                            <Right>
+                                <Badge success style={{ backgroundColor: "#262261" }}>
+                                    <Text style={{ color: "white" }}>open Chat</Text>
+                                </Badge>
+                            </Right>
+                        </ListItem>)
 
-                        }
                     }
 
                     this.setState({ userMessages: followersArray, progressVisible: false });
@@ -139,7 +135,7 @@ export default class Messages extends Component {
 
                 })
                 .catch((err) => {
-                    alert("Unexpected error");
+                    alert("Can't load your messages");
                     this.setState({ progressVisible: false });
 
                 })
@@ -171,29 +167,23 @@ export default class Messages extends Component {
 
                     let users = resp.data.userMessages;
                     for (let x = 0; x < users.length; x++) {
-                        if (users[x].id.toString() == userData.ReceiverId) {
 
-                        }
-                        else {
-                            followersArray.push(<ListItem icon key={x} onPress={() => {
-                                this.openModalMsg(users[x].id, users[x].full_name)
-                            }}>
-                                <Left>
-                                    <Icon name="md-contact" style={{ color: "black" }} />
-                                </Left>
-                                <Body>
-                                    <Text>{users[x].full_name}</Text>
-                                </Body>
-                                <Right>
-                                    <Badge success style={{ backgroundColor: "#262261" }}>
-                                        <Text style={{ color: "white" }}>open Chat</Text>
-                                    </Badge>
-                                </Right>
-                            </ListItem>)
-                        }
-
+                        followersArray.push(<ListItem icon key={x} onPress={() => {
+                            this.openModalMsg(users[x].id, users[x].full_name)
+                        }}>
+                            <Left>
+                                <Icon name="md-contact" style={{ color: "black" }} />
+                            </Left>
+                            <Body>
+                                <Text>{users[x].full_name}</Text>
+                            </Body>
+                            <Right>
+                                <Badge success style={{ backgroundColor: "#262261" }}>
+                                    <Text style={{ color: "white" }}>open Chat</Text>
+                                </Badge>
+                            </Right>
+                        </ListItem>)
                     }
-
                     this.setState({ userMessages: followersArray, progressVisible: false });
 
 
@@ -445,7 +435,7 @@ export default class Messages extends Component {
                             <Button transparent onPress={() => {
                                 this.ReloadMessages()
                             }}>
-                                <Icon name='refresh' style={{ color: "white" }} /> 
+                                <Icon name='refresh' style={{ color: "white" }} />
                             </Button>
                         </Right>
                     </Header>
@@ -457,7 +447,7 @@ export default class Messages extends Component {
 
                 </Content>
 
-                <Modal backButtonClose={true}   style={[styles.modal, styles.ModalMsg]} position={"center"} ref={"ModalMsg"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.ModalMsg]} position={"center"} ref={"ModalMsg"}
                     swipeToClose={false}
                     onClosed={() => {
                         this.onModalClose()
@@ -476,7 +466,7 @@ export default class Messages extends Component {
                                 {this.state.chatBox}
                             </Grid>
                         </ScrollView>
-                        <View style={{height:70 }}>
+                        <View style={{ height: 70 }}>
                             <Input style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.message}
                                 onChangeText={(text) => {
                                     this.setState({ message: text })

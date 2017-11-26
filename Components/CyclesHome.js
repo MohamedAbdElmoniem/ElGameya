@@ -48,11 +48,11 @@ import Share, { ShareSheet } from 'react-native-share';
 import Toast, { DURATION } from 'react-native-easy-toast';
 import { ProgressDialog } from 'react-native-simple-dialogs';
 import PopupDialog, { DialogTitle } from 'react-native-popup-dialog';
-import {BackHandler as Back1} from 'react-native'
+import { BackHandler as Back1 } from 'react-native'
 var myback = Back1;
 
 
-class  CyclesHome extends Component {
+class CyclesHome extends Component {
     static navigationOptions = {
         title: "ElGameya",
         header: null,
@@ -110,60 +110,77 @@ class  CyclesHome extends Component {
         this.refs.modal3.close();
     }
 
-    submitCycleCreation = () => {
-        let component = this;
-
-        if (this.state.selectedStartDate == "" || this.state.selectedEndDate == "" || this.state.noOfMembers == ""
-            || this.state.cycleName == "" || this.state.totalAmountPerCycle == "") {
-
-            alert("please enter all fields")
-
-        }
-        else {
-            let cycleData = {}
-            this.setState({ visible: true })
-            debugger;
-            cycleData =
-                {
-                    CYCLE_NAME: this.state.cycleName,
-                    NUMBER_OF_MEMBERS: this.state.noOfMembers,
-                    TOTAL_AMOUNT: this.state.totalAmountPerCycle,
-                    startDate: this.state.selectedStartDate,
-                    endDate: this.state.selectedEndDate,
-                    privacy: this.state.cyclePrivacy,
-                    ADMIN_ID: component.props.navigation.state.params.id
-                }
-            console.log(JSON.stringify(cycleData))
-
-            axios({
-                method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/CreateCycle",
-                data: JSON.stringify(cycleData),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-                .then((resp) => {
-                    this.setState({ visible: false });
-                    console.log(resp)
-                    this.refs.modal3.close()
-                    //  alert("Cycle created successfully")
-                    this.refs.toast.show('Cycle created successfully');
-
-                })
-                .catch((err) => {
-                    console.log(err)
-                    //  alert("Unexpected error");
-                    this.refs.toast.show('Unexpected error');
-
-                    this.setState({ visible: false });
-
-                })
-
-
-        }
-    }
-
+    /*    submitCycleCreation = () => {
+           let component = this;
+   
+           if (this.state.selectedStartDate == "" || this.state.selectedEndDate == "" || this.state.noOfMembers == ""
+               || this.state.cycleName == "" || this.state.totalAmountPerCycle == "") {
+   
+               alert("please enter all fields")
+   
+           }
+           else {
+               let cycleData = {}
+               this.setState({ visible: true })
+               debugger;
+               cycleData =
+                   {
+                       CYCLE_NAME: this.state.cycleName,
+                       NUMBER_OF_MEMBERS: this.state.noOfMembers,
+                       TOTAL_AMOUNT: this.state.totalAmountPerCycle,
+                       startDate: this.state.selectedStartDate,
+                       endDate: this.state.selectedEndDate,
+                       privacy: this.state.cyclePrivacy,
+                       ADMIN_ID: component.props.navigation.state.params.id
+                   }
+               console.log(JSON.stringify(cycleData))
+   
+               axios({
+                   method: "POST",
+                   url: "http://www.gameya.somee.com/api/gamieya/CreateCycle",
+                   data: JSON.stringify(cycleData),
+                   headers: {
+                       "Content-Type": "application/json"
+                   }
+               })
+                   .then((resp) => {
+                       this.setState({ visible: false });
+                       console.log(resp)
+                       if(resp.status==="success")
+                       {
+                           this.refs.modal3.close()
+                           //  alert("Cycle created successfully")
+                           this.refs.toast.show('Cycle created successfully');
+                       }
+                       else{
+                           if(resp.message)
+                           {
+                               this.refs.modal3.close()
+                               //  alert("Cycle created successfully")
+                               this.refs.toast.show('Cycle created successfully');
+                           }
+                           else{
+                               this.refs.modal3.close()
+                               //  alert("Cycle created successfully")
+                               this.refs.toast.show('Cycle created successfully');
+                           }
+                       }
+                    
+   
+                   })
+                   .catch((err) => {
+                       console.log(err)
+                       //  alert("Unexpected error");
+                       this.refs.toast.show('Unexpected error');
+   
+                       this.setState({ visible: false });
+   
+                   })
+   
+   
+           }
+       }
+    */
     constructor(props) {
         super(props);
         this.state = {
@@ -195,25 +212,25 @@ class  CyclesHome extends Component {
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
 
-            this.handleBackButton2=this.handleBackButton2.bind(this);
+        this.handleBackButton2 = this.handleBackButton2.bind(this);
     }
 
     handleBackButton2() {
-          /*   this.refs.modal3.close();
-            
-            
-     
-            this.refs.modalMonths.close();
-            
-      
-            this.refs.ModalProfile.close();
-                 
-            this.refs.modalSearch.close();
-            
+        /*   this.refs.modal3.close();
+          
+          
+   
+          this.refs.modalMonths.close();
+          
+    
+          this.refs.ModalProfile.close();
+               
+          this.refs.modalSearch.close();
+          
 
-            this.refs.ModalNotifications.close();
+          this.refs.ModalNotifications.close();
 */
-        return true; 
+        return true;
 
     }
 
@@ -222,7 +239,7 @@ class  CyclesHome extends Component {
     componentWillUnmount() {
         myback.removeEventListener('hardwareBackPress', this.handleBackButton2);
     }
-  
+
 
     componentDidMount() {
         myback.addEventListener('hardwareBackPress', this.handleBackButton2);
@@ -251,7 +268,7 @@ class  CyclesHome extends Component {
 
     _handleDatePicked = (date) => {
         console.log('A date has been picked: ', date);
-        console.log(moment(date).format("YYYY-MM"))
+        console.log(moment(date).format("YYYY-MM-DD"))
         if (this.state.StartOrEnd === "start") {
             if (this.state.type === "create") {
                 let endDate = moment(date)
@@ -259,13 +276,13 @@ class  CyclesHome extends Component {
                     endDate = endDate.add(1, "months")
                 }
 
-                this.setState({ selectedStartDate: moment(date).format("YYYY-MM"), selectedEndDate: endDate.format("YYYY-MM") }, () => {
+                this.setState({ selectedStartDate: moment(date).format("YYYY-MM-DD"), selectedEndDate: endDate.format("YYYY-MM-DD") }, () => {
                     console.log(this.state.selectedStartDate);
                     console.log(this.state.selectedEndDate);
                 })
             }
             else {
-                this.setState({ selectedStartDate: moment(date).format("YYYY-MM") })
+                this.setState({ selectedStartDate: moment(date).format("YYYY-MM-DD") })
             }
 
 
@@ -276,18 +293,18 @@ class  CyclesHome extends Component {
                 alert("please enter start month")
             }
             else {
-                if (moment(this.state.selectedStartDate) > moment(date) || moment(date).format("YYYY-MM") === this.state.selectedStartDate) {
+                if (moment(this.state.selectedStartDate) > moment(date) || moment(date).format("YYYY-MM-DD") === this.state.selectedStartDate) {
                     alert("selected end month is before or equal start month");
                 }
                 else {
-                    this.setState({ selectedEndDate: moment(date).format("YYYY-MM") }, () => {
+                    this.setState({ selectedEndDate: moment(date).format("YYYY-MM-DD") }, () => {
                         var dateStart = moment(this.state.selectedStartDate);
                         var dateEnd = moment(this.state.selectedEndDate);
 
                         var timeValues = [];
 
                         while (dateEnd > dateStart) {
-                            timeValues.push(dateStart.format('YYYY-MM'));
+                            timeValues.push(dateStart.format("YYYY-MM-DD"));
                             dateStart.add(1, 'month');
                         }
 
@@ -341,25 +358,25 @@ class  CyclesHome extends Component {
             })
                 .then((resp) => {
                     console.log(resp)
-                    if (resp.data.message) {
-                        if (resp.data.message === "you can't create more than 3 cycles") {
-                            this.refs.modal3.close()
-                            this.setState({ progressVisible: false }, () => {
-                                alert("you can't create more than 3 cycles")
+                    debugger
+                    if (resp.data.status === "failure") {
+                        this.setState({ progressVisible: false }, () => {
+                            alert(resp.data.message);
 
-                            });
-
-                        }
+                        });
                     }
+                    else if (resp.data.status === "success") {
+                        this.setState({ progressVisible: false }, () => {
+                            alert(resp.data.message);
 
+                        });
+                    }
                     else {
                         this.refs.modal3.close()
                         this.setState({ progressVisible: false });
                         //  alert("Cycle created successfully")
                         navigate("MyCycles", { userid: this.props.navigation.state.params.id, option: "create" });
                     }
-
-
                 })
                 .catch((err) => {
                     console.log(err)
@@ -844,7 +861,7 @@ class  CyclesHome extends Component {
         axios({
             method: "POST",
             url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
-            data:JSON.stringify({Id:id}),
+            data: JSON.stringify({ Id: id }),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -1023,9 +1040,9 @@ class  CyclesHome extends Component {
                             </Text>
 
                             <TouchableOpacity onPress={() => {
-                             const {navigate} = this.props.navigation;
-                             navigate("AllCycles", { userid: this.props.navigation.state.params.id});
-                             
+                                const { navigate } = this.props.navigation;
+                                navigate("AllCycles", { userid: this.props.navigation.state.params.id });
+
                             }}>
                                 <View style={styles.HollowCircle}>
                                     <View style={styles.cycleButton}>
@@ -1042,7 +1059,7 @@ class  CyclesHome extends Component {
                         </View>
                     </View>
                 </Content>
-                <Modal backButtonClose={true}   style={[styles.modal, styles.modalCreate]} position={"center"} ref={"modal3"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalCreate]} position={"center"} ref={"modal3"}
                     isDisabled={this.state.isDisabled} swipeToClose={false}>
                     <Content>
                         <Grid>
@@ -1063,12 +1080,7 @@ class  CyclesHome extends Component {
                                         ───────────────────
                                 </Text></Col>
                             </Row>
-                            <Row >
-                                <Col>
-                                    <Text style={{ fontWeight: "bold", fontSize: 12, color: "#262261" }}>Amount per Month</Text>
-                                </Col>
-                            </Row>
-                            <Row ><Col><Input style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.amountPerMonth}
+                            <Row ><Col><Input placeholder="Amount per Month" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.amountPerMonth}
                                 onChangeText={(text) => {
                                     if (text.match(/[0-9]/) && parseInt(text) < 1000000) {
                                         this.setState({ amountPerMonth: text }, () => {
@@ -1087,12 +1099,11 @@ class  CyclesHome extends Component {
                                     }
                                 }}
                             /></Col></Row>
-                            <Row >
+                            <Row style={{ marginTop: 10 }} >
                                 <Col>
-                                    <Text style={{ fontWeight: "bold", fontSize: 12, color: "#262261" }}>Number Of Members</Text>
                                 </Col>
                             </Row>
-                            <Row ><Col><Input style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.noOfMembers}
+                            <Row ><Col><Input placeholder="Number Of Members" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.noOfMembers}
                                 onChangeText={(text) => {
                                     if (parseInt(text) < 13 && text.match(/[0-9]/) || this.state.noOfMembers === "") {
                                         this.setState({ noOfMembers: text }, () => {
@@ -1117,23 +1128,20 @@ class  CyclesHome extends Component {
                                 }}
                             /></Col></Row>
 
-                            <Row>
+                            <Row style={{ marginTop: 10 }} >
                                 <Col>
-                                    <Text style={{ fontWeight: "bold", fontSize: 12, color: "#262261" }}>Cycle Total Amount</Text>
                                 </Col>
                             </Row>
-                            <Row ><Col><Input style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.totalAmountPerCycle}
+                            <Row ><Col><Input placeholder="Cycle Total Amount" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.totalAmountPerCycle}
                                 onChangeText={(text) => {
                                     this.setState({ totalAmountPerCycle: text })
                                 }} disabled={true}
                             /></Col></Row>
-
-                            <Row >
+                            <Row style={{ marginTop: 10 }} >
                                 <Col>
-                                    <Text style={{ fontWeight: "bold", fontSize: 12, color: "#262261" }}>Cycle Name</Text>
                                 </Col>
                             </Row>
-                            <Row ><Col><Input style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
+                            <Row ><Col><Input placeholder="Cycle Name" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
                                 onChangeText={(text) => {
                                     this.setState({ cycleName: text })
                                 }}
@@ -1173,7 +1181,7 @@ class  CyclesHome extends Component {
                                                 <Text>Public</Text>
                                             </Body>
                                             <Right>
-                                                <Switch thumbTintColor="#262261" onValueChange={(val) => {
+                                                <Switch thumbTintColor="#262261" onTintColor="#262261" onValueChange={(val) => {
                                                     this.setState({ cyclePrivacy: !this.state.cyclePrivacy })
                                                 }} value={this.state.cyclePrivacy} />
                                             </Right>
@@ -1201,7 +1209,7 @@ class  CyclesHome extends Component {
                 </Modal>
 
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modalJoin]} position={"center"} ref={"modalSearch"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalJoin]} position={"center"} ref={"modalSearch"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -1308,7 +1316,7 @@ class  CyclesHome extends Component {
 
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"modalMonths"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"modalMonths"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled} onOpened={this.openMonthsModal}>
                     <Container>
@@ -1321,7 +1329,7 @@ class  CyclesHome extends Component {
 
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -1332,7 +1340,7 @@ class  CyclesHome extends Component {
 
                 </Modal>
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"modal2"} swipeToClose={false}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"modal2"} swipeToClose={false}
                     isDisabled={this.state.isDisabled} onOpened={this.openCyclesModal}>
                     <Container>
                         <Content>
@@ -1343,7 +1351,7 @@ class  CyclesHome extends Component {
                 </Modal>
 
 
-                <Modal  backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalNotifications"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalNotifications"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -1424,7 +1432,7 @@ const styles = StyleSheet.create({
 
     },
     modalCreate: {
-        height: "95%",
+        height: "90%",
         width: "85%",
         borderRadius: 12,
     },

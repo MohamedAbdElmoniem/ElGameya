@@ -526,7 +526,7 @@ export default class HomeComponent extends Component {
         axios({
             method: "POST",
             url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
-            data:JSON.stringify({Id:component.props.navigation.state.params.id}),
+            data: JSON.stringify({ Id: component.props.navigation.state.params.id }),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -537,25 +537,25 @@ export default class HomeComponent extends Component {
                 if (notifications.length > 0) {
 
                     for (let x = 0; x < notifications.length; x++) {
-                            renderedNotifications.push(
-                                <Card key={x}>
+                        renderedNotifications.push(
+                            <Card key={x}>
 
-                                    <CardItem>
-                                        <Body>
-                                            <Text>{notifications[x].notificatioN_MSG}</Text>
-                                        </Body>
-                                    </CardItem>
-                                    <View style={{ height: "10%", marginLeft: 5, justifyContent: "flex-start", marginTop: 5, alignItems: "flex-start", flex: 1, marginBottom: 5 }}>
-                                        <View>
-                                            <Badge style={{ backgroundColor: "#A4A4A4", width: "100%", justifyContent: "center", alignItems: "center" }}>
-                                                <Text style={{ fontSize: 12, color: "black" }}>
-                                                    {notifications[x].notificatioN_DATE}
-                                                </Text>
-                                            </Badge>
-                                        </View>
+                                <CardItem>
+                                    <Body>
+                                        <Text>{notifications[x].notificatioN_MSG}</Text>
+                                    </Body>
+                                </CardItem>
+                                <View style={{ height: "10%", marginLeft: 5, justifyContent: "flex-start", marginTop: 5, alignItems: "flex-start", flex: 1, marginBottom: 5 }}>
+                                    <View>
+                                        <Badge style={{ backgroundColor: "#A4A4A4", width: "100%", justifyContent: "center", alignItems: "center" }}>
+                                            <Text style={{ fontSize: 12, color: "black" }}>
+                                                {notifications[x].notificatioN_DATE}
+                                            </Text>
+                                        </Badge>
                                     </View>
-                                </Card>
-                            )
+                                </View>
+                            </Card>
+                        )
 
                     }
                     if (renderedNotifications.length === 0) {
@@ -793,20 +793,33 @@ export default class HomeComponent extends Component {
                         </Right>
                     </Header>
                     <List>
-
-
-
-                        <View style={{ flex: 1, flexDirection: "row" }}>
-                            <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
-                                <Thumbnail source={{ uri: 'https://www.flexygames.net/images/user/user-171302.png' }} />
-                            </View>
-
-                            <View style={{ marginLeft: 20, marginTop: 23 }}>
-                                <Text style={{ fontSize: 18 }}>{this.state.username}</Text>
-
-                            </View>
-
-                        </View>
+                        <Grid>
+                            <Row>
+                                <Col style={{ width: "25%" }}>
+                                    <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
+                                        <Thumbnail source={{ uri: 'https://www.flexygames.net/images/user/user-171302.png' }} />
+                                    </View>
+                                </Col>
+                                <Col style={{ width: "35%" }}>
+                                    <View style={{ marginTop: 25, marginBottom: 12 }}>
+                                        <Text style={{ fontSize: 18 }}>{this.state.username}</Text>
+                                    </View>
+                                </Col>
+                                <Col style={{ width: "10%" }}></Col>
+                                <Col style={{ width: "30%" }}>
+                                    <View style={{ marginRight: 20, marginTop: 15, marginBottom: 12 }}>
+                                        <Button block
+                                            onPress={() => {
+                                                const { navigate } = this.props.navigation;
+                                                navigate("MyProfile", { userid: this.props.navigation.state.params.id })
+                                            }}
+                                            style={{ borderRadius: 12, backgroundColor: "#262261", alignItems: "center", justifyContent: "center" }}>
+                                            <Text style={{ color: "white", fontSize: 13 }}>My Profile</Text>
+                                        </Button>
+                                    </View>
+                                </Col>
+                            </Row>
+                        </Grid>
 
                         <View
                             style={{
