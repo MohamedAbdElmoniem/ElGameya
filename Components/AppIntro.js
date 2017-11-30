@@ -33,7 +33,6 @@ class AppIntro extends Component {
                 else
                 {
                     this.props.navigation.navigate('LoginPage'); // open drawer
-                    
                 }
             })
 

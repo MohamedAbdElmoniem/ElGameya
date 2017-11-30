@@ -35,7 +35,6 @@ import {
 import axios from 'axios'
 import PageOne from './LoginComponent'
 import Spinner from 'react-native-loading-spinner-overlay';
-import getTheme from '../native-base-theme/components';
 
 export default class RegisterationComponent extends Component {
 
@@ -126,7 +125,6 @@ export default class RegisterationComponent extends Component {
 
 
         return (
-            <StyleProvider style={getTheme()}>
                 <Container>
                     <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
 
@@ -249,8 +247,6 @@ export default class RegisterationComponent extends Component {
 
                     </Content>
                 </Container>
-            </StyleProvider>
-
         )
     }
 

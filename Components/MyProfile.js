@@ -63,6 +63,7 @@ export default class MyProfile extends Component {
 
         this.renderUserProfile = this.renderUserProfile.bind(this);
         this.handleGettingUserData = this.handleGettingUserData.bind(this);
+        this.handleSaveEditedData = this.handleSaveEditedData.bind(this);
     }
 
     componentWillMount() {
@@ -72,7 +73,6 @@ export default class MyProfile extends Component {
     handleGettingUserData = () => {
         let component = this;
         let id = component.props.navigation.state.params.userid
-        debugger;
         this.setState({ progressVisible: true });
         let data = {
             Id: id
@@ -93,7 +93,6 @@ export default class MyProfile extends Component {
                     userData: resp.data.userData, progressVisible: false,
                     full_name: resp.data.userData.full_name, email: resp.data.userData.email, mobile: resp.data.userData.mobile
                 }, () => {
-                    debugger;
                     this.renderUserProfile()
                 });
 
@@ -147,23 +146,32 @@ export default class MyProfile extends Component {
                             <Form>
                                 <Item floatingLabel>
                                     <Label>Name</Label>
-                                    <Input value={this.state.full_name.toString()} onChange={(text) => {
-                                        this.setState({ full_name: text })
+                                    <Input value={this.state.full_name.toString()} onChangeText={(text) => {
+                                        this.setState({ full_name: text }, () => {
+                                            this.renderUserProfile()
+                                            this.state.userData.full_name = text;
+                                        })
+
                                     }} />
                                 </Item>
                                 <Item floatingLabel last>
                                     <Label>Mobile</Label>
-                                    <Input value={this.state.mobile.toString()} onChange={(text) => {
-                                        this.setState({ mobile: text })
+                                    <Input value={this.state.mobile.toString()} onChangeText={(text) => {
+                                        this.setState({ mobile: text }, () => {
+                                            this.renderUserProfile();
+                                            this.state.userData.mobile = text;
+                                        })
+
                                     }} />
                                 </Item>
                             </Form>
                         </Col>
                     </Row>
-                    <Row style={{marginTop:10}}>
+                    <Row style={{ marginTop: 10 }}>
                         <Col style={{ width: "60%" }}></Col>
                         <Col style={{ width: "40%" }}>
-                            <Button block style={{ backgroundColor: "#262261", borderRadius: 10 ,marginRight:10}} onPress={() => {
+                            <Button block style={{ backgroundColor: "#262261", borderRadius: 10, marginRight: 10 }} onPress={() => {
+                                this.handleSaveEditedData()
                             }}>
                                 <View style={{ justifyContent: "center", alignItems: "center" }}>
                                     <Text style={{ color: "white", fontSize: 15 }}>Save</Text>
@@ -178,6 +186,41 @@ export default class MyProfile extends Component {
 
         }
 
+    }
+
+    handleSaveEditedData() {
+        let component = this;
+        let id = component.props.navigation.state.params.userid
+        this.setState({ progressVisible: true });
+        let cycle = {
+            id: this.state.userData.id,
+            full_name: this.state.full_name,
+            mobile: this.state.mobile
+        }
+
+        // join in specific month of cycle
+        axios({
+            method: "POST",
+            url: "http://www.gameya.somee.com/api/gamieya/UpdateUserData",
+            data: JSON.stringify(cycle),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                let responseData = resp.data;
+                this.setState({ progressVisible: false }, () => {
+                    alert("Data Updated Successfully")
+                })
+
+
+            })
+            .catch((err) => {
+                console.log(err)
+                component.setState({ progressVisible: false }, () => {
+                    alert("Can't Update user profile .. server error");
+                })
+            })
     }
 
     render() {

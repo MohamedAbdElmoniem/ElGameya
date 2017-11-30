@@ -36,7 +36,6 @@ import {
 } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-
 import { BackHandler } from 'react-native'
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -187,7 +186,6 @@ export default class LoginComponent extends Component {
 
 
     render() {
-
 
         return (
             <Container>
