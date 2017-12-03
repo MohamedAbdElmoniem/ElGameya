@@ -83,9 +83,10 @@ export default class CycleMembers extends Component {
     }
 
     componentDidMount() {
-
+        this.renderItemsIncircle()
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
+
 
 
     componentWillUnmount() {
@@ -187,7 +188,6 @@ export default class CycleMembers extends Component {
         })
             .then((resp) => {
                 console.log(resp)
-                debugger;
                 if (resp.data.users.length > 0) {
                     for (let x = 0; x < resp.data.users.length; x++) {
                         renderedMembers.push(
@@ -593,12 +593,10 @@ export default class CycleMembers extends Component {
                     if (finalData.reminders) {
 
                         for (let x = 0; x < finalData.reminders.length; x++) {
-                            debugger;
                             defferedRemoveEvents.push(RNCalendarEvents.removeEvent(finalData.reminders[x].calendar_reminder_id.toString()))
 
                         }
                         axios.all(defferedRemoveEvents).then((result) => {
-                            debugger;
                             result.forEach((v, i) => {
 
                             })
@@ -669,6 +667,45 @@ export default class CycleMembers extends Component {
         });
 
 
+    }
+
+    renderItemsIncircle() {
+        let component=this;
+        var radius = 50;
+        var angle = 0;
+        var width = 300;
+        var height = 300;
+        var step = (2*Math.PI)/4;
+
+        component.state.circle1={
+            left :Math.round(width/2+radius * Math.cos(angle)-4),
+            top :Math.round(height/2+radius * Math.sin(angle)-4),
+            position:"absolute"
+        }
+        debugger;
+        angle+=step;
+        component.state.circle2={
+            left :Math.round(width/2+radius * Math.cos(angle)-4),
+            top :Math.round(height/2+radius * Math.sin(angle)-4),
+            position:"absolute"
+            
+        }
+        angle+=step;
+        component.state.circle3={
+            left :Math.round(width/2+radius * Math.cos(angle)-4),
+            top :Math.round(height/2+radius * Math.sin(angle)-4),
+            position:"absolute"
+            
+        }
+        angle+=step;
+        component.state.circle4={
+            left :Math.round(width/2+radius * Math.cos(angle)-4),
+            top :Math.round(height/2+radius * Math.sin(angle)-4),
+            position:"absolute"
+            
+        }
+
+        component.setState({});
     }
 
 
@@ -746,7 +783,7 @@ export default class CycleMembers extends Component {
                 </Modal>
 
                 <Content>
-                    <Header style={{ backgroundColor: "#9E1F64" }}>
+                    <Header ref="myheader" style={{ backgroundColor: "#9E1F64" }}>
                         <Left>
                             <Button transparent onPress={() => {
                                 navigate("MyCycles", { userid: this.props.navigation.state.params.userid });
@@ -802,25 +839,32 @@ export default class CycleMembers extends Component {
 
                             <Col></Col>
                             <Col>
-                            <TouchableOpacity onPress={() => {
-                                            Share.open(shareOptions);
-                                        }} >
-                                <View style={{ alignItems: "center" }}>
-                                    <Image style={{ height: 30, width: 30, alignSelf: "center" }}
-                                        source={require('../imgs/addMembers.png')} />
-                                    <Text>Add Members</Text>
-                                </View>
+                                <TouchableOpacity onPress={() => {
+                                    Share.open(shareOptions);
+                                }} >
+                                    <View style={{ alignItems: "center" }}>
+                                        <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                            source={require('../imgs/addMembers.png')} />
+                                        <Text>Add Members</Text>
+                                    </View>
                                 </TouchableOpacity>
                             </Col>
                         </Row>
                     </Grid>
 
                     {this.state.noMembers ? <List></List> :
-                     <List>
-                        {this.state.renderedMembers}
-                    </List>}
+                        <List>
+                            {this.state.renderedMembers}
+                        </List>}
 
-
+                    <View style={{
+                        width: 300, margin: 10, height: 300, borderColor: "black", borderWidth: 1,position:"relative"
+                    }}>
+                        <Button style={this.state.circle1}><Text>fsdfsd</Text></Button>
+                        <Button style={this.state.circle2}><Text>fsdfsd</Text></Button>
+                        <Button style={this.state.circle3}><Text>fsdfsd</Text></Button>
+                        <Button style={this.state.circle4}><Text>fsdfsd</Text></Button>
+                    </View>
                 </Content>
             </Container>
         );
