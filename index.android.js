@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import {
     AppRegistry,
     StyleSheet,
-    Text,
+    Text,Platform ,
     View
 } from 'react-native';
 import { Button } from 'native-base';
@@ -74,17 +74,21 @@ const SimpleApp = StackNavigator({
     AppIntro: { screen: AppIntro },
     RegisterationPage: { screen: RegisterationComponent },
     LoginPage: { screen: LoginComponent },
-    HomePage: { path: 'home/:id', screen: DrawerExample },
-    MyCycles: { path: "mycycles:id", screen: MyCycles },
-    CycleMembers: { path: "CycleMembers:id", screen: CycleMembers },
-    Following: { path: "Following:id", screen: Following },
-    Followers: { path: "Followers:id", screen: Followers },
-    AllCycles: { path: "AllCycles", screen: AllCycles },
-    MyProfile: { path: "MyProfile", screen: MyProfile }
+    HomePage: { screen: DrawerExample },
+    MyCycles: { screen: MyCycles,path:"chat/:user"  },
+    CycleMembers: { screen: CycleMembers },
+    Following: {  screen: Following },
+    Followers: {  screen: Followers },
+    AllCycles: { screen: AllCycles },
+    MyProfile: {  screen: MyProfile}
 
 }, {
         headerMode: 'none',
     });
 
+    const prefix = Platform.OS == 'android' ? 'mychat://mychat/' : 'mychat://';
 
-AppRegistry.registerComponent('elgameya', () => SimpleApp);
+const MainApp = () => <SimpleApp uriPrefix={prefix} />;
+
+
+AppRegistry.registerComponent('elgameya', () => MainApp);

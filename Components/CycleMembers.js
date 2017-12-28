@@ -46,8 +46,15 @@ import PopupDialog, { DialogTitle, SlideAnimation } from 'react-native-popup-dia
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
 
+import {
+    Menu,
+    MenuProvider,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger
+} from 'react-native-popup-menu';
+var moment = require('moment')
 export default class CycleMembers extends Component {
-
 
     static navigationOptions = {
         header: null
@@ -83,7 +90,7 @@ export default class CycleMembers extends Component {
     }
 
     componentDidMount() {
-        this.renderItemsIncircle()
+        // this.renderItemsIncircle()
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
 
@@ -104,77 +111,101 @@ export default class CycleMembers extends Component {
 
     componentWillMount() {
 
-        let renderedMembers = []
-        axios({
-            method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
-            data: JSON.stringify({
-                User_id: this.props.navigation.state.params.userid,
-                Cycle_id: this.props.navigation.state.params.cycleid.id
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then((resp) => {
-                this.setState({ progressVisible: false });
-                console.log(resp)
-                if (resp.data.users.length > 0) {
-                    for (let x = 0; x < resp.data.users.length; x++) {
-                        renderedMembers.push(
-                            <ListItem style={{ height: 100 }} icon key={x} onPress={() => {
-                                this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
+        /*  let renderedMembers = []
+         axios({
+             method: "POST",
+             url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
+             data: JSON.stringify({
+                 User_id: this.props.navigation.state.params.userid,
+                 Cycle_id: this.props.navigation.state.params.cycleid.id
+             }),
+             headers: {
+                 "Content-Type": "application/json"
+             }
+         })
+             .then((resp) => {
+                 this.setState({ progressVisible: false });
+                 console.log(resp)
+                 if (resp.data.users.length > 0) {
+                     for (let x = 0; x < resp.data.users.length; x++) {
+                         renderedMembers.push(
+                             <ListItem style={{ height: 100 }} icon key={x} onPress={() => {
+                                 this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
+ 
+                             }}>
+                                 <Left style={{ height: 100 }}>
+                                     <Icon name="md-contact" />
+                                 </Left>
+                                 <Body style={{ height: 100 }}>
+                                     <Text>Name : {resp.data.users[x].full_name}</Text>
+                                     <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
+                                     {resp.data.months[x].status == "requested" ? <Button onPress={() => {
+                                         this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
+                                     }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
+                                         <Text style={{ color: "white" }}>Confirm</Text>
+                                     </Button> : <Text>status : Confirmed</Text>}
+ 
+                                 </Body>
+                                 <Right style={{ height: 100 }}>
+                                     <Text>show</Text>
+                                     <Icon name="arrow-forward" />
+                                 </Right>
+ 
+                             </ListItem>
+                         )
+                     }
+                     this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
+                         // this.refs.ModalMembers.open();
+                     })
+                 }
+                 else {
+                     renderedMembers.push(
+                         <ListItem key={0} style={{ height: 50 }}>
+                             <Body><Text>No members</Text></Body>
+                         </ListItem>
+                     )
+                     this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
+                         // this.refs.ModalMembers.open();
+                     })
+                 }
+ 
+             })
+             .catch((err) => {
+ 
+                 this.setState({ progressVisible: false }, () => {
+                     alert("Unexpected error");
+                 });
+ 
+             }) */
 
-                            }}>
-                                <Left style={{ height: 100 }}>
-                                    <Icon name="md-contact" />
-                                </Left>
-                                <Body style={{ height: 100 }}>
-                                    <Text>Name : {resp.data.users[x].full_name}</Text>
-                                    <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
-                                    {resp.data.months[x].status == "requested" ? <Button onPress={() => {
-                                        this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
-                                    }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
-                                        <Text style={{ color: "white" }}>Confirm</Text>
-                                    </Button> : <Text>status : Confirmed</Text>}
+        this.renrederMembers();
+    }
 
-                                </Body>
-                                <Right style={{ height: 100 }}>
-                                    <Text>show</Text>
-                                    <Icon name="arrow-forward" />
-                                </Right>
+    monthsBetweenTwoDates(start, end) {
+        let startDate = moment(start)
+        let endDate = moment(end)
 
-                            </ListItem>
-                        )
-                    }
-                    this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
-                        // this.refs.ModalMembers.open();
-                    })
-                }
-                else {
-                    renderedMembers.push(
-                        <ListItem key={0} style={{ height: 50 }}>
-                            <Body><Text>No members</Text></Body>
-                        </ListItem>
-                    )
-                    this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
-                        // this.refs.ModalMembers.open();
-                    })
-                }
+        let timeValues = [];
 
-            })
-            .catch((err) => {
+        while (endDate >= startDate) {
+            timeValues.push(startDate.format('YYYY-MM-DD'));
+            startDate.add(1, 'month');
+        }
 
-                this.setState({ progressVisible: false }, () => {
-                    alert("Unexpected error");
-                });
-
-            })
+        return timeValues;
     }
 
     renrederMembers() {
 
         let renderedMembers = []
+
+        let component = this;
+        var radius = 150;
+        var angle = 0;
+        var width = 320;
+        var height = 320;
+
+
         axios({
             method: "POST",
             url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
@@ -189,32 +220,91 @@ export default class CycleMembers extends Component {
             .then((resp) => {
                 console.log(resp)
                 if (resp.data.users.length > 0) {
-                    for (let x = 0; x < resp.data.users.length; x++) {
-                        renderedMembers.push(
-                            <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
-                                this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
+                    let numberOfMembers = this.props.navigation.state.params.cycleid.numbeR_OF_MEMBERS;
+                    let startDate = this.props.navigation.state.params.cycleid.startDate;
+                    let endDate = this.props.navigation.state.params.cycleid.endDate;
 
-                            }}>
-                                <Left style={{ height: 90 }}>
-                                    <Icon name="md-contact" />
-                                </Left>
-                                <Body style={{ height: 90 }}>
-                                    <Text>Name : {resp.data.users[x].full_name}</Text>
-                                    <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
-                                    {resp.data.months[x].status == "requested" ? <Button onPress={() => {
-                                        this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
-                                    }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
-                                        <Text style={{ color: "white" }}>Confirm</Text>
-                                    </Button> : <Text>status : Confirmed</Text>}
+                    let months = this.monthsBetweenTwoDates(startDate, endDate);
+                    
+                    var step = (2 * Math.PI) / numberOfMembers;
 
-                                </Body>
-                                <Right style={{ height: 90 }}>
-                                    <Text>show</Text>
-                                    <Icon name="arrow-forward" />
-                                </Right>
+                    for (var x = 0; x < numberOfMembers; x++) {
+                        var findMemberByMonth = _.find(resp.data.months, (o) => {
+                            return o.cyclE_MONTH === parseInt(moment(months[x]).format("M"))
+                        })
 
-                            </ListItem>
-                        )
+                        if (findMemberByMonth) {
+                            var memberItSelf = _.find(resp.data.users, function (o) {
+                                return o.id === findMemberByMonth.useR_JOINED_ID
+                            })
+
+                        }
+                        if (findMemberByMonth) {
+                            renderedMembers.push(
+                                <TouchableOpacity onPress={() => { alert("open profile") }} key={x} style={{
+                                    borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
+                                    left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
+                                    top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
+                                    position: "absolute",
+                                    flex: 1,
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}>
+                                    <View>
+                                        <Text style={{ color: "white", fontSize: 10 }}>{months[x]}</Text>
+                                        <Text style={{ color: "white", fontSize: 10 }}>{memberItSelf.full_name}</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                            )
+                        }
+                        else {
+                            renderedMembers.push(
+                                <TouchableOpacity onPress={() => { alert("add") }} key={x} style={{
+                                    borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
+                                    left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
+                                    top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
+                                    position: "absolute",
+                                    flex: 1,
+                                    alignItems: "center",
+                                    justifyContent: "center"
+                                }}>
+                                    <View>
+                                        <Text style={{ color: "white", fontSize: 10 }}>{months[x]}</Text>
+                                        <Text style={{ color: "white", fontSize: 10 }}>Add Member</Text>
+                                    </View>
+                                </TouchableOpacity>
+
+
+                            )
+                        }
+                        /*   <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
+                                              this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
+              
+                                          }}>
+                                              <Left style={{ height: 90 }}>
+                                                  <Icon name="md-contact" />
+                                              </Left>
+                                              <Body style={{ height: 90 }}>
+                                                  <Text>Name : {resp.data.users[x].full_name}</Text>
+                                                  <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
+                                                  {resp.data.months[x].status == "requested" ? <Button onPress={() => {
+                                                      this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
+                                                  }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
+                                                      <Text style={{ color: "white" }}>Confirm</Text>
+                                                  </Button> : <Text>status : Confirmed</Text>}
+              
+                                              </Body>
+                                              <Right style={{ height: 90 }}>
+                                                  <Text>show</Text>
+                                                  <Icon name="arrow-forward" />
+                                              </Right>
+              
+                                          </ListItem> 
+                                      )
+                            */
+                        angle += step;
                     }
                     this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
                         // this.refs.ModalMembers.open();
@@ -233,6 +323,7 @@ export default class CycleMembers extends Component {
 
             })
             .catch((err) => {
+                debugger;
                 alert("Unexpected error");
 
             })
@@ -669,45 +760,36 @@ export default class CycleMembers extends Component {
 
     }
 
-    renderItemsIncircle() {
-        let component=this;
-        var radius = 50;
-        var angle = 0;
-        var width = 300;
-        var height = 300;
-        var step = (2*Math.PI)/4;
-
-        component.state.circle1={
-            left :Math.round(width/2+radius * Math.cos(angle)-4),
-            top :Math.round(height/2+radius * Math.sin(angle)-4),
-            position:"absolute"
-        }
-        debugger;
-        angle+=step;
-        component.state.circle2={
-            left :Math.round(width/2+radius * Math.cos(angle)-4),
-            top :Math.round(height/2+radius * Math.sin(angle)-4),
-            position:"absolute"
-            
-        }
-        angle+=step;
-        component.state.circle3={
-            left :Math.round(width/2+radius * Math.cos(angle)-4),
-            top :Math.round(height/2+radius * Math.sin(angle)-4),
-            position:"absolute"
-            
-        }
-        angle+=step;
-        component.state.circle4={
-            left :Math.round(width/2+radius * Math.cos(angle)-4),
-            top :Math.round(height/2+radius * Math.sin(angle)-4),
-            position:"absolute"
-            
-        }
-
-        component.setState({});
+    renderPopupMenu() {
+        return (
+            <Menu onSelect={value => { this.handlePopupMenuClick(value) }}>
+                <MenuTrigger>
+                    <Icon name='ios-settings' style={{ color: "white" }} />
+                </MenuTrigger>
+                <MenuOptions>
+                    <MenuOption value='Edit cycle' text='Edit cycle' />
+                    <MenuOption value='Group Message' text='Group Message' />
+                    <MenuOption value='Delete cycle' text='Delete cycle' />
+                    <MenuOption value='Info' text='Info' />
+                </MenuOptions>
+            </Menu>
+        )
     }
 
+    handlePopupMenuClick(value) {
+        if (value === "Edit cycle") {
+
+        }
+        if (value === "Group Message") {
+
+        }
+        if (value === "Delete cycle") {
+
+        }
+        if (value === "Info") {
+
+        }
+    }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -719,7 +801,10 @@ export default class CycleMembers extends Component {
             subject: "ElGameya app" //  for email
         };
         return (
+
+
             <Container>
+
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
 
                 <PopupDialog width={width - 100} height={150}
@@ -781,92 +866,108 @@ export default class CycleMembers extends Component {
                         </Content>
                     </Container>
                 </Modal>
+                <MenuProvider>
+                    <Content>
+                        <Header ref="myheader" style={{ backgroundColor: "#9E1F64" }}>
+                            <Left>
+                                <Button transparent onPress={() => {
+                                    navigate("MyCycles", { userid: this.props.navigation.state.params.userid });
 
-                <Content>
-                    <Header ref="myheader" style={{ backgroundColor: "#9E1F64" }}>
-                        <Left>
-                            <Button transparent onPress={() => {
-                                navigate("MyCycles", { userid: this.props.navigation.state.params.userid });
+                                }}>
+                                    <Icon name='arrow-back' />
+                                </Button>
+                            </Left>
+                            <Body>
+                                <Title>{this.props.navigation.state.params.cycleid.cyclE_NAME}</Title>
+                            </Body>
+                            <Right>
+                                <Grid>
+                                    <Row style={{ marginTop: 15 }}>
+                                        <Col style={{ width: "30%" }}></Col>
 
-                            }}>
-                                <Icon name='arrow-back' />
-                            </Button>
-                        </Left>
-                        <Body>
-                            <Title>{this.props.navigation.state.params.cycleid.cyclE_NAME}</Title>
-                        </Body>
-                        <Right>
-                            <Icon onPress={() => {
-                                this.handleReminders();
-                            }} name='md-alarm' style={{ color: "white" }} />
+                                        <Col style={{ width: "50%" }}>
+                                            {this.renderPopupMenu()}
 
-                        </Right>
-                    </Header>
-
-                    <ProgressDialog
-                        visible={this.state.progressVisible}
-                        title="My Cycles"
-                        message="Please, wait..."
-                    />
+                                        </Col>
+                                        <Col style={{ width: "20%" }}>
+                                            <Icon onPress={() => {
+                                                this.handleReminders();
+                                            }} name='md-alarm' style={{ color: "white" }} />
+                                        </Col>
+                                    </Row>
+                                </Grid>
 
 
-                    <View style={{ flex: 1, flexDirection: "row" }}>
-                        <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
-                            <Thumbnail source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/4195-200.png' }} />
-                        </View>
 
-                        <View style={{ marginLeft: 20, marginTop: 23 }}>
-                            <Text style={{ fontSize: 18 }}>cycle
+                            </Right>
+                        </Header>
+
+                        <ProgressDialog
+                            visible={this.state.progressVisible}
+                            title="My Cycles"
+                            message="Please, wait..."
+                        />
+
+
+                        <View style={{ flex: 1, flexDirection: "row" }}>
+                            <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
+                                <Thumbnail source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/4195-200.png' }} />
+                            </View>
+
+                            <View style={{ marginLeft: 20, marginTop: 23 }}>
+                                <Text style={{ fontSize: 18 }}>cycle
                                 : {this.props.navigation.state.params.cycleid.cyclE_NAME}</Text>
-                            <Text style={{ fontSize: 16 }}>number of memebers
+                                <Text style={{ fontSize: 16 }}>number of memebers
                                 : {this.props.navigation.state.params.cycleid.numbeR_OF_MEMBERS}</Text>
+                            </View>
+
                         </View>
 
-                    </View>
+                        <View
+                            style={{
+                                borderBottomWidth: 1,
+                                borderBottomColor: 'black',
+                                width: 400,
+                            }}
+                        />
 
-                    <View
-                        style={{
-                            borderBottomWidth: 1,
-                            borderBottomColor: 'black',
-                            width: 400,
-                        }}
-                    />
+                        <Grid>
+                            <Row>
 
-                    <Grid>
-                        <Row>
+                                {this.state.noMembers === true ? <Col>{this.state.renderedMembers}</Col> : <Col></Col>}
 
-                            {this.state.noMembers === true ? <Col>{this.state.renderedMembers}</Col> : <Col></Col>}
+                                <Col></Col>
+                                <Col>
+                                    <TouchableOpacity onPress={() => {
+                                        Share.open(shareOptions);
+                                    }} >
+                                        <View style={{ alignItems: "center" }}>
+                                            <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                                source={require('../imgs/addMembers.png')} />
+                                            <Text>Add Members</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Col>
+                            </Row>
+                        </Grid>
 
-                            <Col></Col>
-                            <Col>
-                                <TouchableOpacity onPress={() => {
-                                    Share.open(shareOptions);
-                                }} >
-                                    <View style={{ alignItems: "center" }}>
-                                        <Image style={{ height: 30, width: 30, alignSelf: "center" }}
-                                            source={require('../imgs/addMembers.png')} />
-                                        <Text>Add Members</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </Col>
-                        </Row>
-                    </Grid>
+                        {this.state.noMembers ? <List></List> :
+                            <Grid>
+                                <Row>
+                                    <Col style={{ width: "5%" }}></Col>
+                                    <Col style={{ position: 'relative', width: "80%", height: 400 }} >
+                                        {this.state.renderedMembers}
+                                    </Col>
+                                    <Col style={{ width: "15%" }}></Col>
+                                </Row>
+                            </Grid>
+                        }
 
-                    {this.state.noMembers ? <List></List> :
-                        <List>
-                            {this.state.renderedMembers}
-                        </List>}
-
-                    <View style={{
-                        width: 300, margin: 10, height: 300, borderColor: "black", borderWidth: 1,position:"relative"
-                    }}>
-                        <Button style={this.state.circle1}><Text>fsdfsd</Text></Button>
-                        <Button style={this.state.circle2}><Text>fsdfsd</Text></Button>
-                        <Button style={this.state.circle3}><Text>fsdfsd</Text></Button>
-                        <Button style={this.state.circle4}><Text>fsdfsd</Text></Button>
-                    </View>
-                </Content>
+                    </Content>
+                </MenuProvider>
             </Container>
+
+
         );
     }
 

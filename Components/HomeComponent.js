@@ -36,7 +36,6 @@ import {
     StyleProvider, List, ListItem, Card, CardItem,
 } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import ActionButton from 'react-native-action-button';
 import StarRating from 'react-native-star-rating';
 import RNCalendarEvents from 'react-native-calendar-events';
 import axios from 'axios'
