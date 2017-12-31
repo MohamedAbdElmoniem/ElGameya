@@ -82,7 +82,7 @@ export default class LoginComponent extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/LoginUser",
+                url: "http://www.elgameya.net/api/gamieya/LoginUser",
                 data: JSON.stringify(userData),
                 headers: {
                     "Content-Type": "application/json"
@@ -150,7 +150,7 @@ export default class LoginComponent extends Component {
                 debugger;
                 axios({
                     method: "POST",
-                    url: "http://www.gameya.somee.com/api/gamieya/RegisterLoginFacebook",
+                    url: "http://www.elgameya.net/api/gamieya/RegisterLoginFacebook",
                     data: JSON.stringify(FbCredentials),
                     headers: {
                         "Content-Type": "application/json"

@@ -28,7 +28,7 @@ import {
     Form,
     Item,
     Input,
-    Icon,
+    Icon, Tab, Tabs,
     Title,
     StyleProvider, List, ListItem, Card, CardItem,
 } from 'native-base';
@@ -45,6 +45,7 @@ import Share, { ShareSheet } from 'react-native-share';
 import PopupDialog, { DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
+import TabView from 'mkp-react-native-tab-view';
 
 import {
     Menu,
@@ -54,6 +55,8 @@ import {
     MenuTrigger
 } from 'react-native-popup-menu';
 var moment = require('moment')
+import SortableList from 'react-native-sortable-list';
+
 export default class CycleMembers extends Component {
 
     static navigationOptions = {
@@ -74,15 +77,61 @@ export default class CycleMembers extends Component {
             arrayOfReminders: [],
             ReceiverId: "",
             message: "",
-            noMembers: true
+            noMembers: true,
+            renderedRequestsList: []
 
         }
 
         this.handleBackButton = this.handleBackButton.bind(this);
+        this.getUnConfirmedRequests = this.getUnConfirmedRequests.bind(this);
+        this.handleDeleteMyCycle = this.handleDeleteMyCycle.bind(this);
 
 
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
+
+        this.ListData = {
+            0: {
+                image: 'https://placekitten.com/200/240',
+                text: 'Chloe',
+            },
+            1: {
+                image: 'https://placekitten.com/200/201',
+                text: 'Jasper',
+            },
+            2: {
+                image: 'https://placekitten.com/200/202',
+                text: 'Pepper',
+            },
+            3: {
+                image: 'https://placekitten.com/200/203',
+                text: 'Oscar',
+            },
+            4: {
+                image: 'https://placekitten.com/200/204',
+                text: 'Dusty',
+            },
+            5: {
+                image: 'https://placekitten.com/200/205',
+                text: 'Spooky',
+            },
+            6: {
+                image: 'https://placekitten.com/200/210',
+                text: 'Kiki',
+            },
+            7: {
+                image: 'https://placekitten.com/200/215',
+                text: 'Smokey',
+            },
+            8: {
+                image: 'https://placekitten.com/200/220',
+                text: 'Gizmo',
+            },
+            9: {
+                image: 'https://placekitten.com/220/239',
+                text: 'Kitty',
+            },
+        };
 
         this.flag = false;
 
@@ -111,73 +160,6 @@ export default class CycleMembers extends Component {
 
     componentWillMount() {
 
-        /*  let renderedMembers = []
-         axios({
-             method: "POST",
-             url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
-             data: JSON.stringify({
-                 User_id: this.props.navigation.state.params.userid,
-                 Cycle_id: this.props.navigation.state.params.cycleid.id
-             }),
-             headers: {
-                 "Content-Type": "application/json"
-             }
-         })
-             .then((resp) => {
-                 this.setState({ progressVisible: false });
-                 console.log(resp)
-                 if (resp.data.users.length > 0) {
-                     for (let x = 0; x < resp.data.users.length; x++) {
-                         renderedMembers.push(
-                             <ListItem style={{ height: 100 }} icon key={x} onPress={() => {
-                                 this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
- 
-                             }}>
-                                 <Left style={{ height: 100 }}>
-                                     <Icon name="md-contact" />
-                                 </Left>
-                                 <Body style={{ height: 100 }}>
-                                     <Text>Name : {resp.data.users[x].full_name}</Text>
-                                     <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
-                                     {resp.data.months[x].status == "requested" ? <Button onPress={() => {
-                                         this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
-                                     }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
-                                         <Text style={{ color: "white" }}>Confirm</Text>
-                                     </Button> : <Text>status : Confirmed</Text>}
- 
-                                 </Body>
-                                 <Right style={{ height: 100 }}>
-                                     <Text>show</Text>
-                                     <Icon name="arrow-forward" />
-                                 </Right>
- 
-                             </ListItem>
-                         )
-                     }
-                     this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
-                         // this.refs.ModalMembers.open();
-                     })
-                 }
-                 else {
-                     renderedMembers.push(
-                         <ListItem key={0} style={{ height: 50 }}>
-                             <Body><Text>No members</Text></Body>
-                         </ListItem>
-                     )
-                     this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
-                         // this.refs.ModalMembers.open();
-                     })
-                 }
- 
-             })
-             .catch((err) => {
- 
-                 this.setState({ progressVisible: false }, () => {
-                     alert("Unexpected error");
-                 });
- 
-             }) */
-
         this.renrederMembers();
     }
 
@@ -195,20 +177,88 @@ export default class CycleMembers extends Component {
         return timeValues;
     }
 
+    getUnConfirmedRequests() {
+
+        let renderedRequests = [];
+        this.state.renderedRequestsList = [];
+
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/GetCycleMembers",
+            data: JSON.stringify({
+                User_id: this.props.navigation.state.params.userid,
+                Cycle_id: this.props.navigation.state.params.cycleid.id
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+
+            if (resp.data.months.length > 0) {
+                let monthsToBeConfirmed = resp.data.months;
+
+                for (let x = 0; x < monthsToBeConfirmed.length; x++) {
+
+                    if (monthsToBeConfirmed[x].status === "requested") {
+                        renderedRequests.push(
+                            <ListItem icon key={x}>
+                                <Left>
+                                    <Icon name="md-person-add" />
+                                </Left>
+                                <Body>
+                                    <Text>{resp.data.users[x].full_name} - Month : {monthsToBeConfirmed[x].cyclE_MONTH}</Text>
+                                </Body>
+                                <Right>
+                                    <Button small onPress={() => {
+                                        this.confirmRequest(monthsToBeConfirmed[x].cyclE_ID, resp.data.users[x].id)
+                                    }}><Text>Confirm</Text></Button>
+                                </Right>
+                            </ListItem>
+                        )
+                    }
+
+                }
+            }
+
+            if (renderedRequests.length === 0) {
+                renderedRequests.push(
+                    <ListItem icon key={0}>
+                        <Left>
+                        </Left>
+                        <Body>
+                            <Text>There's no pending requests</Text>
+                        </Body>
+                        <Right>
+                        </Right>
+                    </ListItem>
+                )
+            }
+
+            this.setState({ renderedRequestsList: renderedRequests })
+
+
+        })
+            .catch((err) => {
+                alert("Unexpected error")
+            })
+    }
+
     renrederMembers() {
 
         let renderedMembers = []
+        this.state.renderedMembers = [];
 
         let component = this;
-        var radius = 150;
         var angle = 0;
-        var width = 320;
-        var height = 320;
+        var width = Dimensions.get('window').width * 80 / 100;
+        var radius = width / 2;
+
+        var height = parseInt(Dimensions.get('window').height) * 60 / 100;
 
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
+            url: "http://www.elgameya.net/api/gamieya/GetCycleMembers",
             data: JSON.stringify({
                 User_id: this.props.navigation.state.params.userid,
                 Cycle_id: this.props.navigation.state.params.cycleid.id
@@ -219,107 +269,112 @@ export default class CycleMembers extends Component {
         })
             .then((resp) => {
                 console.log(resp)
-                if (resp.data.users.length > 0) {
-                    let numberOfMembers = this.props.navigation.state.params.cycleid.numbeR_OF_MEMBERS;
-                    let startDate = this.props.navigation.state.params.cycleid.startDate;
-                    let endDate = this.props.navigation.state.params.cycleid.endDate;
+                // if (resp.data.users.length > 0) {
+                let numberOfMembers = this.props.navigation.state.params.cycleid.numbeR_OF_MEMBERS;
+                let startDate = this.props.navigation.state.params.cycleid.startDate;
+                let endDate = this.props.navigation.state.params.cycleid.endDate;
 
-                    let months = this.monthsBetweenTwoDates(startDate, endDate);
-                    
-                    var step = (2 * Math.PI) / numberOfMembers;
+                let months = this.monthsBetweenTwoDates(startDate, endDate);
 
-                    for (var x = 0; x < numberOfMembers; x++) {
-                        var findMemberByMonth = _.find(resp.data.months, (o) => {
-                            return o.cyclE_MONTH === parseInt(moment(months[x]).format("M"))
+                var step = (2 * Math.PI) / numberOfMembers;
+
+                for (var x = 0; x < numberOfMembers; x++) {
+                    var findMemberByMonth = _.find(resp.data.months, (o) => {
+                        return o.cyclE_MONTH === parseInt(moment(months[x]).format("M"))
+                    })
+
+                    if (findMemberByMonth) {
+                        var memberItSelf = _.find(resp.data.users, function (o) {
+                            return o.id === findMemberByMonth.useR_JOINED_ID
                         })
 
-                        if (findMemberByMonth) {
-                            var memberItSelf = _.find(resp.data.users, function (o) {
-                                return o.id === findMemberByMonth.useR_JOINED_ID
-                            })
-
-                        }
-                        if (findMemberByMonth) {
-                            renderedMembers.push(
-                                <TouchableOpacity onPress={() => { alert("open profile") }} key={x} style={{
-                                    borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
-                                    left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
-                                    top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
-                                    position: "absolute",
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}>
-                                    <View>
-                                        <Text style={{ color: "white", fontSize: 10 }}>{months[x]}</Text>
-                                        <Text style={{ color: "white", fontSize: 10 }}>{memberItSelf.full_name}</Text>
-                                    </View>
-                                </TouchableOpacity>
-
-
-                            )
-                        }
-                        else {
-                            renderedMembers.push(
-                                <TouchableOpacity onPress={() => { alert("add") }} key={x} style={{
-                                    borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
-                                    left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
-                                    top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
-                                    position: "absolute",
-                                    flex: 1,
-                                    alignItems: "center",
-                                    justifyContent: "center"
-                                }}>
-                                    <View>
-                                        <Text style={{ color: "white", fontSize: 10 }}>{months[x]}</Text>
-                                        <Text style={{ color: "white", fontSize: 10 }}>Add Member</Text>
-                                    </View>
-                                </TouchableOpacity>
-
-
-                            )
-                        }
-                        /*   <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
-                                              this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
-              
-                                          }}>
-                                              <Left style={{ height: 90 }}>
-                                                  <Icon name="md-contact" />
-                                              </Left>
-                                              <Body style={{ height: 90 }}>
-                                                  <Text>Name : {resp.data.users[x].full_name}</Text>
-                                                  <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
-                                                  {resp.data.months[x].status == "requested" ? <Button onPress={() => {
-                                                      this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
-                                                  }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
-                                                      <Text style={{ color: "white" }}>Confirm</Text>
-                                                  </Button> : <Text>status : Confirmed</Text>}
-              
-                                              </Body>
-                                              <Right style={{ height: 90 }}>
-                                                  <Text>show</Text>
-                                                  <Icon name="arrow-forward" />
-                                              </Right>
-              
-                                          </ListItem> 
-                                      )
-                            */
-                        angle += step;
                     }
-                    this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
-                        // this.refs.ModalMembers.open();
-                    })
+                    if (findMemberByMonth) {
+                        renderedMembers.push(
+                            <TouchableOpacity onPress={() => { alert("open profile") }} key={x} style={{
+                                borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
+                                left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
+                                top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
+                                position: "absolute",
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}>
+                                <Text style={{ color: "white", fontSize: 8 }}>{months[x]}</Text>
+                                <Text style={{ color: "white", fontSize: 8 }}>{memberItSelf.full_name}</Text>
+                            </TouchableOpacity>
+
+
+                        )
+                    }
+                    else {
+                        let shareOptions = {
+                            title: "ElGameya app",
+                            message: "join gameya : " + this.props.navigation.state.params.cycleid.cyclE_NAME
+                                + "from this link : https://elgameya/gameya/" + this.props.navigation.state.params.cycleid.cyclE_NAME + "/" + parseInt(moment(months[x]).format("M"))
+                            ,
+                            url: "https://elgameya.net/gameya/" + this.props.navigation.state.params.cycleid.cyclE_NAME + "/" + parseInt(moment(months[x]).format("M")),
+                            subject: "ElGameya app" //  for email
+                        };
+                        renderedMembers.push(
+                            <TouchableOpacity onPress={() => { Share.open(shareOptions); }} key={x} style={{
+                                borderRadius: 100 / 2, borderColor: '#262261', borderWidth: 1, width: 60, height: 60,
+                                left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
+                                top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
+                                position: "absolute",
+                                flex: 1,
+                                alignItems: "center",
+                                justifyContent: "center"
+                            }}>
+                                <Text style={{ color: "#262261", fontSize: 8 }}>{months[x]}</Text>
+                                <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                    source={require('../imgs/addMembers.png')} />
+                            </TouchableOpacity>
+
+
+                        )
+                    }
+                    /*   <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
+                                    this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
+
+                                }}>
+                                    <Left style={{ height: 90 }}>
+                                        <Icon name="md-contact" />
+                                    </Left>
+                                    <Body style={{ height: 90 }}>
+                                        <Text>Name : {resp.data.users[x].full_name}</Text>
+                                        <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
+                                        {resp.data.months[x].status == "requested" ? <Button onPress={() => {
+                                            this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
+                                        }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
+                                            <Text style={{ color: "white" }}>Confirm</Text>
+                                        </Button> : <Text>status : Confirmed</Text>}
+
+                                    </Body>
+                                    <Right style={{ height: 90 }}>
+                                        <Text>show</Text>
+                                        <Icon name="arrow-forward" />
+                                    </Right>
+
+                                </ListItem>
+                                )
+                        */
+                    angle += step;
                 }
-                else {
-                    renderedMembers.push(
-                        <ListItem key={0} style={{ height: 50 }}>
-                            <Body><Text>No members</Text></Body>
-                        </ListItem>
-                    )
-                    this.setState({ renderedMembers: renderedMembers, noMembers: true }, () => {
-                        // this.refs.ModalMembers.open();
-                    })
-                }
+                this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
+                    // this.refs.ModalMembers.open();
+                })
+                // }
+                /*         else {
+                                    renderedMembers.push(
+                                        <ListItem key={0} style={{ height: 50 }}>
+                                            <Body><Text>No members</Text></Body>
+                                        </ListItem>
+                                    )
+                            this.setState({renderedMembers: renderedMembers, noMembers: true }, () => {
+                                    // this.refs.ModalMembers.open();
+                                })
+                        } */
 
             })
             .catch((err) => {
@@ -333,7 +388,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/AdminConfirmRequests",
+            url: "http://www.elgameya.net/api/gamieya/AdminConfirmRequests",
             data: JSON.stringify({ User_id: userid, Cycle_id: cycleid }),
             headers: {
                 "Content-Type": "application/json"
@@ -365,7 +420,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -477,7 +532,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/FollowUser",
+            url: "http://www.elgameya.net/api/gamieya/FollowUser",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -511,7 +566,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"
@@ -545,7 +600,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/UnfollowUser",
+            url: "http://www.elgameya.net/api/gamieya/UnfollowUser",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -571,7 +626,7 @@ export default class CycleMembers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RemoveReminders",
+            url: "http://www.elgameya.net/api/gamieya/RemoveReminders",
             data: JSON.stringify({ id: this.props.navigation.state.params.cycleid.id }),
             headers: {
                 "Content-Type": "application/json"
@@ -641,7 +696,7 @@ export default class CycleMembers extends Component {
                     if (response === results[results.length - 1]) {
                         axios({
                             method: "POST",
-                            url: "http://www.gameya.somee.com/api/gamieya/AddReminders",
+                            url: "http://www.elgameya.net/api/gamieya/AddReminders",
                             data: JSON.stringify(this.state.arrayOfReminders),
                             headers: {
                                 "Content-Type": "application/json"
@@ -672,7 +727,7 @@ export default class CycleMembers extends Component {
             //   remove reminders
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/RemoveReminders",
+                url: "http://www.elgameya.net/api/gamieya/RemoveReminders",
                 data: JSON.stringify({ id: this.props.navigation.state.params.cycleid.id }),
                 headers: {
                     "Content-Type": "application/json"
@@ -731,7 +786,7 @@ export default class CycleMembers extends Component {
 
                 axios({
                     method: "POST",
-                    url: "http://www.gameya.somee.com/api/gamieya/SendMessage",
+                    url: "http://www.elgameya.net/api/gamieya/SendMessage",
                     data: JSON.stringify(userData),
                     headers: {
                         "Content-Type": "application/json"
@@ -778,16 +833,52 @@ export default class CycleMembers extends Component {
 
     handlePopupMenuClick(value) {
         if (value === "Edit cycle") {
-
+this.refs.ModalEditList.open();
         }
         if (value === "Group Message") {
 
         }
         if (value === "Delete cycle") {
+            this.refs.ModalDeleteCycle.open();
+
 
         }
         if (value === "Info") {
 
+        }
+    }
+
+    handleDeleteMyCycle() {
+        let dataToBeSent = {
+            id: this.props.navigation.state.params.cycleid.id
+        }
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/AdminDeleteCycle",
+            data: JSON.stringify(dataToBeSent),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.data.status === "success") {
+                // alert(resp.data.message);
+                const { navigate } = this.props.navigation;
+                navigate("MyCycles", { userid: this.props.navigation.state.params.userid });
+
+            }
+        })
+            .catch((err) => {
+                alert("Unexpected error")
+            })
+    }
+
+    handleTabChange(data, ref) {
+        if (data.i === 0) {
+            this.renrederMembers();
+        }
+        if (data.i === 1) {
+
+            this.getUnConfirmedRequests();
         }
     }
 
@@ -831,6 +922,58 @@ export default class CycleMembers extends Component {
                             {this.state.showData ? this.renderProfileData(this.state.profileResponse) : null}
                         </Content>
                     </Container>
+                </Modal>
+
+                {/*   ////////////////////////////////////////////////    */}
+
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalEditList"}
+                    swipeToClose={false}
+                    isDisabled={this.state.isDisabled}>
+                    <View style={{height:500}}>
+                            <SortableList
+                                style={styles.list}
+                                contentContainerStyle={styles.contentContainer}
+                                data={this.ListData}
+                                renderRow={(data, active) => {
+                                    return <View><Text>{data.data.text}</Text></View>
+                                }} 
+                               
+                                onChangeOrder={(nextOrder)=>{
+
+                                }}
+                                />
+
+                    </View>
+                </Modal>
+
+                <Modal backButtonClose={true} style={[styles.modal, styles.ModalDeleteCycle]} position={"center"} ref={"ModalDeleteCycle"}
+                    swipeToClose={false}
+                    isDisabled={this.state.isDisabled}>
+                    <Container>
+                        <Content>
+                            <Grid>
+                                <Row>
+                                    <Col style={{ width: "10%" }}></Col>
+                                    <Col style={{ width: "80%" }}>
+                                        <Text>Are you sure you want to delete this cycle ?</Text>
+                                    </Col>
+                                    <Col style={{ width: "10%" }}></Col>
+                                </Row>
+                                <Row>
+                                    <Col style={{ width: "40%" }}>
+                                        <Button style={{ borderRadius: 10, backgroundColor: "#9E1F64" }} onPress={() => {
+                                            this.refs.ModalDeleteCycle.close();
+                                        }}><Text>Cancel</Text></Button>
+                                    </Col>
+                                    <Col style={{ width: "40%" }}>
+                                    </Col>
+                                    <Col style={{ width: "40%" }}>
+                                        <Button style={{ borderRadius: 10, backgroundColor: "#9E1F64" }} onPress={() => { this.handleDeleteMyCycle() }}><Text>Ok</Text></Button>
+                                    </Col>
+                                </Row>
+                            </Grid>
+                        </Content>
+                    </Container>
 
                 </Modal>
 
@@ -839,6 +982,9 @@ export default class CycleMembers extends Component {
                     isDisabled={this.state.isDisabled}>
                     <Container>
                         <Content>
+
+
+
                             <View style={{ flex: 1, flexDirection: "row" }}>
                                 <View style={{ flex: 0.1 }}>
                                     <Icon name="md-alarm" /></View>
@@ -931,37 +1077,76 @@ export default class CycleMembers extends Component {
                             }}
                         />
 
-                        <Grid>
-                            <Row>
+                        {/*       <Tabs initialPage={0} onChangeTab={(i, ref) => {
+                            this.handleTabChange(i, ref);
+                        }}>
+                            <Tab heading="Joined">
+                                {this.state.noMembers ? <List></List> :
+                                    <Grid>
+                                        <Row>
+                                            <Col style={{ width: "5%" }}></Col>
+                                            <Col style={{ position: 'relative', width: "80%", height: 400 }}>
+                                                {this.state.renderedMembers}
+                                            </Col>
+                                            <Col style={{ width: "15%" }}></Col>
+                                        </Row>
+                                    </Grid>
+                                }
+                            </Tab>
+                            <Tab heading="Pending">
+                                <List>
+                                    {this.state.renderedRequestsList}
+                                </List>
+                            </Tab>
 
-                                {this.state.noMembers === true ? <Col>{this.state.renderedMembers}</Col> : <Col></Col>}
+                        </Tabs> */}
 
-                                <Col></Col>
-                                <Col>
-                                    <TouchableOpacity onPress={() => {
-                                        Share.open(shareOptions);
-                                    }} >
-                                        <View style={{ alignItems: "center" }}>
-                                            <Image style={{ height: 30, width: 30, alignSelf: "center" }}
-                                                source={require('../imgs/addMembers.png')} />
-                                            <Text>Add Members</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </Col>
-                            </Row>
-                        </Grid>
+                        <TabView tabBarPosition="top"
+                            style={{ flex: 1, height: 500 }}
+                            tabs={[{
+                                text: "Joined",
+                                onPress: () => {
+                                    this.state.renderedRequestsList = []
+                                    this.renrederMembers()
+                                },
+                                component: <Grid>
+                                    <Row>
+                                        <Col style={{ width: "5%" }}></Col>
+                                        <Col style={{ position: 'relative', width: "80%", height: 400 }}>
+                                            {this.state.renderedMembers}
+                                        </Col>
+                                        <Col style={{ width: "15%" }}></Col>
+                                    </Row>
+                                </Grid>
+                            }, {
+                                text: "Pending",
+                                onPress: () => {
+                                    this.state.renderedMembers = []
 
-                        {this.state.noMembers ? <List></List> :
-                            <Grid>
-                                <Row>
-                                    <Col style={{ width: "5%" }}></Col>
-                                    <Col style={{ position: 'relative', width: "80%", height: 400 }} >
-                                        {this.state.renderedMembers}
-                                    </Col>
-                                    <Col style={{ width: "15%" }}></Col>
-                                </Row>
-                            </Grid>
-                        }
+                                    this.getUnConfirmedRequests()
+                                },
+                                component:
+                                    <Grid>
+                                        <Row>
+                                            <Col>
+                                                <List>
+                                                    {this.state.renderedRequestsList}
+                                                </List>
+                                            </Col>
+                                        </Row>
+                                    </Grid>
+
+                            }]}
+                            renderTabBar={(isActive, tab) => {
+                                console.log("render tab bar")
+                                if (isActive) {
+                                    return <Text style={{ color: "black", borderColor: "black", borderWidth: 0.5, backgroundColor: "#9E1F64", textAlign: "center", height: 30, lineHeight: 30 }}>{tab.text}</Text>
+                                }
+                                return <Text style={{ color: "black", borderColor: "black", borderWidth: 0.5, textAlign: "center", height: 30, lineHeight: 30 }}>{tab.text}</Text>
+                            }}>
+                        </TabView>
+
+
 
                     </Content>
                 </MenuProvider>
@@ -991,7 +1176,11 @@ const styles = StyleSheet.create({
         borderRadius: 12
     },
 
-
+    ModalDeleteCycle: {
+        height: "22%",
+        width: "85%",
+        borderRadius: 12
+    },
     modal3: {
         height: "85%",
         width: "85%"

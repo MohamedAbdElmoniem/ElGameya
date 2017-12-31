@@ -44,6 +44,20 @@ import PopupDialog, { DialogTitle, SlideAnimation } from 'react-native-popup-dia
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
 import * as _ from 'lodash';
+var SnapSlider = require('react-native-snap-slider');
+var sliderOptions = [
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },
+    { value: 6, label: '6' },
+    { value: 7, label: '7' },
+    { value: 8, label: '8' },
+    { value: 9, label: '9' },
+    { value: 10, label: '10' },
+    { value: 11, label: '11' },
+    { value: 12, label: '12' }
+]
 
 export default class AllCycles extends Component {
     constructor(props) {
@@ -61,7 +75,40 @@ export default class AllCycles extends Component {
             ReceiverId: "",
             RATEDUSERID: "",
             showData: false,
+            Amounts: [
+                { value: 500, status: "unselected" },
+                { value: 1000, status: "unselected" },
+                { value: 2000, status: "unselected" },
+                { value: 3000, status: "unselected" },
+                { value: 4000, status: "unselected" },
+                { value: 5000, status: "unselected" },
+                { value: 6000, status: "unselected" },
+                { value: 7000, status: "unselected" },
+                { value: 8000, status: "unselected" },
+                { value: 9000, status: "unselected" },
+                { value: 10000, status: "unselected" }
+            ],
+            Positions: [
+                { value: "1st", status: "unselected",actualValue:1 },
+                { value: "2nd", status: "unselected",actualValue:2 },
+                { value: "3rd", status: "unselected" ,actualValue:3},
+                { value: "4th", status: "unselected" ,actualValue:4},
+                { value: "5th", status: "unselected",actualValue:5 },
+                { value: "6th", status: "unselected" ,actualValue:6},
+                { value: "7th", status: "unselected" ,actualValue:7},
+                { value: "8th", status: "unselected" ,actualValue:8},
+                { value: "9th", status: "unselected" ,actualValue:9},
+                { value: "10th", status: "unselected" ,actualValue:10},
+                { value: "11th", status: "unselected" ,actualValue:11},
+                { value: "12th", status: "unselected" ,actualValue:12 }
+            ],
+            renderedAmountsInCircles: [],
+            renderedPositionsInCircles: [],
+            selectedValueFromSlider: ""
         }
+
+        this.handleFilterCycles = this.handleFilterCycles.bind(this);
+        this.slidingComplete = this.slidingComplete.bind(this);
 
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
@@ -80,19 +127,21 @@ export default class AllCycles extends Component {
 
         axios({
             method: methodtype,
-            url: "http://www.gameya.somee.com/api/gamieya/" + url,
+            url: "http://www.elgameya.net/api/gamieya/" + url,
             data: searchData,
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then((resp) => {
+
                 this.setState({ progressVisible: false, returnedCycles: resp.data }, () => {
                     this.renderAllCycles(resp.data)
                     this.setState({ progressVisible: false })
                 });
             })
             .catch((err) => {
+
                 this.setState({ progressVisible: false }, () => {
                     alert("Can't get all cycles .. server error");
                 });
@@ -149,7 +198,7 @@ export default class AllCycles extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetMonthsOfCycle",
+            url: "http://www.elgameya.net/api/gamieya/GetMonthsOfCycle",
             data: JSON.stringify({ id: data.id }),
             headers: {
                 "Content-Type": "application/json"
@@ -220,7 +269,7 @@ export default class AllCycles extends Component {
         // join in specific month of cycle
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/JoinCycle",
+            url: "http://www.elgameya.net/api/gamieya/JoinCycle",
             data: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
@@ -271,7 +320,7 @@ export default class AllCycles extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -376,7 +425,7 @@ export default class AllCycles extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"
@@ -417,7 +466,7 @@ export default class AllCycles extends Component {
 
                 axios({
                     method: "POST",
-                    url: "http://www.gameya.somee.com/api/gamieya/SendMessage",
+                    url: "http://www.elgameya.net/api/gamieya/SendMessage",
                     data: JSON.stringify(userData),
                     headers: {
                         "Content-Type": "application/json"
@@ -478,7 +527,7 @@ export default class AllCycles extends Component {
 
 
             })
-            debugger;
+
             if (foundedCylces.length > 0) {
                 this.renderAllCycles(foundedCylces);
             }
@@ -491,6 +540,371 @@ export default class AllCycles extends Component {
         this.setState({ CycleName: "", Amount: "", selectedStartDate: "" })
 
     }
+
+    slidingComplete(itemSelected) {
+        let component = this;
+        let itemselectedFromSlider = sliderOptions[itemSelected]
+        component.setState({ selectedValueFromSlider: itemselectedFromSlider.value })
+
+
+    }
+
+    renderAmountsInCircles() {
+        let component = this;
+        let renderedAmounts = [[], []];
+
+        for (let x = 0; x < this.state.Amounts.length; x++) {
+
+            if (x <= 5) {
+                if (this.state.Amounts[x].status === "unselected") {
+                    renderedAmounts[0].push(
+                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+                else {
+                    renderedAmounts[0].push(
+                        <Col style={{ width: "15%" ,marginRight:3}} key={x}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+            else {
+                if (this.state.Amounts[x].status === "unselected") {
+                    renderedAmounts[1].push(
+                        <Col key={x} style={{ width: "15%",marginRight:3 }}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+                else {
+                    renderedAmounts[1].push(
+                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+                                }}>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+
+        }
+        component.setState({ renderedAmountsInCircles: renderedAmounts })
+
+
+    }
+
+    handleSelectAmount(data, status) {
+        if (status === "unselected") {
+            for (let x = 0; x < this.state.Amounts.length; x++) {
+                if (this.state.Amounts[x].status === "selected") {
+                    this.state.Amounts[x].status = "unselected";
+                }
+            }
+            let findedIndex = _.findIndex(this.state.Amounts, data);
+            this.state.Amounts[findedIndex].status = "selected";
+
+        }
+        if (status === "selected") {
+            let findedIndex = _.findIndex(this.state.Amounts, data);
+            this.state.Amounts[findedIndex].status = "unselected";
+        }
+
+        this.setState({}, () => {
+            this.renderAmountsInCircles();
+        })
+    }
+
+    renderPositionsInCircles() {
+        let component = this;
+        let renderedPositions = [[], []];
+
+        for (let x = 0; x < this.state.Positions.length; x++) {
+
+            if (x <= 5) {
+                if (this.state.Positions[x].status === "unselected") {
+                    renderedPositions[0].push(
+                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectPosition(this.state.Positions[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    backgroundColor: "#262261",
+                                    alignItems: 'center',
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderStyle: "dotted",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+                }
+                else {
+                    renderedPositions[0].push(
+                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectPosition(this.state.Positions[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    backgroundColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+            else {
+                if (this.state.Positions[x].status === "unselected") {
+                    renderedPositions[1].push(
+                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectPosition(this.state.Positions[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    backgroundColor: "#262261",
+                                    alignItems: 'center',
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderStyle: "dotted",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+                else {
+                    renderedPositions[1].push(
+                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectPosition(this.state.Positions[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    backgroundColor: '#9E1F64',
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+                                }}>
+                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+
+        }
+        component.setState({ renderedPositionsInCircles: renderedPositions })
+
+
+    }
+
+    handleSelectPosition(data, status) {
+        if (status === "unselected") {
+            for (let x = 0; x < this.state.Positions.length; x++) {
+                if (this.state.Positions[x].status === "selected") {
+                    this.state.Positions[x].status = "unselected";
+                }
+            }
+            let findedIndex = _.findIndex(this.state.Positions, data);
+            this.state.Positions[findedIndex].status = "selected";
+
+        }
+        if (status === "selected") {
+            let findedIndex = _.findIndex(this.state.Positions, data);
+            this.state.Positions[findedIndex].status = "unselected";
+        }
+
+        this.setState({}, () => {
+            this.renderPositionsInCircles();
+        })
+    }
+
+    handleFilterCycles() {
+        let component = this;
+        this.setState({ progressVisible: true })
+
+        let dataToBeSent = {
+        }
+        if (this.state.selectedValueFromSlider !== "") {
+            dataToBeSent = {
+                duration: this.state.selectedValueFromSlider,
+                startdate: this.state.selectedStartDate,
+                amount: 0,
+                position: 0
+            }
+        }
+
+        let findSelectedAmount = _.find(this.state.Amounts, (o) => {
+            return o.status === "selected"
+        });
+        let findSelectedPositions = _.find(this.state.Positions, (o) => {
+            return o.status === "selected"
+        });
+        if (findSelectedAmount) {
+            if (findSelectedPositions) {
+       
+                dataToBeSent = {
+                    duration: "",
+                    startdate: "",
+                    amount: findSelectedAmount.value,
+                    position: findSelectedPositions.actualValue
+                }
+            }
+            else {
+                dataToBeSent = {
+                    duration: "",
+                    startdate: "",
+                    amount: findSelectedAmount.value,
+                    position: 0
+                }
+            }
+        }
+
+        if (findSelectedPositions) {
+            if (findSelectedAmount) {
+                dataToBeSent = {
+                    duration: "",
+                    startdate: "",
+                    amount: findSelectedAmount.value,
+                    position: findSelectedPositions.actualValue
+                }
+            }
+            else {
+                dataToBeSent = {
+                    duration: "",
+                    startdate: "",
+                    amount: 0,
+                    position: findSelectedPositions.actualValue
+                }
+            }
+        }
+
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/FilterCycles",
+            data: JSON.stringify(dataToBeSent),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                this.setState({ progressVisible: false, returnedCycles: resp.data.data }, () => {
+                    debugger;
+                    this.renderAllCycles(resp.data.data)
+                });
+                this.refs.modalFilter.close();
+
+            })
+            .catch((err) => {
+                console.log(err)
+                debugger;
+
+                component.setState({ progressVisible: false }, () => {
+                })
+            })
+    }
+
 
     render() {
 
@@ -518,55 +932,29 @@ export default class AllCycles extends Component {
                             <Title>Cycles to Join</Title>
                         </Body>
                     </Header>
-                    <View>
-                        <Grid style={styles.SearchBox}>
-                            <Row>
-                                <Col style={{ width: "50%" }}>
-                                    <Form>
-                                        <Item inlineLabel>
-                                            <Input placeholder="Cycle name" value={this.state.CycleName} onChangeText={(text) => {
-                                                this.setState({ CycleName: text })
-                                            }} />
-                                        </Item>
-                                    </Form>
-                                </Col>
-                                <Col style={{ width: "50%" }}>
-                                    <Form>
-                                        <Item inlineLabel>
-                                            <Input placeholder="Amount" value={this.state.Amount} onChangeText={(text) => {
-                                                this.setState({ Amount: text })
-                                            }} />
-                                        </Item>
-                                    </Form>
-                                </Col>
-                            </Row>
-                            <Row style={{ marginTop: 5, marginBottom: 5 }}>
-                                <Col style={{ width: "30%", marginLeft: 10 }}>
-                                    <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {
-                                        this._showDateTimePicker()
-                                    }}>
-                                        <View style={{ justifyContent: "center", alignItems: "center" }}>
-                                            <Text style={{ color: "white", fontSize: 12, margin: -5 }}>Start month</Text>
-                                        </View>
-                                    </Button>
-                                </Col>
-                                <Col style={{ width: "40%" }}>
+                    <View style={{ height: 15 }}></View>
 
-                                </Col>
-                                <Col style={{ width: "30%" }}>
-                                    <Button style={{ backgroundColor: "#9E1F64", borderRadius: 10, width: "80%" }} onPress={
-                                        () => {
-                                            this.handleCyclesFilter()
-                                        }
-                                    }>
-                                        <View style={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
-                                            <Text style={{ color: "white", fontSize: 12 }}>Filter</Text>
-                                        </View>
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Grid>
-                    </View>
+                    <Grid>
+                        <Row>
+                            <Col style={{ width: "5%" }}></Col>
+                            <Col style={{ width: "70%" }}>
+                                <Item rounded style={{ borderRadius: 10, backgroundColor: "#CBCAD9" }}>
+                                    <Icon active name='search' />
+                                    <Input style={{ backgroundColor: "#CBCAD9" }} placeholder='Search ...' />
+                                </Item>
+                            </Col>
+                            <Col style={{ width: "5%" }}></Col>
+                            <Col style={{ width: "20%" }}>
+                                <Button onPress={() => {
+                                    this.renderAmountsInCircles();
+                                    this.renderPositionsInCircles();
+                                    this.refs.modalFilter.open();
+
+                                }} style={{ borderRadius: 10, marginTop: 3, backgroundColor: "#CBCAD9" }}><Text>Filter</Text></Button>
+                            </Col>
+                        </Row>
+                    </Grid>
+
                     {this.state.renderedCycles}
                 </Content>
 
@@ -588,6 +976,140 @@ export default class AllCycles extends Component {
                             <List>
                                 {this.state.renderedMonths}
                             </List>
+                        </Content>
+                    </Container>
+
+                </Modal>
+
+
+
+
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"modalFilter"}
+                    swipeToClose={false}
+                    isDisabled={this.state.isDisabled} onOpened={this.openMonthsModal}>
+                    <Container>
+                        <Content>
+                            <Card>
+                                <CardItem header>
+                                    <Left><Text>Duration</Text></Left>
+                                    <Body></Body>
+                                    <Right><Icon name='md-close' style={{ color: "black" }} /></Right>
+                                </CardItem>
+                                <CardItem>
+                                    <Body>
+                                        <SnapSlider ref="slider"
+                                            style={{ width: "100%" }}
+                                            items={sliderOptions}
+                                            labelPosition="bottom"
+                                            onSlidingComplete={this.slidingComplete}
+                                            itemStyle={{ fontSize: 12, padding: -7, fontWeight: 'bold' }}
+                                            itemWrapperStyle={{ backgroundColor: "#9E1F64", borderRadius: 12 }}
+                                        />
+                                    </Body>
+                                </CardItem>
+                            </Card>
+
+
+                            <Card>
+                                <Grid>
+                                    <Row>
+                                        <Col style={{ width: "85%" }}></Col>
+                                        <Col style={{ width: "15%" }}>
+                                            <Right><Icon name='md-close' style={{ color: "black" }} /></Right>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col style={{ width: "5%" }}></Col>
+                                        <Col>
+                                            <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {
+                                                this._showDateTimePicker()
+                                            }}>
+                                                <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                                    <Text style={{ color: "white", fontSize: 12, margin: -5 }}>Start Date</Text>
+                                                </View>
+                                            </Button>
+                                            <View style={{ height: 15 }}></View>
+
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col></Col>
+                                    </Row>
+                                </Grid>
+                            </Card>
+                            <Card>
+                                <Grid>
+                                    <Row>
+                                        <Col style={{ width: "10%" }}></Col>
+                                        <Col style={{ width: "30%" }}><Text>Amount</Text></Col>
+                                        <Col style={{ width: "50%" }}></Col>
+                                        <Col style={{ width: "10%" }}><Icon name='md-close' style={{ color: "black" }} /></Col>
+                                    </Row>
+                                    <Row>
+                                        <Col style={{ width: "3%" }}></Col>
+                                        {this.state.renderedAmountsInCircles[0]}
+                                    </Row>
+                                    <Row style={{ marginTop: 10 }}>
+                                        <Col style={{ width: "3%" }}></Col>
+
+                                        {this.state.renderedAmountsInCircles[1]}
+                                    </Row>
+                                </Grid>
+                                <View style={{ height: 15 }}></View>
+
+                            </Card>
+                            <Card>
+                                <Grid>
+                                    <Row>
+                                        <Col style={{ width: "10%" }}></Col>
+                                        <Col style={{ width: "30%" }}><Text>Get Paid</Text></Col>
+                                        <Col style={{ width: "50%" }}></Col>
+                                        <Col style={{ width: "10%" }}><Icon name='md-close' style={{ color: "black" }} /></Col>
+                                    </Row>
+                                    <Row>
+                                        <Col style={{ width: "3%" }}></Col>
+                                        {this.state.renderedPositionsInCircles[0]}
+                                    </Row>
+                                    <Row style={{ marginTop: 10 }}>
+                                        <Col style={{ width: "3%" }}></Col>
+
+                                        {this.state.renderedPositionsInCircles[1]}
+                                    </Row>
+
+                                </Grid>
+                                <View style={{ height: 15 }}></View>
+
+                            </Card>
+
+                            <View style={{ height: 15 }}></View>
+
+                            <Grid>
+                                <Row>
+                                    <Col style={{ width: "15%" }}></Col>
+                                    <Col style={{ width: "35%" }}>
+                                        <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {
+                                            this.refs.modalFilter.close();
+                                        }}>
+                                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                                <Text style={{ color: "white", fontSize: 12, margin: -5 }}>Cancel</Text>
+                                            </View>
+                                        </Button>
+                                    </Col>
+                                    <Col style={{ width: "15%" }}></Col>
+
+                                    <Col style={{ width: "35%" }}>
+                                        <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {
+
+                                            this.handleFilterCycles()
+                                        }}>
+                                            <View style={{ justifyContent: "center", alignItems: "center" }}>
+                                                <Text style={{ color: "white", fontSize: 12, margin: -5 }}>Search</Text>
+                                            </View>
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Grid>
+
                         </Content>
                     </Container>
 

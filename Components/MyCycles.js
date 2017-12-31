@@ -108,7 +108,7 @@ export default class MyCycles extends Component {
         let renderedCycles = []
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetCyclesCreatedByMe",
+            url: "http://www.elgameya.net/api/gamieya/GetCyclesCreatedByMe",
             data: JSON.stringify({ id: this.props.navigation.state.params.userid }),
             headers: {
                 "Content-Type": "application/json"
@@ -177,7 +177,7 @@ export default class MyCycles extends Component {
         let renderedMembers = []
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetCycleMembers",
+            url: "http://www.elgameya.net/api/gamieya/GetCycleMembers",
             data: JSON.stringify({ User_id: this.props.navigation.state.params.userid, Cycle_id: cycleid }),
             headers: {
                 "Content-Type": "application/json"
@@ -232,7 +232,7 @@ export default class MyCycles extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -316,7 +316,7 @@ export default class MyCycles extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"

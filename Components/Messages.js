@@ -99,7 +99,7 @@ export default class Messages extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetMyMessages",
+                url: "http://www.elgameya.net/api/gamieya/GetMyMessages",
                 data: JSON.stringify(userData),
                 headers: {
                     "Content-Type": "application/json"
@@ -156,7 +156,7 @@ export default class Messages extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetMyMessages",
+                url: "http://www.elgameya.net/api/gamieya/GetMyMessages",
                 data: JSON.stringify(userData),
                 headers: {
                     "Content-Type": "application/json"
@@ -213,7 +213,7 @@ export default class Messages extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetMessagesBetweenTwoPersons",
+                url: "http://www.elgameya.net/api/gamieya/GetMessagesBetweenTwoPersons",
                 data: JSON.stringify(userData),
                 headers: {
                     "Content-Type": "application/json"
@@ -298,7 +298,7 @@ export default class Messages extends Component {
 
                 axios({
                     method: "POST",
-                    url: "http://www.gameya.somee.com/api/gamieya/SendMessage",
+                    url: "http://www.elgameya.net/api/gamieya/SendMessage",
                     data: JSON.stringify(userData),
                     headers: {
                         "Content-Type": "application/json"
@@ -342,7 +342,7 @@ export default class Messages extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetMessagesBetweenTwoPersons",
+                url: "http://www.elgameya.net/api/gamieya/GetMessagesBetweenTwoPersons",
                 data: JSON.stringify(userData),
                 headers: {
                     "Content-Type": "application/json"

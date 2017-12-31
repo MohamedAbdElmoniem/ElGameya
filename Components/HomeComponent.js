@@ -207,7 +207,7 @@ export default class HomeComponent extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -301,7 +301,7 @@ export default class HomeComponent extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RemoveReminders",
+            url: "http://www.elgameya.net/api/gamieya/RemoveReminders",
             data: JSON.stringify({ id: cycle.id }),
             headers: {
                 "Content-Type": "application/json"
@@ -373,7 +373,7 @@ export default class HomeComponent extends Component {
                     if (response === results[results.length - 1]) {
                         axios({
                             method: "POST",
-                            url: "http://www.gameya.somee.com/api/gamieya/AddReminders",
+                            url: "http://www.elgameya.net/api/gamieya/AddReminders",
                             data: JSON.stringify(this.state.arrayOfReminders),
                             headers: {
                                 "Content-Type": "application/json"
@@ -408,7 +408,7 @@ export default class HomeComponent extends Component {
             //   remove reminders
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/RemoveReminders",
+                url: "http://www.elgameya.net/api/gamieya/RemoveReminders",
                 data: JSON.stringify({ id: this.state.openedCycle.id }),
                 headers: {
                     "Content-Type": "application/json"
@@ -425,7 +425,6 @@ export default class HomeComponent extends Component {
                         }
                         axios.all(defferedRemoveEvents).then((result) => {
                             result.forEach((v, i) => {
-                                debugger;
                             })
                         })
 
@@ -463,7 +462,7 @@ export default class HomeComponent extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetMyCycles",
+            url: "http://www.elgameya.net/api/gamieya/GetMyCycles",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -524,7 +523,7 @@ export default class HomeComponent extends Component {
         let renderedNotifications = [];
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
+            url: "http://www.elgameya.net/api/gamieya/GetTopTenNotifications",
             data: JSON.stringify({ Id: component.props.navigation.state.params.id }),
             headers: {
                 "Content-Type": "application/json"
@@ -600,7 +599,7 @@ export default class HomeComponent extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"
@@ -631,7 +630,7 @@ export default class HomeComponent extends Component {
         AsyncStorage.getItem('adminId', (err, result) => {
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetUserNameById",
+                url: "http://www.elgameya.net/api/gamieya/GetUserNameById",
                 data: JSON.stringify({ id: result }),
                 headers: {
                     "Content-Type": "application/json"
@@ -656,7 +655,7 @@ export default class HomeComponent extends Component {
         this.setState({ progressVisible: true });
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserPendingRequests",
+            url: "http://www.elgameya.net/api/gamieya/GetUserPendingRequests",
             data: JSON.stringify({ Id: this.props.navigation.state.params.id }),
             headers: {
                 "Content-Type": "application/json"

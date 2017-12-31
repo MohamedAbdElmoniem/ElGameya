@@ -3,12 +3,12 @@
  */
 
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     AppRegistry,
     StyleSheet,
-    Text,AsyncStorage,
-    View,Image
+    Text, AsyncStorage,
+    View, Image, Linking
 } from 'react-native';
 
 class AppIntro extends Component {
@@ -20,18 +20,17 @@ class AppIntro extends Component {
 
     componentDidMount() {
 
-       
 
+       
 
         setTimeout(() => {
 
             AsyncStorage.getItem('adminId', (err, result) => {
                 if (result != "" && result != undefined && result != null) {
                     this.props.navigation.navigate("HomePage", { id: result });
-    
+
                 }
-                else
-                {
+                else {
                     this.props.navigation.navigate('LoginPage'); // open drawer
                 }
             })
@@ -41,14 +40,14 @@ class AppIntro extends Component {
 
     render() {
 
-        const {navigate} = this.props.navigation;
+        const { navigate } = this.props.navigation;
 
 
         return (
             <View style={styles.content}>
-            
+
                 <Image style={{ height: "45%", width: "70%", resizeMode: "stretch" }}
-                source={require('../imgs/splash.png')}
+                    source={require('../imgs/splash.png')}
                 />
             </View>
         )
@@ -59,11 +58,11 @@ class AppIntro extends Component {
 
 
 const styles = StyleSheet.create({
-    content:{
-        flex:1,
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center'
+    content: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
 

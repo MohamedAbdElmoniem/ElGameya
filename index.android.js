@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
 });
 
 const SimpleApp = StackNavigator({
-    AppIntro: { screen: AppIntro },
+    AppIntro: { screen: AppIntro  },
     RegisterationPage: { screen: RegisterationComponent },
     LoginPage: { screen: LoginComponent },
-    HomePage: { screen: DrawerExample },
-    MyCycles: { screen: MyCycles,path:"chat/:user"  },
+    HomePage: { screen: DrawerExample,path:"gameya/:user/:month" },
+    MyCycles: { screen: MyCycles },
     CycleMembers: { screen: CycleMembers },
     Following: {  screen: Following },
     Followers: {  screen: Followers },
@@ -86,7 +86,7 @@ const SimpleApp = StackNavigator({
         headerMode: 'none',
     });
 
-    const prefix = Platform.OS == 'android' ? 'mychat://mychat/' : 'mychat://';
+    const prefix = Platform.OS == 'android' ? 'https://elgameya.net/' : 'elgameya://';
 
 const MainApp = () => <SimpleApp uriPrefix={prefix} />;
 

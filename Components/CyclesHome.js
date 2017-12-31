@@ -14,7 +14,7 @@ import {
     Text,
     View, ScrollView, BackHandler,
     TouchableOpacity, Switch, AsyncStorage, TouchableHighlight,
-    Image, Dimensions
+    Image, Dimensions, Linking
 } from 'react-native';
 import { Button } from 'native-base';
 import {
@@ -36,7 +36,6 @@ import {
     StyleProvider, List, ListItem, Card, CardItem,
 } from 'native-base';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import ActionButton from 'react-native-action-button';
 import StarRating from 'react-native-star-rating';
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
@@ -110,77 +109,7 @@ class CyclesHome extends Component {
         this.refs.modal3.close();
     }
 
-    /*    submitCycleCreation = () => {
-           let component = this;
-   
-           if (this.state.selectedStartDate == "" || this.state.selectedEndDate == "" || this.state.noOfMembers == ""
-               || this.state.cycleName == "" || this.state.totalAmountPerCycle == "") {
-   
-               alert("please enter all fields")
-   
-           }
-           else {
-               let cycleData = {}
-               this.setState({ visible: true })
-               debugger;
-               cycleData =
-                   {
-                       CYCLE_NAME: this.state.cycleName,
-                       NUMBER_OF_MEMBERS: this.state.noOfMembers,
-                       TOTAL_AMOUNT: this.state.totalAmountPerCycle,
-                       startDate: this.state.selectedStartDate,
-                       endDate: this.state.selectedEndDate,
-                       privacy: this.state.cyclePrivacy,
-                       ADMIN_ID: component.props.navigation.state.params.id
-                   }
-               console.log(JSON.stringify(cycleData))
-   
-               axios({
-                   method: "POST",
-                   url: "http://www.gameya.somee.com/api/gamieya/CreateCycle",
-                   data: JSON.stringify(cycleData),
-                   headers: {
-                       "Content-Type": "application/json"
-                   }
-               })
-                   .then((resp) => {
-                       this.setState({ visible: false });
-                       console.log(resp)
-                       if(resp.status==="success")
-                       {
-                           this.refs.modal3.close()
-                           //  alert("Cycle created successfully")
-                           this.refs.toast.show('Cycle created successfully');
-                       }
-                       else{
-                           if(resp.message)
-                           {
-                               this.refs.modal3.close()
-                               //  alert("Cycle created successfully")
-                               this.refs.toast.show('Cycle created successfully');
-                           }
-                           else{
-                               this.refs.modal3.close()
-                               //  alert("Cycle created successfully")
-                               this.refs.toast.show('Cycle created successfully');
-                           }
-                       }
-                    
-   
-                   })
-                   .catch((err) => {
-                       console.log(err)
-                       //  alert("Unexpected error");
-                       this.refs.toast.show('Unexpected error');
-   
-                       this.setState({ visible: false });
-   
-                   })
-   
-   
-           }
-       }
-    */
+
     constructor(props) {
         super(props);
         this.state = {
@@ -216,20 +145,7 @@ class CyclesHome extends Component {
     }
 
     handleBackButton2() {
-        /*   this.refs.modal3.close();
-          
-          
-   
-          this.refs.modalMonths.close();
-          
-    
-          this.refs.ModalProfile.close();
-               
-          this.refs.modalSearch.close();
-          
 
-          this.refs.ModalNotifications.close();
-*/
         return true;
 
     }
@@ -242,6 +158,63 @@ class CyclesHome extends Component {
 
 
     componentDidMount() {
+
+        let cycleName = "";
+        let cycleMonth = "";
+        let flag = false;
+
+        const url = Linking.getInitialURL().then(urlString => {
+            if (urlString !== null) {
+                urlString = urlString.split("/")
+                cycleName = urlString[4];
+                cycleMonth = urlString[5];
+
+                let cycleDataTobeSent = {
+                    userid: this.props.navigation.state.params.id,
+                    month: cycleMonth,
+                    cyclename: cycleName
+                }
+
+
+                axios({
+                    method: "POST",
+                    url: "http://www.elgameya.net/api/gamieya/JoinCycleFromDeepLink",
+                    data: JSON.stringify(cycleDataTobeSent),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then((resp) => {
+                        if (resp.data.status === "success") {
+                            if (resp.data.message != undefined) {
+                                if (flag === false) {
+                                  //  alert(resp.data.message)
+                                    flag = true;
+                                }
+                            }
+                            else {
+                                if (flag === false) {
+                                    alert("you have joined the cycle successfully")
+                                    flag = true;
+
+                                }
+                            }
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.refs.toast.show('Unexpected error');
+                        this.setState({ visible: false });
+
+                    })
+
+
+            }
+        })
+
+
+
         myback.addEventListener('hardwareBackPress', this.handleBackButton2);
     }
 
@@ -350,7 +323,7 @@ class CyclesHome extends Component {
             const { navigate } = this.props.navigation;
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/CreateCycle",
+                url: "http://www.elgameya.net/api/gamieya/CreateCycle",
                 data: JSON.stringify(cycleData),
                 headers: {
                     "Content-Type": "application/json"
@@ -358,7 +331,6 @@ class CyclesHome extends Component {
             })
                 .then((resp) => {
                     console.log(resp)
-                    debugger
                     if (resp.data.status === "failure") {
                         this.setState({ progressVisible: false }, () => {
                             alert(resp.data.message);
@@ -435,7 +407,7 @@ class CyclesHome extends Component {
 
             axios({
                 method: methodtype,
-                url: "http://www.gameya.somee.com/api/gamieya/" + url,
+                url: "http://www.elgameya.net/api/gamieya/" + url,
                 data: searchData,
                 headers: {
                     "Content-Type": "application/json"
@@ -518,7 +490,7 @@ class CyclesHome extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/GetMonthsOfCycle",
+                url: "http://www.elgameya.net/api/gamieya/GetMonthsOfCycle",
                 data: JSON.stringify({ id: data.id }),
                 headers: {
                     "Content-Type": "application/json"
@@ -594,7 +566,7 @@ class CyclesHome extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -671,7 +643,7 @@ class CyclesHome extends Component {
 
                 axios({
                     method: "POST",
-                    url: "http://www.gameya.somee.com/api/gamieya/SendMessage",
+                    url: "http://www.elgameya.net/api/gamieya/SendMessage",
                     data: JSON.stringify(userData),
                     headers: {
                         "Content-Type": "application/json"
@@ -749,7 +721,7 @@ class CyclesHome extends Component {
         // join in specific month of cycle
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/JoinCycle",
+            url: "http://www.elgameya.net/api/gamieya/JoinCycle",
             data: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
@@ -806,7 +778,7 @@ class CyclesHome extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetMyCycles",
+            url: "http://www.elgameya.net/api/gamieya/GetMyCycles",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -860,7 +832,7 @@ class CyclesHome extends Component {
         let renderedNotifications = [];
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetTopTenNotifications",
+            url: "http://www.elgameya.net/api/gamieya/GetTopTenNotifications",
             data: JSON.stringify({ Id: id }),
             headers: {
                 "Content-Type": "application/json"
@@ -935,7 +907,7 @@ class CyclesHome extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"

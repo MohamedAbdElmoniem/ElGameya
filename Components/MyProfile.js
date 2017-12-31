@@ -81,7 +81,7 @@ export default class MyProfile extends Component {
         // join in specific month of cycle
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserData",
+            url: "http://www.elgameya.net/api/gamieya/GetUserData",
             data: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json"
@@ -201,7 +201,7 @@ export default class MyProfile extends Component {
         // join in specific month of cycle
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/UpdateUserData",
+            url: "http://www.elgameya.net/api/gamieya/UpdateUserData",
             data: JSON.stringify(cycle),
             headers: {
                 "Content-Type": "application/json"
