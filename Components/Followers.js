@@ -77,10 +77,9 @@ export default class Followers extends Component {
             id: this.currentUserId
         }
         let followersArray = [];
-
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetMyFollowers",
+            url: "http://www.elgameya.net/api/gamieya/GetMyFollowers",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -90,6 +89,8 @@ export default class Followers extends Component {
                 console.log(resp);
 
                 let followers = resp.data.followers;
+                debugger;
+
                 for (let x = 0; x < followers.length; x++) {
                     followersArray.push(<ListItem icon key={x} onPress={() => {
                         this.showUserProfile(followers[x].id);
@@ -136,7 +137,7 @@ export default class Followers extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -184,7 +185,7 @@ export default class Followers extends Component {
 
             axios({
                 method: "POST",
-                url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+                url: "http://www.elgameya.net/api/gamieya/RateUser",
                 data: JSON.stringify(RateData),
                 headers: {
                     "Content-Type": "application/json"

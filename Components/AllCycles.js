@@ -89,18 +89,18 @@ export default class AllCycles extends Component {
                 { value: 10000, status: "unselected" }
             ],
             Positions: [
-                { value: "1st", status: "unselected",actualValue:1 },
-                { value: "2nd", status: "unselected",actualValue:2 },
-                { value: "3rd", status: "unselected" ,actualValue:3},
-                { value: "4th", status: "unselected" ,actualValue:4},
-                { value: "5th", status: "unselected",actualValue:5 },
-                { value: "6th", status: "unselected" ,actualValue:6},
-                { value: "7th", status: "unselected" ,actualValue:7},
-                { value: "8th", status: "unselected" ,actualValue:8},
-                { value: "9th", status: "unselected" ,actualValue:9},
-                { value: "10th", status: "unselected" ,actualValue:10},
-                { value: "11th", status: "unselected" ,actualValue:11},
-                { value: "12th", status: "unselected" ,actualValue:12 }
+                { value: "1st", status: "unselected", actualValue: 1 },
+                { value: "2nd", status: "unselected", actualValue: 2 },
+                { value: "3rd", status: "unselected", actualValue: 3 },
+                { value: "4th", status: "unselected", actualValue: 4 },
+                { value: "5th", status: "unselected", actualValue: 5 },
+                { value: "6th", status: "unselected", actualValue: 6 },
+                { value: "7th", status: "unselected", actualValue: 7 },
+                { value: "8th", status: "unselected", actualValue: 8 },
+                { value: "9th", status: "unselected", actualValue: 9 },
+                { value: "10th", status: "unselected", actualValue: 10 },
+                { value: "11th", status: "unselected", actualValue: 11 },
+                { value: "12th", status: "unselected", actualValue: 12 }
             ],
             renderedAmountsInCircles: [],
             renderedPositionsInCircles: [],
@@ -207,6 +207,7 @@ export default class AllCycles extends Component {
             .then((resp) => {
                 let MonthsData = resp.data.data;
                 let users = resp.data.users;
+                debugger;
                 component.setState({ choosenCycleId: MonthsData[0].cyclE_ID });
                 if (MonthsData.length > 0) {
                     for (let x = 0; x < MonthsData.length; x++) {
@@ -558,7 +559,7 @@ export default class AllCycles extends Component {
             if (x <= 5) {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
                             }}>
@@ -582,7 +583,7 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%" ,marginRight:3}} key={x}>
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
@@ -609,7 +610,7 @@ export default class AllCycles extends Component {
             else {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%",marginRight:3 }}>
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
@@ -634,7 +635,7 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
@@ -694,7 +695,7 @@ export default class AllCycles extends Component {
             if (x <= 5) {
                 if (this.state.Positions[x].status === "unselected") {
                     renderedPositions[0].push(
-                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "unselected")
                             }}>
@@ -717,7 +718,7 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedPositions[0].push(
-                        <Col style={{ width: "15%",marginRight:3 }} key={x}>
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "selected")
@@ -744,7 +745,7 @@ export default class AllCycles extends Component {
             else {
                 if (this.state.Positions[x].status === "unselected") {
                     renderedPositions[1].push(
-                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "unselected")
@@ -769,7 +770,7 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedPositions[1].push(
-                        <Col key={x} style={{ width: "15%" ,marginRight:3}}>
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "selected")
@@ -843,7 +844,7 @@ export default class AllCycles extends Component {
         });
         if (findSelectedAmount) {
             if (findSelectedPositions) {
-       
+
                 dataToBeSent = {
                     duration: "",
                     startdate: "",
@@ -940,7 +941,18 @@ export default class AllCycles extends Component {
                             <Col style={{ width: "70%" }}>
                                 <Item rounded style={{ borderRadius: 10, backgroundColor: "#CBCAD9" }}>
                                     <Icon active name='search' />
-                                    <Input style={{ backgroundColor: "#CBCAD9" }} placeholder='Search ...' />
+                                    <Input onChangeText={(text) => {
+                                        let findedData = _.filter(this.state.returnedCycles, (o) => {
+                                            
+                                            return o.cyclE_NAME.indexOf(text) != -1
+                                        })
+
+                                       if(findedData)
+                                       {
+                                        this.renderAllCycles(findedData);
+                                       }
+
+                                    }} style={{ backgroundColor: "#CBCAD9" }} placeholder='Search ...' />
                                 </Item>
                             </Col>
                             <Col style={{ width: "5%" }}></Col>

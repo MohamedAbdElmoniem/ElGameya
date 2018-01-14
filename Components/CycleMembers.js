@@ -11,7 +11,8 @@ import {
     AppRegistry,
     StyleSheet,
     Text, BackHandler,
-    View,
+    View, Animated, Easing,
+    Platform,
     TouchableOpacity, Switch, AsyncStorage, Dimensions, Image
 } from 'react-native';
 import { Button } from 'native-base';
@@ -46,7 +47,7 @@ import PopupDialog, { DialogTitle, SlideAnimation } from 'react-native-popup-dia
 var { width } = Dimensions.get('window');
 var { height } = Dimensions.get('window');
 import TabView from 'mkp-react-native-tab-view';
-
+const window = Dimensions.get('window');
 import {
     Menu,
     MenuProvider,
@@ -78,60 +79,25 @@ export default class CycleMembers extends Component {
             ReceiverId: "",
             message: "",
             noMembers: true,
-            renderedRequestsList: []
+            renderedRequestsList: [],
+            AllCycleMembersAndMonths: [[], []],
+            AllFormatedCycleData: {},
+            OriginalFormatedCycleData: {},
+            TwoMembersToBeSwiped: [],
+            ActiveTab: ""
 
         }
 
         this.handleBackButton = this.handleBackButton.bind(this);
         this.getUnConfirmedRequests = this.getUnConfirmedRequests.bind(this);
         this.handleDeleteMyCycle = this.handleDeleteMyCycle.bind(this);
+        this.changeMembersListOrder = this.changeMembersListOrder.bind(this);
+        this.getDataToBeEdited = this.getDataToBeEdited.bind(this);
+        this.handleReleaseRow = this.handleReleaseRow.bind(this);
 
 
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
-
-        this.ListData = {
-            0: {
-                image: 'https://placekitten.com/200/240',
-                text: 'Chloe',
-            },
-            1: {
-                image: 'https://placekitten.com/200/201',
-                text: 'Jasper',
-            },
-            2: {
-                image: 'https://placekitten.com/200/202',
-                text: 'Pepper',
-            },
-            3: {
-                image: 'https://placekitten.com/200/203',
-                text: 'Oscar',
-            },
-            4: {
-                image: 'https://placekitten.com/200/204',
-                text: 'Dusty',
-            },
-            5: {
-                image: 'https://placekitten.com/200/205',
-                text: 'Spooky',
-            },
-            6: {
-                image: 'https://placekitten.com/200/210',
-                text: 'Kiki',
-            },
-            7: {
-                image: 'https://placekitten.com/200/215',
-                text: 'Smokey',
-            },
-            8: {
-                image: 'https://placekitten.com/200/220',
-                text: 'Gizmo',
-            },
-            9: {
-                image: 'https://placekitten.com/220/239',
-                text: 'Kitty',
-            },
-        };
 
         this.flag = false;
 
@@ -181,7 +147,6 @@ export default class CycleMembers extends Component {
 
         let renderedRequests = [];
         this.state.renderedRequestsList = [];
-
         axios({
             method: "POST",
             url: "http://www.elgameya.net/api/gamieya/GetCycleMembers",
@@ -209,7 +174,7 @@ export default class CycleMembers extends Component {
                                     <Text>{resp.data.users[x].full_name} - Month : {monthsToBeConfirmed[x].cyclE_MONTH}</Text>
                                 </Body>
                                 <Right>
-                                    <Button small onPress={() => {
+                                    <Button style={{ borderRadius: 10, backgroundColor: "#262261" }} small onPress={() => {
                                         this.confirmRequest(monthsToBeConfirmed[x].cyclE_ID, resp.data.users[x].id)
                                     }}><Text>Confirm</Text></Button>
                                 </Right>
@@ -334,51 +299,17 @@ export default class CycleMembers extends Component {
 
                         )
                     }
-                    /*   <ListItem style={{ height: 90 }} icon key={x} onPress={() => {
-                                    this.showUserProfile(resp.data.users[x].id, this.props.navigation.state.params.cycleid.id);
 
-                                }}>
-                                    <Left style={{ height: 90 }}>
-                                        <Icon name="md-contact" />
-                                    </Left>
-                                    <Body style={{ height: 90 }}>
-                                        <Text>Name : {resp.data.users[x].full_name}</Text>
-                                        <Text>Reserved Month : {this.monthNames[resp.data.months[x].cyclE_MONTH - 1]}</Text>
-                                        {resp.data.months[x].status == "requested" ? <Button onPress={() => {
-                                            this.confirmRequest(resp.data.months[x].cyclE_ID, resp.data.months[x].useR_JOINED_ID);
-                                        }} style={{ borderRadius: 10, backgroundColor: "#262261" }}>
-                                            <Text style={{ color: "white" }}>Confirm</Text>
-                                        </Button> : <Text>status : Confirmed</Text>}
-
-                                    </Body>
-                                    <Right style={{ height: 90 }}>
-                                        <Text>show</Text>
-                                        <Icon name="arrow-forward" />
-                                    </Right>
-
-                                </ListItem>
-                                )
-                        */
                     angle += step;
                 }
                 this.setState({ renderedMembers: renderedMembers, noMembers: false }, () => {
                     // this.refs.ModalMembers.open();
                 })
                 // }
-                /*         else {
-                                    renderedMembers.push(
-                                        <ListItem key={0} style={{ height: 50 }}>
-                                            <Body><Text>No members</Text></Body>
-                                        </ListItem>
-                                    )
-                            this.setState({renderedMembers: renderedMembers, noMembers: true }, () => {
-                                    // this.refs.ModalMembers.open();
-                                })
-                        } */
+
 
             })
             .catch((err) => {
-                debugger;
                 alert("Unexpected error");
 
             })
@@ -397,8 +328,9 @@ export default class CycleMembers extends Component {
             .then((resp) => {
                 this.setState({ progressVisible: false });
                 if (resp.data.message = "confirmed") {
-                    alert("This user has been Confirmed");
-                    this.renrederMembers();
+                    this.getUnConfirmedRequests();
+
+                    //  this.renrederMembers();
                 }
 
             })
@@ -833,9 +765,50 @@ export default class CycleMembers extends Component {
 
     handlePopupMenuClick(value) {
         if (value === "Edit cycle") {
-this.refs.ModalEditList.open();
+            // get the list of members and months from BE : 
+            this.state.TwoMembersToBeSwiped = [];
+
+            let dataToBeSent = {
+                id: this.props.navigation.state.params.cycleid.id
+            }
+            axios({
+                method: "POST",
+                url: "http://www.elgameya.net/api/gamieya/EditCycleMembers",
+                data: JSON.stringify(dataToBeSent),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then((resp) => {
+
+                    for (let x = 0; x < resp.data.users.length; x++) {
+                        let data = resp.data;
+                        this.state.AllFormatedCycleData[x] = {
+                            userid: data.users[x].id,
+                            username: data.users[x].full_name,
+                            month: data.months[x].cyclE_MONTH
+                        }
+
+                        this.state.OriginalFormatedCycleData = JSON.parse(JSON.stringify(this.state.AllFormatedCycleData))
+                    }
+
+                    this.setState({ AllCycleMembersAndMonths: [resp.data.users, resp.data.months] }, () => {
+                        this.refs.ModalEditList.open();
+                    });
+                })
+                .catch((err) => {
+                    alert("Unexpected error");
+                    this.setState({ progressVisible: false });
+
+                })
+
+
+
         }
         if (value === "Group Message") {
+
+            const {navigate} = this.props.navigation;
+            navigate("GroupChat",{cycle: this.props.navigation.state.params.cycleid,userid: this.props.navigation.state.params.userid});
 
         }
         if (value === "Delete cycle") {
@@ -846,6 +819,45 @@ this.refs.ModalEditList.open();
         if (value === "Info") {
 
         }
+    }
+
+    getDataToBeEdited() {
+        // get the list of members and months from BE : 
+        let dataToBeSent = {
+            id: this.props.navigation.state.params.cycleid.id
+        }
+
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/EditCycleMembers",
+            data: JSON.stringify(dataToBeSent),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+
+                for (let x = 0; x < resp.data.users.length; x++) {
+                    let data = resp.data;
+                    this.state.AllFormatedCycleData[x] = {
+                        userid: data.users[x].id,
+                        username: data.users[x].full_name,
+                        month: data.months[x].cyclE_MONTH
+                    }
+
+                    this.state.OriginalFormatedCycleData = JSON.parse(JSON.stringify(this.state.AllFormatedCycleData))
+
+                }
+
+                this.setState({ AllCycleMembersAndMonths: [resp.data.users, resp.data.months] }, () => {
+
+                });
+            })
+            .catch((err) => {
+                alert("Unexpected error");
+                this.setState({ progressVisible: false });
+
+            })
     }
 
     handleDeleteMyCycle() {
@@ -882,6 +894,112 @@ this.refs.ModalEditList.open();
         }
     }
 
+    changeMembersListOrder(nextOrder) {
+        let newOrder = {
+        }
+
+        for (let x = 0; x < nextOrder.length; x++) {
+
+            newOrder[x] = this.state.OriginalFormatedCycleData[nextOrder[x]];
+
+        }
+
+        let flagIfEqual = true;
+        for (var key in nextOrder) {
+            flagIfEqual = _.isEqual(newOrder[key], this.state.AllFormatedCycleData[key]);
+            if (flagIfEqual === false) {
+                this.state.TwoMembersToBeSwiped.push(newOrder[key]);
+            }
+        }
+        this.state.AllFormatedCycleData = newOrder
+        //this.setState({ AllFormatedCycleData: newOrder })
+
+    }
+
+    handleReleaseRow = (key) => {
+
+        let monthsArray = [];
+        let allData = this.state.AllCycleMembersAndMonths[1]
+        for (var x in this.state.OriginalFormatedCycleData) {
+
+            monthsArray.push(this.state.OriginalFormatedCycleData[x].month)
+
+        }
+        for (var n in this.state.AllFormatedCycleData) {
+
+            this.state.AllFormatedCycleData[n].month = monthsArray[n]
+
+        }
+        for (let m = 0; m < this.state.AllCycleMembersAndMonths[1].length; m++) {
+
+
+            let findedMonth = _.find(this.state.AllFormatedCycleData, (o) => {
+
+                return o.userid === allData[m].useR_JOINED_ID
+            })
+
+            if (findedMonth) {
+                allData[m].cyclE_MONTH = findedMonth.month
+
+            }
+        }
+        console.log(JSON.stringify(allData))
+
+
+        this.setState({ progressVisible: true })
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/ReOrderCycleMembers",
+            data: JSON.stringify(allData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.data.status === "success") {
+                // alert(resp.data.message);
+                this.setState({ progressVisible: false })
+                this.getDataToBeEdited();
+                this.renrederMembers();
+            
+
+            }
+        })
+            .catch((err) => {
+                alert("Unexpected error")
+            })
+
+    }
+
+
+    handleRemoveCycleMember=(userid,currentMonth)=>{
+        this.setState({ progressVisible: true })
+        let dataToBeSent= {
+            User_id:userid,
+            Cycle_id:this.props.navigation.state.params.cycleid.id,
+            Month:currentMonth
+        }
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/AdminRemoveCycleMember",
+            data: JSON.stringify(dataToBeSent),
+            headers: {  
+                "Content-Type": "application/json"
+            }
+        }).then((resp) => {
+            if (resp.data.status === "success") {
+                // alert(resp.data.message);
+                this.getDataToBeEdited();
+                this.renrederMembers();
+                this.setState({ progressVisible: false })
+
+            }
+        })
+            .catch((err) => {
+                alert("Unexpected error")
+            })
+    }
+
+
     render() {
         const { navigate } = this.props.navigation;
         let cycleInfo = this.props.navigation.state.params.cycleid;
@@ -891,6 +1009,9 @@ this.refs.ModalEditList.open();
             url: "https://play.google.com/store",
             subject: "ElGameya app" //  for email
         };
+
+
+
         return (
 
 
@@ -926,22 +1047,50 @@ this.refs.ModalEditList.open();
 
                 {/*   ////////////////////////////////////////////////    */}
 
-                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalEditList"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.ModalEditList]} position={"center"} ref={"ModalEditList"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
-                    <View style={{height:500}}>
-                            <SortableList
-                                style={styles.list}
-                                contentContainerStyle={styles.contentContainer}
-                                data={this.ListData}
-                                renderRow={(data, active) => {
-                                    return <View><Text>{data.data.text}</Text></View>
-                                }} 
+                    <View style={{ height: 600, flex: 1,flexDirection:"column" }}>
+                    <Header ref="myheader" style={{ backgroundColor: "#9E1F64",marginBottom:10 }}>
+                    <Left>
+                    </Left>
+                    <Body>
+                        <Text style={{color:"white",fontSize:15}}>Cycle members</Text>
+                    </Body>
+                    <Right>
+                    </Right>
+                </Header>
+                        <SortableList
+                            style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignContent: "center" }}
+                            contentContainerStyle={styles.contentContainer}
+                            data={this.state.AllFormatedCycleData}
+                            renderRow={(data, active) => {
+                                return (
+            
+                                    <View style={{backgroundColor:"white", height: 30,marginBottom:10, width:"75%",flex:1,flexDirection:"row", borderRadius: 5, borderWidth: 1, borderColor: "#262261" }}>
+                                    <View style={{flex:0.05}}></View>
+                                    <View style={{flex:0.5}}>
+                                    <Text style={{color:"#262261"}}>Name : {data.data.username} month : {data.data.month}</Text>
+                                    </View>
+                                    <View style={{flex:0.2}}></View>
+                                    <View style={{flex:0.2}}>
+                                    <Icon name='close' onPress={()=>{
+                                        this.handleRemoveCycleMember(data.data.userid,data.data.month)
+                                    }} style={{color:"#262261"}} />
+                                    </View>
+                    
+                                    </View>
                                
-                                onChangeOrder={(nextOrder)=>{
+                            );
 
-                                }}
-                                />
+                            }}
+                            onReleaseRow={
+                                this.handleReleaseRow
+                            }
+                            onChangeOrder={
+                                this.changeMembersListOrder
+                            }
+                        />
 
                     </View>
                 </Modal>
@@ -1077,29 +1226,6 @@ this.refs.ModalEditList.open();
                             }}
                         />
 
-                        {/*       <Tabs initialPage={0} onChangeTab={(i, ref) => {
-                            this.handleTabChange(i, ref);
-                        }}>
-                            <Tab heading="Joined">
-                                {this.state.noMembers ? <List></List> :
-                                    <Grid>
-                                        <Row>
-                                            <Col style={{ width: "5%" }}></Col>
-                                            <Col style={{ position: 'relative', width: "80%", height: 400 }}>
-                                                {this.state.renderedMembers}
-                                            </Col>
-                                            <Col style={{ width: "15%" }}></Col>
-                                        </Row>
-                                    </Grid>
-                                }
-                            </Tab>
-                            <Tab heading="Pending">
-                                <List>
-                                    {this.state.renderedRequestsList}
-                                </List>
-                            </Tab>
-
-                        </Tabs> */}
 
                         <TabView tabBarPosition="top"
                             style={{ flex: 1, height: 500 }}
@@ -1139,7 +1265,9 @@ this.refs.ModalEditList.open();
                             }]}
                             renderTabBar={(isActive, tab) => {
                                 console.log("render tab bar")
+
                                 if (isActive) {
+                                    this.state.ActiveTab = tab.text;
                                     return <Text style={{ color: "black", borderColor: "black", borderWidth: 0.5, backgroundColor: "#9E1F64", textAlign: "center", height: 30, lineHeight: 30 }}>{tab.text}</Text>
                                 }
                                 return <Text style={{ color: "black", borderColor: "black", borderWidth: 0.5, textAlign: "center", height: 30, lineHeight: 30 }}>{tab.text}</Text>
@@ -1189,10 +1317,148 @@ const styles = StyleSheet.create({
         height: "35%",
         width: "85%"
     },
-
+    ModalEditList:
+        {
+            height: "80%",
+            width: "85%"
+        },
     textBorder: {
         borderColor: 'black',
         borderWidth: 1
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#eee',
+
+        ...Platform.select({
+            ios: {
+                paddingTop: 20,
+            },
+        }),
+    },
+
+    title: {
+        fontSize: 20,
+        paddingVertical: 20,
+        color: '#999999',
+    },
+
+    list: {
+        flex: 1,
+    },
+
+    contentContainer: {
+        width: window.width,
+
+        ...Platform.select({
+            ios: {
+                paddingHorizontal: 30,
+            },
+
+            android: {
+                paddingHorizontal: 0,
+            }
+        })
+    },
+
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 16,
+        height: 80,
+        flex: 1,
+        marginTop: 7,
+        marginBottom: 12,
+        borderRadius: 4,
+
+
+        ...Platform.select({
+            ios: {
+                width: window.width - 30 * 2,
+                shadowColor: 'rgba(0,0,0,0.2)',
+                shadowOpacity: 1,
+                shadowOffset: { height: 2, width: 2 },
+                shadowRadius: 2,
+            },
+
+            android: {
+                width: window.width - 30 * 2,
+                elevation: 0,
+                marginHorizontal: 30,
+            },
+        })
+    },
+
+    image: {
+        width: 50,
+        height: 50,
+        marginRight: 30,
+        borderRadius: 25,
+    },
+
+    text: {
+        fontSize: 24,
+        color: '#222222',
+    },
+});
+
+class RowComponent extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this._active = new Animated.Value(0);
+
+        this._style = {
+            ...Platform.select({
+                ios: {
+                    transform: [{
+                        scale: this._active.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 1.1],
+                        }),
+                    }],
+                    shadowRadius: this._active.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [2, 10],
+                    }),
+                },
+
+                android: {
+                    transform: [{
+                        scale: this._active.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 1.07],
+                        }),
+                    }],
+                    elevation: this._active.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [2, 6],
+                    }),
+                },
+            })
+        };
     }
 
-});
+    componentWillReceiveProps(nextProps) {
+        if (this.props.active !== nextProps.active) {
+            Animated.timing(this._active, {
+                duration: 300,
+                easing: Easing.bounce,
+                toValue: Number(nextProps.active),
+            }).start();
+        }
+    }
+
+
+    render() {
+
+        const { data, active } = this.props;
+
+
+     
+    }
+}

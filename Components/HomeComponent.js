@@ -474,32 +474,42 @@ export default class HomeComponent extends Component {
                 if (resp.data.mycycles.length > 0) {
 
                     for (let x = 0; x < resp.data.mycycles.length; x++) {
-                        renderedData.push(
-                            <Card key={x}>
-                                <CardItem header>
-                                    <Text style={{ fontWeight: "bold", fontSize: 20 }}>cycle : {resp.data.mycycles[x].cyclE_NAME}</Text>
-                                    <Right>
-                                        <Icon onPress={() => {
-                                            this.handleReminders(resp.data.mycycles[x]);
-                                        }} name='md-alarm' />
-
-                                    </Right>
-                                </CardItem>
-                                <CardItem>
-                                    <Body>
-                                        <Text>
-                                            StartDate : {resp.data.mycycles[x].startDate}
-                                        </Text>
-                                        <Text>EndDate : {resp.data.mycycles[x].endDate}</Text>
-                                        <Text>Number of members : {resp.data.mycycles[x].numbeR_OF_MEMBERS}</Text>
-                                        <Text>Amount : {resp.data.mycycles[x].totaL_AMOUNT} </Text>
-                                    </Body>
-                                </CardItem>
-                                <CardItem footer>
-                                    <Text>Reserved Month : {resp.data.cycles[x].cyclE_MONTH}</Text>
-                                </CardItem>
-                            </Card>
-                        )
+                        if(resp.data.mycycles[x]!=null)
+                        {
+                            renderedData.push(
+                                <Card key={x}>
+                                    <CardItem header>
+                                        <Text style={{ fontWeight: "bold", fontSize: 20 }}>cycle : {resp.data.mycycles[x].cyclE_NAME}</Text>
+                                        <Right>
+                                            <Icon onPress={() => {
+                                                this.handleReminders(resp.data.mycycles[x]);
+                                            }} name='md-alarm' />
+    
+                                        </Right>
+                                    </CardItem>
+                                    <CardItem>
+                                        <Body>
+                                            <Text>
+                                                StartDate : {resp.data.mycycles[x].startDate}
+                                            </Text>
+                                            <Text>EndDate : {resp.data.mycycles[x].endDate}</Text>
+                                            <Text>Number of members : {resp.data.mycycles[x].numbeR_OF_MEMBERS}</Text>
+                                            <Text>Amount : {resp.data.mycycles[x].totaL_AMOUNT} </Text>
+                                        </Body>
+                                    </CardItem>
+                                    <CardItem footer>
+                                        <Text>Reserved Month : {resp.data.cycles[x].cyclE_MONTH}</Text>
+                                        <Button
+                                        onPress={()=>{
+                                            const {navigate} = this.props.navigation;
+                                            navigate("NormalCycleView", { cycleid: resp.data.mycycles[x], userid: this.props.navigation.state.params.id });
+                                        }}
+                                        ><Text>Open cycle</Text></Button>
+                                    </CardItem>
+                                </Card>
+                            )
+                        }
+                      
                     }
 
                 }

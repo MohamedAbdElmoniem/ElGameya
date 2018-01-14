@@ -204,7 +204,7 @@ class CyclesHome extends Component {
                     })
                     .catch((err) => {
                         console.log(err)
-                        this.refs.toast.show('Unexpected error');
+                      //  this.refs.toast.show('Unexpected error');
                         this.setState({ visible: false });
 
                     })
@@ -498,6 +498,7 @@ class CyclesHome extends Component {
             })
                 .then((resp) => {
                     let MonthsData = resp.data.data;
+                    debugger;
                     let users = resp.data.users;
                     component.setState({ choosenCycleId: MonthsData[0].cyclE_ID });
                     if (MonthsData.length > 0) {
