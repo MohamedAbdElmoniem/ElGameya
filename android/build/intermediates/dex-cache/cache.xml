@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.0.0_79b0bbbd12e08d7f27d0ad312104834e8665a669.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.9.0\f824591a0016efbaeddb8300bee54832a1398cfa\okio-1.9.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\okio-1.9.0_b3d22b92e095494e6ab1fef753b75b3a59e8ff4b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.44.0\jars\libs\infer-annotations-1.5.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="dcac634e137395f79693ec760f081a86eb2bd84e">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\infer-annotations-1.5_7a2af75231ce94fa745eed3735de4c51a26be18b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\customtabs\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="94ba691efc31bf53264db0716d9c9ec03843ea31">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-customtabs-25.0.0_dac18718d6524ebea6b7e9339e7c5cd1998a008c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_c28ae35c2292eb4d0b2178352286c3390f2be75c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="cf836a435a496eb22ff2aa69aa1e619462549f81">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fresco-1.0.1_40810d54db41f77d39acb711e7a70de52c0e2c07.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tagmanager-v4-impl\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c76804333008c855433cad5cfd1256e86045e97b">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tagmanager-v4-impl-10.2.4_467074f916369d046c3d67a71a5ace9aac8d35ef.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="2668e49e4e31c7d451b76a36009b902bf44e0d70">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-fbcore-1.0.1_d9b9f7ec585113832d31c640ad6ef9822c713aa7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="9ed08fab37c3a572da1d9ed2bf2e36c8d3e2bc48">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-10.2.4_9bd58c22ef0d5dc02b8a558b971d8414d4d772f8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.0.0_d27cf954ffb9b4ee13b37fc9a5289ad2c3005e9a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics-impl\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="2ed7ba48801a0a361727833ade3b6cf096968cc0">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-impl-10.2.4_003fa33db574be84a4b6979d16ae6524960e6395.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.soloader-soloader-0.1.0_b02ce56b98bc07b9d74eda78d2ad93311c107b5d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d9c4402c3057225d80cbbbec52154e7a25b0ebdf">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-1.0.1_7d61cb634aa45c90f4f2e8f101b08c4b7c1e924e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\ElGameya\react-native-vector-icons\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="b319ff9834bbeb9be394687614eb86892699ea14">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\ElGameya-react-native-vector-icons-unspecified_eaaf903b3720ea1e4f22e34c471f8cc53c1ef7bd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.onesignal\OneSignal\3.6.5\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="dfff80b6e21c10f40ec59c0e5d86d00bd67a1f35">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.onesignal-OneSignal-3.6.5_d91a5b0164d35bc147711ce0d18ceab855ceb668.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.0_4f880ce48e1368c786ad02b7094f9453ee7356ab.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_ac4b0845d35b1305882ce5e8e0e51412bcde6bcf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-ws\3.4.1\8ace66ef7002d98f633377c9e67daeeb196d8c3b\okhttp-ws-3.4.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\okhttp-ws-3.4.1_36685350c9bbf750a9d96ff459b88a80e759e2f5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\javax.inject-1_aebfb76f49593f7d81b1ce6b551e039ce644fcc8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.4.0\8ad21bf21784dacce5f2043afb97218cc377e835\bolts-applinks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\bolts-applinks-1.4.0_070709474f2c3cc6acb5f528fe261578ffe6d5b7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fbui.textlayoutbuilder\textlayoutbuilder\1.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f90b593491e4044903f0bbf68dc3fa2790b151b9">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fbui.textlayoutbuilder-textlayoutbuilder-1.0.0_3217bf845d78fe822b1ccc01d2e0210cd4ca2aa2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\ElGameya\react-native-share\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1ac1a52d84feee696d966c36344425e8fd9cd515">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\ElGameya-react-native-share-unspecified_cc5711fe6d51a58a9a30e966a03180c9e9884054.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_6d00bdc6bbc1a0d7a7023aa35b1577f945a0e5bd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.4.1\63994437f62bc861bc20c605d12962f7246116d1\okhttp-urlconnection-3.4.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="63994437f62bc861bc20c605d12962f7246116d1">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.4.1_32b3d8b8deeb4573ac462132da2fe5584c054ab2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_df334300f017c4381fd397d580c345ac15fcbd44.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.0.0_ca25dfdf00b62cfd514e993e0ddd3a092a2102bc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-iid\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="29d9916bd9ad8406a53edbafbbce5e18943aa882">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-iid-10.2.4_fb1828791b4cec9221f2fc585527ace7bc30b1c4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\ElGameya\react-native-onesignal\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="43b3eb17d5232d576dc613f658d82d2da04e1b99">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\ElGameya-react-native-onesignal-unspecified_74068adfbad6196d9a7819f50930422b1cf862d6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-gcm\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5cba8868595f6aaff54cf7d1798591108cf5611c">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-gcm-10.2.4_a3f119518deda64779fae60105d2fbf890f1301a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8a372c4191f80489770a231f7be4820b204b886a">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-25.0.0_451bd926211bcae48a4eb47c5e5ac0f00e1d6193.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\ElGameya\react-native-calendar-events\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="dfbf3a99b407177efa7cdff9f213cd220310dfc1">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\ElGameya-react-native-calendar-events-unspecified_736c7e00893df2800c5a09573989c9e81e4edb68.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="183e4fb7cf95f4fa54963cfcdaf0f4d7e2397bad">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-10.2.4_78d2c1f89dd639bca9de78f66d69c81a4b1f328a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5a61f17cd72e20aa4323cbf5f909b7c609619275">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-drawee-1.0.1_b85dc7a749ebb862afad170b92302557af638b09.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.0.0_2ac5dbc8495288b9948d073f14edc3c959086e22.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_af85029f85405834896b554954bc1cd0be478cc7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="7e0f082141b7aa90aab5d3a47ab09b0edc958f6b">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-location-10.2.4_7c9212c1c3fdd909de832dd2fbc9982bd8771796.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\ElGameya\react-native-fbsdk\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="71519d58111acda15d5cb2be4d54674f96cb7ba9">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\ElGameya-react-native-fbsdk-unspecified_417c57a2df485c7519b67a8989d2bf08c6162575.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.0_4f9f1dfb062c79a152a251bc176810f9b98b2a0f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5803db663655ef5cb38c6bcb17ba326fdb9edfbd">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-10.2.4_abcf2aaa785725fd1e3185c7d682f7287eda58a5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_f6c5f1e33d80e157a118da2684287fccfe26f415.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.4.1\c7c4f9e35c2fd5900da24f9872e3971801f08ce0\okhttp-3.4.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\okhttp-3.4.1_a2e6e9cb7a4914cc12068a18cf71733331422856.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.44.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="af9665a44df26b4098e24c934c1109507845ef5e">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.react-react-native-0.44.0_8779276b5bef76fa50a93fa030eb8fd0bf794558.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="050f688115ea65a0292d8483a6ffe6bcdab1e2ef">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-base-1.0.1_b9784942ce08f08738cff0f1978938df0efe1158.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\1.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="ba9b39366b723ccff6359d1117332968e98a4aca">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.fresco-imagepipeline-okhttp3-1.0.1_257367d84abe1753d7136d992929658d5a81f38d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.0_1fffab6d3b9cc0dbb9fba56651cf7cf5bb82cda1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.0.0_62b4208d2b0409269d0d9ab12431621f6923da44.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_f4615152166ee4836d7e3e062e595b4678cf241e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.0_7da0ed20312e3f084d1943575365e362ac87fabd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.22.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d5cbc9214ee567ea6ef56fb2707d48e58d240fc2">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.facebook.android-facebook-android-sdk-4.22.1_f6aba7f1ae458861f586d0c24e53612ed654b75a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.4\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="dd1d0d84da2cff18f741c63a9c3af7d9aa89fdd6">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-10.2.4_2a1ae9be04e28cbebb2d6471012c51240d2991d6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\abdelmon\.gradle\caches\modules-2\files-2.1\com.facebook.fbui.textlayoutbuilder\staticlayout-proxy\1.0\f162442a19fff13995fbd51ba414d9ee05579080\staticlayout-proxy-1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f162442a19fff13995fbd51ba414d9ee05579080">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\staticlayout-proxy-1.0_32ddf3c1e4c315d5d525d666fc49dcd1cc7fe148.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\gameyaAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="C:\gameyaAndroid\android\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.0.0_9bd6ca91b70bafaf3079c82f993849e248a12c33.jar" />
+    </item>
+
+</items>
