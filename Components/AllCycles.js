@@ -74,6 +74,7 @@ export default class AllCycles extends Component {
             profileResponse: {},
             ReceiverId: "",
             RATEDUSERID: "",
+            selectedAmount:"",
             showData: false,
             Amounts: [
                 { value: 500, status: "unselected" },
@@ -207,7 +208,7 @@ export default class AllCycles extends Component {
             .then((resp) => {
                 let MonthsData = resp.data.data;
                 let users = resp.data.users;
-                debugger;
+                ;
                 component.setState({ choosenCycleId: MonthsData[0].cyclE_ID });
                 if (MonthsData.length > 0) {
                     for (let x = 0; x < MonthsData.length; x++) {
@@ -515,8 +516,16 @@ export default class AllCycles extends Component {
             SearchFilters.CycleName = (this.state.CycleName);
         }
 
-        if (this.state.Amount != "") {
-            SearchFilters.Amount = (this.state.Amount);
+        if (this.state.Amount != "" ) {
+            if(this.state.selectedAmount!="")
+            {
+                SearchFilters.Amount = (this.state.selectedAmount);
+
+            }
+            else{
+                SearchFilters.Amount = (this.state.Amount);
+
+            }
         }
         if (this.state.returnedCycles.length > 0) {
 
@@ -524,7 +533,7 @@ export default class AllCycles extends Component {
 
                 return (SearchFilters.selectedStartDate != undefined ? SearchFilters.selectedStartDate === cycle.startDate : true)
                     && (SearchFilters.CycleName != undefined ? SearchFilters.CycleName === cycle.cyclE_NAME : true)
-                    && (SearchFilters.Amount != undefined ? parseInt(SearchFilters.Amount) === cycle.totaL_AMOUNT : true)
+                    && (SearchFilters.Amount != undefined  ? parseInt(SearchFilters.Amount) === cycle.totaL_AMOUNT : true)
 
 
             })
@@ -843,6 +852,10 @@ export default class AllCycles extends Component {
             return o.status === "selected"
         });
         if (findSelectedAmount) {
+            if(this.state.selectedAmount!="")
+            {
+                findSelectedAmount.value=this.state.selectedAmount;
+            }
             if (findSelectedPositions) {
 
                 dataToBeSent = {
@@ -864,6 +877,11 @@ export default class AllCycles extends Component {
 
         if (findSelectedPositions) {
             if (findSelectedAmount) {
+                if(this.state.selectedAmount!="")
+                {
+                    findSelectedAmount.value=this.state.selectedAmount;
+                }
+                
                 dataToBeSent = {
                     duration: "",
                     startdate: "",
@@ -880,7 +898,15 @@ export default class AllCycles extends Component {
                 }
             }
         }
-
+        if(findSelectedAmount==undefined && findSelectedPositions==undefined)
+        {
+            dataToBeSent = {
+                duration: "",
+                startdate: "",
+                amount: this.state.selectedAmount,
+                position: 0
+            }
+        }
         axios({
             method: "POST",
             url: "http://www.elgameya.net/api/gamieya/FilterCycles",
@@ -891,7 +917,7 @@ export default class AllCycles extends Component {
         })
             .then((resp) => {
                 this.setState({ progressVisible: false, returnedCycles: resp.data.data }, () => {
-                    debugger;
+                    ;
                     this.renderAllCycles(resp.data.data)
                 });
                 this.refs.modalFilter.close();
@@ -899,7 +925,7 @@ export default class AllCycles extends Component {
             })
             .catch((err) => {
                 console.log(err)
-                debugger;
+                ;
 
                 component.setState({ progressVisible: false }, () => {
                 })
@@ -943,14 +969,13 @@ export default class AllCycles extends Component {
                                     <Icon active name='search' />
                                     <Input onChangeText={(text) => {
                                         let findedData = _.filter(this.state.returnedCycles, (o) => {
-                                            
+
                                             return o.cyclE_NAME.indexOf(text) != -1
                                         })
 
-                                       if(findedData)
-                                       {
-                                        this.renderAllCycles(findedData);
-                                       }
+                                        if (findedData) {
+                                            this.renderAllCycles(findedData);
+                                        }
 
                                     }} style={{ backgroundColor: "#CBCAD9" }} placeholder='Search ...' />
                                 </Item>
@@ -1065,6 +1090,13 @@ export default class AllCycles extends Component {
                                         <Col style={{ width: "3%" }}></Col>
 
                                         {this.state.renderedAmountsInCircles[1]}
+                                    </Row>
+                                    <Row style={{ marginTop: 10 }}>
+                                        <Col>
+                                            <Input style={{borderRadius:10,borderColor:"black",borderWidth:0.5}} placeholder="enter amount ..." onChangeText={(text)=>{
+                                                this.setState({selectedAmount:text});
+                                            }} />
+                                        </Col>
                                     </Row>
                                 </Grid>
                                 <View style={{ height: 15 }}></View>

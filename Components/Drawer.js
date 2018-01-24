@@ -98,6 +98,26 @@ const DrawerExample = DrawerNavigator(
                 </Row>
             </Grid>
             <DrawerItems {...props} />
+            <TouchableHighlight>
+                <Grid style={styles.buttonLogin}>
+                    <Row>
+                        <Col></Col>
+                        <Col><Text style={styles.textColor}>Settings</Text>
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Grid>
+            </TouchableHighlight>
+            <TouchableHighlight>
+                <Grid style={styles.buttonLogin}>
+                    <Row>
+                        <Col></Col>
+                        <Col><Text style={styles.textColor}>Info</Text>
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                </Grid>
+            </TouchableHighlight>
             <TouchableHighlight onPress={() => {
                 AsyncStorage.setItem('adminId', "", () => {
                     LoginManager.logOut()

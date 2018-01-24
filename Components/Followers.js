@@ -89,7 +89,7 @@ export default class Followers extends Component {
                 console.log(resp);
 
                 let followers = resp.data.followers;
-                debugger;
+                ;
 
                 for (let x = 0; x < followers.length; x++) {
                     followersArray.push(<ListItem icon key={x} onPress={() => {

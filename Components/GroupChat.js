@@ -96,7 +96,7 @@ export default class GroupChat extends Component {
       }
     })
       .then(resp => {
-        debugger;
+        ;
 
         let data = resp.data;
         let renderedData = [];
@@ -106,7 +106,7 @@ export default class GroupChat extends Component {
               let foundedUser = _.find(data.members, o => {
                 return o.id === data.chatMessages[x].sender_id;
               });
-              debugger;
+              ;
               if (foundedUser.id == this.props.navigation.state.params.userid) {
                 renderedData.push(
                   <Row key={x} style={{ marginBottom: 10 }}>
@@ -209,6 +209,7 @@ export default class GroupChat extends Component {
       })
         .then(resp => {
           let data = resp.data;
+          this.setState({msg:""})
           this.renderGroupMessages();
         })
         .catch(err => {
@@ -276,6 +277,7 @@ export default class GroupChat extends Component {
                     this.setState({ msg: text });
                   }}
                   placeholder="Type your message ..."
+                  value={this.state.msg}
                   placeholderTextColor="white"
                   style={{ backgroundColor: "#262261", color: "white" }}
                 />

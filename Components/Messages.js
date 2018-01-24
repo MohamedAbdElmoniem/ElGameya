@@ -23,7 +23,7 @@ import {
   Container,
   Content,
   Header,
-  Left,
+  Left, Thumbnail,
   Body,
   Grid,
   Col,
@@ -49,7 +49,7 @@ import StarRating from "react-native-star-rating";
 import Toast, { DURATION } from "react-native-easy-toast";
 import OneSignal from "react-native-onesignal"; // Import package from node modules
 
-import PopupDialog, { SlideAnimation } from "react-native-popup-dialog";
+import PopupDialog, { DialogTitle, SlideAnimation } from 'react-native-popup-dialog';
 import { ProgressDialog } from "react-native-simple-dialogs";
 const window = Dimensions.get("window");
 
@@ -70,14 +70,18 @@ export default class Messages extends Component {
       message: "",
       chatBox: [],
       ReceiverId: "",
-      ChatWith: ""
+      ChatWith: "",
+      followersList: [],
+      MSG: "",
+      ReceiverId: "",
+      message:""
     };
 
     this.currentUserId = "";
     this.doInterval = "";
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   componentWillMount() {
     AsyncStorage.getItem("adminId", (err, result) => {
@@ -99,6 +103,7 @@ export default class Messages extends Component {
       })
         .then(resp => {
           console.log(resp);
+          ;
 
           let users = resp.data.userMessages;
           for (let x = 0; x < users.length; x++) {
@@ -144,7 +149,7 @@ export default class Messages extends Component {
                 <View
                   style={{
                     flex: 1,
-                    marginTop:-30,
+                    marginTop: -30,
                     justifyContent: "center",
                     alignItems: "center"
                   }}
@@ -155,7 +160,10 @@ export default class Messages extends Component {
                     style={{
                       backgroundColor: "#ACAAD0"
                     }}
-                    onPress={() => {}}
+                    onPress={() => {
+                      this.handleOpenChatList()
+
+                    }}
                   >
                     <Text style={{ color: "#262261" }}>Start Chat</Text>
                   </Button>
@@ -175,6 +183,8 @@ export default class Messages extends Component {
         });
     });
   }
+
+
 
   ReloadMessages = () => {
     AsyncStorage.getItem("adminId", (err, result) => {
@@ -241,7 +251,7 @@ export default class Messages extends Component {
                 <View
                   style={{
                     flex: 1,
-                    marginTop:-30,
+                    marginTop: -30,
                     justifyContent: "center",
                     alignItems: "center"
                   }}
@@ -252,7 +262,10 @@ export default class Messages extends Component {
                     style={{
                       backgroundColor: "#ACAAD0"
                     }}
-                    onPress={() => {}}
+                    onPress={() => {
+
+                      this.handleOpenChatList()
+                    }}
                   >
                     <Text style={{ color: "#262261" }}>Start Chat</Text>
                   </Button>
@@ -272,6 +285,114 @@ export default class Messages extends Component {
         });
     });
   };
+
+  handleOpenChatList = () => {
+    let userData = {
+      id: this.currentUserId
+    }
+    let followersArray = []
+    axios({
+      method: "POST",
+      url: "http://www.elgameya.net/api/gamieya/GetMyFollowers",
+      data: JSON.stringify(userData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((resp) => {
+        console.log(resp);
+
+        let followers = resp.data.followers;
+
+
+        for (let x = 0; x < followers.length; x++) {
+          followersArray.push(<Row style={{ marginBottom: 10 }} icon key={x}>
+            <Col style={{ width: "5%" }}></Col>
+            <Col style={{ width: "10%" }}>
+              <Image source={{ uri: 'https://www.flexygames.net/images/user/user-171302.png' }} style={{ width: 30, height: 30 }} />
+            </Col>
+            <Col style={{ width: "5%" }}></Col>
+
+            <Col style={{ width: "35%" }}>
+              <Text> {followers[x].full_name}</Text>
+            </Col>
+            <Col style={{ width: "45%" }}>
+              <Button rounded style={{ backgroundColor: "#262261" }} onPress={() => {
+                this.handleSendMessageToFollower(followers[x].id);
+              }}><Text style={{ color: "white", fontSize: 10 }}>Send Message</Text></Button>
+            </Col>
+
+          </Row>)
+        }
+
+        this.setState({ followersList: followersArray, progressVisible: false }, () => {
+          this.refs.ModalChatList.open();
+        });
+
+        this.setState({ progressVisible: false });
+
+
+      })
+      .catch((err) => {
+        ;
+        alert("Unexpected error");
+
+        this.setState({ progressVisible: false });
+
+      })
+  }
+
+  handleSendMessageToFollower = (followerId) => {
+    this.setState({ ReceiverId: followerId }, () => {
+      this.popupDialog.show();
+
+    });
+  }
+
+  sendMessage() {
+
+
+    AsyncStorage.getItem('adminId', (err, result) => {
+      this.currentUserId = result;
+      let userData = {
+        RECEIVER_ID: this.state.ReceiverId,
+        SENDER_ID: result,
+        MSG: this.state.message
+      }
+
+      if (this.state.message != "") {
+
+
+        axios({
+          method: "POST",
+          url: "http://www.elgameya.net/api/gamieya/SendMessage",
+          data: JSON.stringify(userData),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then((resp) => {
+            console.log(resp);
+            
+            let status = resp.data.status;
+            this.popupDialog.hide();
+            this.refs.ModalChatList.close();
+            this.ReloadMessages();
+            this.setState({ message: "" })
+           
+
+          })
+          .catch((err) => {
+            alert("Message not sent");
+
+          })
+      }
+      else {
+        alert("Please enter message")
+      }
+    });
+  }
+
 
   openModalMsg = (userId, username) => {
     AsyncStorage.getItem("adminId", (err, result) => {
@@ -373,7 +494,9 @@ export default class Messages extends Component {
             console.log(resp);
 
             let status = resp.data.status;
-            this.reloadChatBox();
+          //  this.reloadChatBox();
+           
+            this.ReloadMessages();
 
             this.setState({ message: "" });
           })
@@ -445,7 +568,7 @@ export default class Messages extends Component {
             }
           }
 
-          this.setState({ chatBox: ChatArray }, () => {});
+          this.setState({ chatBox: ChatArray }, () => { });
         })
         .catch(err => {
           alert("Unexpected error");
@@ -486,8 +609,7 @@ export default class Messages extends Component {
                 transparent
                 onPress={() => {
                   this.ReloadMessages();
-                }}
-              >
+                }}>
                 <Icon name="refresh" style={{ color: "white" }} />
               </Button>
             </Right>
@@ -495,6 +617,31 @@ export default class Messages extends Component {
 
           <List>{this.state.userMessages}</List>
         </Content>
+        <Modal
+          backButtonClose={true}
+          style={[styles.modal, styles.ModalMsg]}
+          position={"center"}
+          ref={"ModalChatList"}
+          swipeToClose={false}
+          onClosed={() => {
+            this.onModalClose();
+          }}
+          isDisabled={this.state.isDisabled}
+        >
+          <Container>
+            <Header style={{ backgroundColor: "#262261", marginBottom: 10 }}>
+              <Body>
+                <Title>Followers</Title>
+              </Body>
+            </Header>
+
+            <Content>
+              <Grid>
+                {this.state.followersList}
+              </Grid>
+            </Content>
+          </Container>
+        </Modal>
 
         <Modal
           backButtonClose={true}
@@ -552,6 +699,29 @@ export default class Messages extends Component {
             </View>
           </Container>
         </Modal>
+
+        <PopupDialog width={window.width - 75} height={140}
+          dialogTitle={<DialogTitle title="send private message" />}
+          ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+        ><Grid>
+            <Row>
+              <Col style={{ width: "70%", height: "50%" }}>
+                <Input style={{ borderColor: "black", fontSize: 14, backgroundColor: "white", borderWidth: 1, borderRadius: 10 }} value={this.state.message}
+                  onChangeText={(text) => {
+                    this.setState({ message: text })
+                  }} placeholder="enter message"
+                />
+              </Col>
+              <Col style={{ width: "5%" }}></Col>
+              <Col style={{ width: "25%", height: "50%" }}>
+                <Button style={{ borderRadius: 12, backgroundColor: "#262261" }} onPress={() => {
+                  this.sendMessage();
+                }}><Text style={{ color: "white", fontSize: 10 }}>Send</Text></Button></Col>
+            </Row>
+          </Grid>
+        </PopupDialog>
+
+
       </Container>
     );
   }

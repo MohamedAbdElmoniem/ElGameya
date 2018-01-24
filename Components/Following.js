@@ -80,7 +80,7 @@ export default class Following extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetFollowedByMe",
+            url: "http://www.elgameya.net/api/gamieya/GetFollowedByMe",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -134,7 +134,7 @@ export default class Following extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetFollowedByMe",
+            url: "http://www.elgameya.net/api/gamieya/GetFollowedByMe",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -189,7 +189,7 @@ export default class Following extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/GetUserProfile",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -235,7 +235,7 @@ export default class Following extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/RateUser",
+            url: "http://www.elgameya.net/api/gamieya/RateUser",
             data: JSON.stringify(RateData),
             headers: {
                 "Content-Type": "application/json"
@@ -307,7 +307,7 @@ export default class Following extends Component {
 
         axios({
             method: "POST",
-            url: "http://www.gameya.somee.com/api/gamieya/UnfollowUser",
+            url: "http://www.elgameya.net/api/gamieya/UnfollowUser",
             data: JSON.stringify(userData),
             headers: {
                 "Content-Type": "application/json"
@@ -315,7 +315,7 @@ export default class Following extends Component {
         })
             .then((resp) => {
 
-            debugger;
+            ;
                 this.setState({progressVisible: false});
                 console.log(resp)
               this.refs.ModalProfile.close();

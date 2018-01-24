@@ -147,7 +147,7 @@ export default class LoginComponent extends Component {
 
 
                 let FbCredentials = { Name: json.name, Email: json.email }
-                debugger;
+                ;
                 axios({
                     method: "POST",
                     url: "http://www.elgameya.net/api/gamieya/RegisterLoginFacebook",
@@ -159,7 +159,7 @@ export default class LoginComponent extends Component {
                     .then((resp) => {
                         this.setState({ progressVisible: false });
                         console.log(resp)
-                        debugger;
+                        ;
                         let adminId = resp.data.user.id.toString();
                         AsyncStorage.setItem('adminId', adminId, () => {
                             navigate("HomePage", resp.data.user);

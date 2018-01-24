@@ -135,19 +135,214 @@ class CyclesHome extends Component {
             amountPerMonth: "",
             totalAmountPerCycle: "",
             ReceiverId: "",
-            message: ""
+            message: "",
+            Amounts: [
+                { value: 500, status: "unselected" },
+                { value: 1000, status: "unselected" },
+                { value: 2000, status: "unselected" },
+                { value: 3000, status: "unselected" },
+                { value: 4000, status: "unselected" },
+                { value: 5000, status: "unselected" },
+                { value: 6000, status: "unselected" },
+                { value: 7000, status: "unselected" },
+                { value: 8000, status: "unselected" },
+                { value: 9000, status: "unselected" },
+                { value: 10000, status: "unselected" }
+            ],
+            renderedAmountsInCircles: [],
+            selectedAmount: ""
 
         }
+
         this.monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"];
 
         this.handleBackButton2 = this.handleBackButton2.bind(this);
+        this.renderAmountsInCircles = this.renderAmountsInCircles.bind(this);
+        this.handleSelectAmount = this.handleSelectAmount.bind(this);
     }
 
     handleBackButton2() {
 
         return true;
 
+    }
+
+    renderAmountsInCircles() {
+        let component = this;
+        let renderedAmounts = [[], []];
+
+        for (let x = 0; x < this.state.Amounts.length; x++) {
+
+            if (x <= 5) {
+                if (this.state.Amounts[x].status === "unselected") {
+                    renderedAmounts[0].push(
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+                else {
+                    renderedAmounts[0].push(
+                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+            else {
+                if (this.state.Amounts[x].status === "unselected") {
+                    renderedAmounts[1].push(
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "unselected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#262261',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+
+                                }}>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+                else {
+                    renderedAmounts[1].push(
+                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+
+                            <TouchableOpacity onPress={() => {
+                                this.handleSelectAmount(this.state.Amounts[x], "selected")
+                            }}>
+                                <View style={{
+                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    borderColor: '#9E1F64',
+                                    alignItems: 'center',
+                                    borderStyle: "dotted",
+                                    justifyContent: "center",
+                                    alignContent: "center",
+                                    borderWidth: 2
+                                }}>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Col>
+                    )
+
+                }
+            }
+
+        }
+        ;
+        component.setState({ renderedAmountsInCircles: renderedAmounts })
+
+
+    }
+
+    handleSelectAmount(data, status) {
+        if (status === "unselected") {
+            for (let x = 0; x < this.state.Amounts.length; x++) {
+                if (this.state.Amounts[x].status === "selected") {
+                    this.state.Amounts[x].status = "unselected";
+                }
+            }
+            let findedIndex = _.findIndex(this.state.Amounts, data);
+            this.state.Amounts[findedIndex].status = "selected";
+
+            if (this.state.noOfMembers != "") {
+                let total_amount = "";
+                let findSelectedAmount = _.find(this.state.Amounts, (o) => {
+                    return o.status === "selected"
+                });
+                if (findSelectedAmount != undefined) {
+                    total_amount = findSelectedAmount.value;
+                    let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                    this.setState({ totalAmountPerCycle: total })
+                }
+                else {
+                    if (this.state.selectedAmount != "") {
+                        total_amount = this.state.selectedAmount
+                        let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                        this.setState({ totalAmountPerCycle: total })
+                    }
+                    else {
+                        this.setState({ totalAmountPerCycle: "" })
+                        //  alert("please enter amount per month");
+                    }
+                }
+
+            }
+            else {
+                this.setState({ totalAmountPerCycle: "" })
+            }
+
+        }
+        if (status === "selected") {
+            let findedIndex = _.findIndex(this.state.Amounts, data);
+            this.state.Amounts[findedIndex].status = "unselected";
+        }
+
+        this.setState({}, () => {
+            this.renderAmountsInCircles();
+            this.setState({ selectedAmount: "" })
+        })
+    }
+
+    makeAllAmountsUnSelected = () => {
+
+        for (let x = 0; x < this.state.Amounts.length; x++) {
+            if (this.state.Amounts[x].status === "selected") {
+                this.state.Amounts[x].status = "unselected";
+            }
+        }
+        this.setState({}, () => {
+            this.renderAmountsInCircles();
+        })
     }
 
 
@@ -188,7 +383,7 @@ class CyclesHome extends Component {
                         if (resp.data.status === "success") {
                             if (resp.data.message != undefined) {
                                 if (flag === false) {
-                                  //  alert(resp.data.message)
+                                    //  alert(resp.data.message)
                                     flag = true;
                                 }
                             }
@@ -204,7 +399,7 @@ class CyclesHome extends Component {
                     })
                     .catch((err) => {
                         console.log(err)
-                      //  this.refs.toast.show('Unexpected error');
+                        //  this.refs.toast.show('Unexpected error');
                         this.setState({ visible: false });
 
                     })
@@ -220,6 +415,7 @@ class CyclesHome extends Component {
 
     handleCreateCycle = () => {
         this.setState({ selectedStartDate: "", selectedEndDate: "" })
+        this.renderAmountsInCircles();
         this.refs.modal3.open()
     }
 
@@ -309,11 +505,23 @@ class CyclesHome extends Component {
         else {
             let cycleData = {}
             this.setState({ progressVisible: true })
+            let total_amount = "";
+            let findSelectedAmount = _.find(this.state.Amounts, (o) => {
+                return o.status === "selected"
+            });
+            if (findSelectedAmount != undefined) {
+                total_amount = findSelectedAmount.value;
+            }
+            else {
+                total_amount = this.state.selectedAmount
+            }
+            let _total_amount = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+
             cycleData =
                 {
                     CYCLE_NAME: this.state.cycleName,
                     NUMBER_OF_MEMBERS: this.state.noOfMembers,
-                    TOTAL_AMOUNT: this.state.totalAmountPerCycle,
+                    TOTAL_AMOUNT: _total_amount,
                     startDate: this.state.selectedStartDate,
                     endDate: this.state.selectedEndDate,
                     privacy: this.state.cyclePrivacy,
@@ -498,7 +706,7 @@ class CyclesHome extends Component {
             })
                 .then((resp) => {
                     let MonthsData = resp.data.data;
-                    debugger;
+                    ;
                     let users = resp.data.users;
                     component.setState({ choosenCycleId: MonthsData[0].cyclE_ID });
                     if (MonthsData.length > 0) {
@@ -1053,76 +1261,174 @@ class CyclesHome extends Component {
                                         ───────────────────
                                 </Text></Col>
                             </Row>
-                            <Row ><Col><Input placeholder="Amount per Month" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.amountPerMonth}
-                                onChangeText={(text) => {
-                                    if (text.match(/[0-9]/) && parseInt(text) < 1000000) {
-                                        this.setState({ amountPerMonth: text }, () => {
-                                            if (this.state.noOfMembers != "" && this.state.amountPerMonth != "") {
-                                                let total = (parseInt(this.state.noOfMembers) * parseInt(this.state.amountPerMonth)).toString();
-                                                this.setState({ totalAmountPerCycle: total })
-                                            }
-                                            else if (this.state.noOfMembers == "" || this.state.amountPerMonth == "") {
-                                                this.setState({ totalAmountPerCycle: "" })
-                                            }
-                                        })
-
-                                    }
-                                    else {
-                                        this.setState({ amountPerMonth: "" })
-                                    }
-                                }}
-                            /></Col></Row>
-                            <Row style={{ marginTop: 10 }} >
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row ><Col><Input placeholder="Number Of Members" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.noOfMembers}
-                                onChangeText={(text) => {
-                                    if (parseInt(text) < 13 && text.match(/[0-9]/) || this.state.noOfMembers === "") {
-                                        this.setState({ noOfMembers: text }, () => {
-                                            if (this.state.noOfMembers != "" && this.state.amountPerMonth != "") {
-                                                let total = (parseInt(this.state.noOfMembers) * parseInt(this.state.amountPerMonth)).toString();
-                                                this.setState({ totalAmountPerCycle: total })
-                                            }
-                                            else if (this.state.noOfMembers == "" || this.state.amountPerMonth == "") {
-                                                this.setState({ totalAmountPerCycle: "" })
-                                            }
-                                        })
-
-                                    }
-                                    else if (!text.match(/[0-9]/)) {
-                                        this.setState({ noOfMembers: "" })
-                                    }
-                                    else {
-                                        alert("please enter number of members less than or equal 12");
-                                        this.setState({ noOfMembers: "" })
-
-                                    }
-                                }}
-                            /></Col></Row>
-
-                            <Row style={{ marginTop: 10 }} >
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row ><Col><Input placeholder="Cycle Total Amount" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.totalAmountPerCycle}
-                                onChangeText={(text) => {
-                                    this.setState({ totalAmountPerCycle: text })
-                                }} disabled={true}
-                            /></Col></Row>
-                            <Row style={{ marginTop: 10 }} >
-                                <Col>
-                                </Col>
-                            </Row>
-                            <Row ><Col><Input placeholder="Cycle Name" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
+                            <Row><Col><Input placeholder="Cycle Name" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
                                 onChangeText={(text) => {
                                     this.setState({ cycleName: text })
                                 }}
                             /></Col></Row>
+                            <Row style={{ marginTop: 5 }} >
+                                <Col>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Card>
+                                    <Grid>
+                                        <Row>
+                                            <Col style={{ width: "10%" }}></Col>
+                                            <Col style={{ width: "30%" }}><Text>Amount</Text></Col>
+                                            <Col style={{ width: "50%" }}></Col>
+                                            <Col style={{ width: "10%" }}><Icon name='md-close' style={{ color: "black" }} /></Col>
+                                        </Row>
+                                        <Row>
+                                            <Col style={{ width: "3%" }}></Col>
+                                            {this.state.renderedAmountsInCircles[0]}
+                                        </Row>
+                                        <Row style={{ marginTop: 10 }}>
+                                            <Col style={{ width: "3%" }}></Col>
+
+                                            {this.state.renderedAmountsInCircles[1]}
+                                        </Row>
+                                        <Row style={{ marginTop: 10 }}>
+                                            <Col>
+                                                <Input style={{ borderRadius: 10, borderColor: "black", height: 40, borderWidth: 0.5, marginLeft: 10, marginRight: 10 }} placeholder="enter amount ..." value={this.state.selectedAmount} onChangeText={(text) => {
+                                                    if (!text.match(/[0-9]/)) {
+                                                        alert("please enter only numbers")
+
+                                                    }
+                                                    else {
+                                                        this.setState({ selectedAmount: text }, () => {
+                                                            if (this.state.noOfMembers != "") {
+                                                                let total_amount = "";
+                                                                let findSelectedAmount = _.find(this.state.Amounts, (o) => {
+                                                                    return o.status === "selected"
+                                                                });
+                                                                if (findSelectedAmount != undefined) {
+                                                                    total_amount = findSelectedAmount.value;
+                                                                    let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                                                                    this.setState({ totalAmountPerCycle: total })
+                                                                }
+                                                                else {
+                                                                    if (this.state.selectedAmount != "") {
+                                                                        total_amount = this.state.selectedAmount
+                                                                        let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                                                                        this.setState({ totalAmountPerCycle: total })
+                                                                    }
+                                                                    else {
+                                                                        this.setState({ totalAmountPerCycle: "" })
+                                                                        // alert("please enter amount per month");
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            else {
+                                                                this.setState({ totalAmountPerCycle: "" })
+                                                            }
+                                                        });
+
+                                                        this.makeAllAmountsUnSelected();
+                                                    }
+
+                                                }} />
+                                            </Col>
+                                        </Row>
+                                    </Grid>
+                                    <View style={{ height: 15 }}></View>
+                                </Card>
+                            </Row>
+                            <Row ><Col><Input placeholder="Number Of Members" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.noOfMembers}
+                                onChangeText={(text) => {
+                                    if (parseInt(text) < 13 && text.match(/[0-9]/) || this.state.noOfMembers === "") {
+                                        let findSelectedAmount = {}
+
+                                        this.setState({ noOfMembers: text }, () => {
+                                            if (this.state.noOfMembers != "") {
+                                                let total_amount = "";
+                                                let findSelectedAmount = _.find(this.state.Amounts, (o) => {
+                                                    return o.status === "selected"
+                                                });
+                                                if (findSelectedAmount != undefined) {
+                                                    total_amount = findSelectedAmount.value;
+                                                    let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                                                    this.setState({ totalAmountPerCycle: total })
+                                                }
+                                                else {
+                                                    if (this.state.selectedAmount != "") {
+                                                        total_amount = this.state.selectedAmount
+                                                        let total = (parseInt(this.state.noOfMembers) * parseInt(total_amount)).toString();
+                                                        this.setState({ totalAmountPerCycle: total })
+                                                    }
+                                                    else {
+                                                        this.setState({ totalAmountPerCycle: "" })
+                                                        // alert("please enter amount per month");
+                                                    }
+                                                }
+
+                                            }
+                                            else {
+                                                this.setState({ totalAmountPerCycle: "" })
+                                            }
+                                        })
+
+
+
+                                    }
+                                    else if (!text.match(/[0-9]/)) {
+                                        this.setState({ noOfMembers: "" })
+                                        this.setState({ totalAmountPerCycle: "" })
+
+                                    }
+                                    else {
+                                        alert("please enter number of members less than or equal 12");
+                                        this.setState({ noOfMembers: "" })
+                                        this.setState({ totalAmountPerCycle: "" })
+
+
+                                    }
+                                }}
+                            /></Col></Row>
+                            <Row style={{ marginTop: 10 }} >
+                                <Col>
+                                </Col>
+                            </Row>
+                            <Row><Col style={{
+                                alignItems:"center",
+                                justifyContent:"center",
+                                alignContent:"center"
+                            }}>
+                                <View style={{
+                                    width: 80, height: 80, borderRadius: 80 / 2,
+                                    borderColor: '#262261',
+                                    borderStyle: "dotted",
+                                    alignContent: "center",
+                                    flex: 1,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderWidth: 2,
+                                    backgroundColor:"white"
+
+                                }}>
+                                  {/*   <Input placeholder="Total" style={{ backgroundColor: 'transparent', fontSize: 14,marginTop:15,marginLeft:5, width: "100%", backgroundColor: "white",width:70, borderRadius: 10 }} value={this.state.totalAmountPerCycle}
+                                        onChangeText={(text) => {
+                                            this.setState({ totalAmountPerCycle: text })
+                                        }} disabled={true}
+                                    />  */}     
+                                    <View style={{height:30,marginBottom:-10}}>
+                                    <Text style={{ color: "#262261", fontSize: 12 }}>Total</Text>
+                                    </View> 
+                                    <View style={{height:30}}>
+{this.state.totalAmountPerCycle !="" ? <Text style={{ color: "#262261", fontSize: 12 }}>{this.state.totalAmountPerCycle}</Text>
+: <Text style={{ color: "#262261", fontSize: 14 }}>0000</Text>
+}
+                                    </View> 
+                                    <View style={{height:30}}>
+                                    <Text style={{ color: "#262261", fontSize: 12 }}>EGP</Text>
+                                    </View> 
+                                </View>
+                            </Col></Row>
                             <View style={{ flex: 1, flexDirection: "row", top: "5%" }}>
                                 <View style={{ flex: 0.5 }}>
                                     <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {
-                                        if (this.state.amountPerMonth == "" || this.state.totalAmountPerCycle == "" || this.state.noOfMembers == "") {
+                                        if (this.state.totalAmountPerCycle == "") {
                                             alert("please enter all fields")
                                         }
                                         else {
@@ -1163,7 +1469,7 @@ class CyclesHome extends Component {
                                 </Col>
                             </Row>
                             <Text>{"\n"}</Text>
-                            <View style={{ flex: 1, flexDirection: "row", bottom: "2%" }}>
+                            <View style={{ flex: 1, flexDirection: "row", bottom: "7%" }}>
                                 <View style={{ flex: 0.4, marginLeft: "8%" }}>
                                     <Button style={{ borderRadius: 10, backgroundColor: "#262261" }}
                                         onPress={this.handleCancel}>

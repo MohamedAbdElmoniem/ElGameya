@@ -93,14 +93,14 @@ export default class RegisterationComponent extends Component {
                         }
                     })
                         .then((resp) => {
-                            debugger;
+                            ;
                             this.setState({ visible: false });
                             console.log(resp)
                             const { navigate } = this.props.navigation;
                             navigate("LoginPage",{email:this.state.email,password:this.state.password});
                         })
                         .catch((err) => {
-                            debugger;
+                            ;
                             console.log(err)
                             this.setState({ visible: false },()=>{
                                 alert("Unexpected error");                                

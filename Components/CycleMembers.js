@@ -861,6 +861,7 @@ export default class CycleMembers extends Component {
     }
 
     handleDeleteMyCycle() {
+        debugger;
         let dataToBeSent = {
             id: this.props.navigation.state.params.cycleid.id
         }
@@ -872,6 +873,7 @@ export default class CycleMembers extends Component {
                 "Content-Type": "application/json"
             }
         }).then((resp) => {
+            debugger;
             if (resp.data.status === "success") {
                 // alert(resp.data.message);
                 const { navigate } = this.props.navigation;
@@ -880,6 +882,7 @@ export default class CycleMembers extends Component {
             }
         })
             .catch((err) => {
+                debugger;   
                 alert("Unexpected error")
             })
     }

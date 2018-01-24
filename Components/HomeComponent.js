@@ -46,7 +46,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Share, { ShareSheet } from 'react-native-share';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import { ProgressDialog } from 'react-native-simple-dialogs';
-
+import { config }from './Config/Config'
+ 
 export default class HomeComponent extends Component {
 
     static navigationOptions = {
@@ -85,7 +86,8 @@ export default class HomeComponent extends Component {
             username: "",
             remindersFlag: false,
             openedCycle: {},
-            renderedRequests: []
+            renderedRequests: [],
+            countDownItem:[]
 
         }
 
@@ -713,6 +715,61 @@ export default class HomeComponent extends Component {
             })
     }
 
+    openCountDownModal=()=>{
+
+        this.setState({ progressVisible: true });
+let renderedCountDownItems = [];
+
+        axios({
+            method: "POST",
+            url: config.url,
+            data: JSON.stringify({ Id: this.props.navigation.state.params.id }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                this.setState({ progressVisible: false });
+                let finalData = resp.data;
+                if (finalData.cycledata.length>0) {
+
+                    for (let x = 0; x < finalData.cycledata.length; x++) {
+
+                        renderedCountDownItems.push(
+                            <Card key={x}>
+                            <CardItem>
+                              <Body>
+                                <Text>
+                                  cycle name : {finalData.cycledata[x].cyclename}
+                                </Text>
+                                <Text>
+                                  remaining months : {finalData.cycledata[x].remainingMonths}
+                                </Text>
+                              </Body>
+                            </CardItem>
+                          </Card>
+                        )
+
+                    }
+
+                    this.setState({countDownItems:renderedCountDownItems},()=>{
+                        this.refs.countDownModal.open();
+                    })
+               
+                }
+                else {
+                    alert("there's no reminders")
+                }
+
+            })
+            .catch((err) => {
+                this.setState({ progressVisible: false });
+                alert("Unexpected error");
+
+            })
+
+    }
+
 
 
     render() {
@@ -803,18 +860,19 @@ export default class HomeComponent extends Component {
                     <List>
                         <Grid>
                             <Row>
-                                <Col style={{ width: "25%" }}>
+                                <Col style={{ width: "20%" }}>
                                     <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
                                         <Thumbnail source={{ uri: 'https://www.flexygames.net/images/user/user-171302.png' }} />
                                     </View>
                                 </Col>
-                                <Col style={{ width: "35%" }}>
+                                <Col style={{width:"5%"}}></Col>
+                                <Col style={{ width: "30%" }}>
                                     <View style={{ marginTop: 25, marginBottom: 12 }}>
                                         <Text style={{ fontSize: 18 }}>{this.state.username}</Text>
                                     </View>
                                 </Col>
                                 <Col style={{ width: "10%" }}></Col>
-                                <Col style={{ width: "30%" }}>
+                                <Col style={{ width: "35%" }}>
                                     <View style={{ marginRight: 20, marginTop: 15, marginBottom: 12 }}>
                                         <Button block
                                             onPress={() => {
@@ -906,6 +964,24 @@ export default class HomeComponent extends Component {
                                 <Icon name="arrow-forward" />
                             </Right>
                         </ListItem>
+                        <ListItem itemDivider>
+                            <Text style={{ fontWeight: "bold" }}>Timeline</Text>
+                        </ListItem>
+                        <ListItem icon onPress={() => {
+                            this.openCountDownModal()
+                        }}>
+                            <Left>
+                                <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                    source={require('../imgs/invite.png')}
+                                />
+                            </Left>
+                            <Body>
+                                <Text>Countdown</Text>
+                            </Body>
+                            <Right>
+                                <Icon name="arrow-forward" />
+                            </Right>
+                        </ListItem>
                     </List>
 
 
@@ -971,6 +1047,22 @@ export default class HomeComponent extends Component {
                         </Header>
                         <Content>
                             {this.state.renderedRequests}
+                        </Content>
+                    </Container>
+                </Modal>
+
+                
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"countDownModal"}
+                    swipeToClose={false}
+                    isDisabled={this.state.isDisabled}>
+                    <Container>
+                        <Header style={{ backgroundColor: "#262261" }}>
+                            <Body style={{ alignItems: "center", justifyContent: "center" }}>
+                                <Title>Countdown</Title>
+                            </Body>
+                        </Header>
+                        <Content>
+                            {this.state.countDownItems}
                         </Content>
                     </Container>
                 </Modal>
