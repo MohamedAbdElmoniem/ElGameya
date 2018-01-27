@@ -8,7 +8,7 @@ import {
     AppRegistry,
     StyleSheet,
     Text, BackHandler,
-    View,
+    View, Slider,
     TouchableOpacity, Switch, AsyncStorage, Dimensions, Image
 } from 'react-native';
 import { Button } from 'native-base';
@@ -74,7 +74,7 @@ export default class AllCycles extends Component {
             profileResponse: {},
             ReceiverId: "",
             RATEDUSERID: "",
-            selectedAmount:"",
+            selectedAmount: "",
             showData: false,
             Amounts: [
                 { value: 500, status: "unselected" },
@@ -516,13 +516,12 @@ export default class AllCycles extends Component {
             SearchFilters.CycleName = (this.state.CycleName);
         }
 
-        if (this.state.Amount != "" ) {
-            if(this.state.selectedAmount!="")
-            {
+        if (this.state.Amount != "") {
+            if (this.state.selectedAmount != "") {
                 SearchFilters.Amount = (this.state.selectedAmount);
 
             }
-            else{
+            else {
                 SearchFilters.Amount = (this.state.Amount);
 
             }
@@ -533,7 +532,7 @@ export default class AllCycles extends Component {
 
                 return (SearchFilters.selectedStartDate != undefined ? SearchFilters.selectedStartDate === cycle.startDate : true)
                     && (SearchFilters.CycleName != undefined ? SearchFilters.CycleName === cycle.cyclE_NAME : true)
-                    && (SearchFilters.Amount != undefined  ? parseInt(SearchFilters.Amount) === cycle.totaL_AMOUNT : true)
+                    && (SearchFilters.Amount != undefined ? parseInt(SearchFilters.Amount) === cycle.totaL_AMOUNT : true)
 
 
             })
@@ -852,9 +851,8 @@ export default class AllCycles extends Component {
             return o.status === "selected"
         });
         if (findSelectedAmount) {
-            if(this.state.selectedAmount!="")
-            {
-                findSelectedAmount.value=this.state.selectedAmount;
+            if (this.state.selectedAmount != "") {
+                findSelectedAmount.value = this.state.selectedAmount;
             }
             if (findSelectedPositions) {
 
@@ -877,11 +875,10 @@ export default class AllCycles extends Component {
 
         if (findSelectedPositions) {
             if (findSelectedAmount) {
-                if(this.state.selectedAmount!="")
-                {
-                    findSelectedAmount.value=this.state.selectedAmount;
+                if (this.state.selectedAmount != "") {
+                    findSelectedAmount.value = this.state.selectedAmount;
                 }
-                
+
                 dataToBeSent = {
                     duration: "",
                     startdate: "",
@@ -898,8 +895,7 @@ export default class AllCycles extends Component {
                 }
             }
         }
-        if(findSelectedAmount==undefined && findSelectedPositions==undefined)
-        {
+        if (findSelectedAmount == undefined && findSelectedPositions == undefined) {
             dataToBeSent = {
                 duration: "",
                 startdate: "",
@@ -925,7 +921,7 @@ export default class AllCycles extends Component {
             })
             .catch((err) => {
                 console.log(err)
-                ;
+                    ;
 
                 component.setState({ progressVisible: false }, () => {
                 })
@@ -1093,8 +1089,8 @@ export default class AllCycles extends Component {
                                     </Row>
                                     <Row style={{ marginTop: 10 }}>
                                         <Col>
-                                            <Input style={{borderRadius:10,borderColor:"black",borderWidth:0.5}} placeholder="enter amount ..." onChangeText={(text)=>{
-                                                this.setState({selectedAmount:text});
+                                            <Input style={{ borderRadius: 10, borderColor: "black", borderWidth: 0.5 }} placeholder="enter amount ..." onChangeText={(text) => {
+                                                this.setState({ selectedAmount: text });
                                             }} />
                                         </Col>
                                     </Row>
@@ -1122,7 +1118,6 @@ export default class AllCycles extends Component {
 
                                 </Grid>
                                 <View style={{ height: 15 }}></View>
-
                             </Card>
 
                             <View style={{ height: 15 }}></View>

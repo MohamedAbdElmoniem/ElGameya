@@ -46,8 +46,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Share, { ShareSheet } from 'react-native-share';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import { ProgressDialog } from 'react-native-simple-dialogs';
-import { config }from './Config/Config'
- 
+import { config } from './Config/Config'
+
 export default class HomeComponent extends Component {
 
     static navigationOptions = {
@@ -87,7 +87,9 @@ export default class HomeComponent extends Component {
             remindersFlag: false,
             openedCycle: {},
             renderedRequests: [],
-            countDownItem:[]
+            countDownItem: [],
+            UsersToFollow: [],
+            switchFlagToFollow:false
 
         }
 
@@ -476,8 +478,7 @@ export default class HomeComponent extends Component {
                 if (resp.data.mycycles.length > 0) {
 
                     for (let x = 0; x < resp.data.mycycles.length; x++) {
-                        if(resp.data.mycycles[x]!=null)
-                        {
+                        if (resp.data.mycycles[x] != null) {
                             renderedData.push(
                                 <Card key={x}>
                                     <CardItem header>
@@ -486,7 +487,7 @@ export default class HomeComponent extends Component {
                                             <Icon onPress={() => {
                                                 this.handleReminders(resp.data.mycycles[x]);
                                             }} name='md-alarm' />
-    
+
                                         </Right>
                                     </CardItem>
                                     <CardItem>
@@ -502,16 +503,16 @@ export default class HomeComponent extends Component {
                                     <CardItem footer>
                                         <Text>Reserved Month : {resp.data.cycles[x].cyclE_MONTH}</Text>
                                         <Button
-                                        onPress={()=>{
-                                            const {navigate} = this.props.navigation;
-                                            navigate("NormalCycleView", { cycleid: resp.data.mycycles[x], userid: this.props.navigation.state.params.id });
-                                        }}
+                                            onPress={() => {
+                                                const { navigate } = this.props.navigation;
+                                                navigate("NormalCycleView", { cycleid: resp.data.mycycles[x], userid: this.props.navigation.state.params.id });
+                                            }}
                                         ><Text>Open cycle</Text></Button>
                                     </CardItem>
                                 </Card>
                             )
                         }
-                      
+
                     }
 
                 }
@@ -715,10 +716,10 @@ export default class HomeComponent extends Component {
             })
     }
 
-    openCountDownModal=()=>{
+    openCountDownModal = () => {
 
         this.setState({ progressVisible: true });
-let renderedCountDownItems = [];
+        let renderedCountDownItems = [];
 
         axios({
             method: "POST",
@@ -731,31 +732,60 @@ let renderedCountDownItems = [];
             .then((resp) => {
                 this.setState({ progressVisible: false });
                 let finalData = resp.data;
-                if (finalData.cycledata.length>0) {
+                if (finalData.cycledata.length > 0) {
 
                     for (let x = 0; x < finalData.cycledata.length; x++) {
+                        if (finalData.cycledata[x].remainingType === "days") {
+                            renderedCountDownItems.push(
+                                <Card key={x} style={{ borderRadius: 10 }}>
+                                    <CardItem>
+                                        <Body>
+                                            <Text style={{ color: "#9E1F64", fontSize: 13 }}>
+                                                cycle: {finalData.cycledata[x].cyclename}
+                                            </Text>
+                                            <Text style={{ fontSize: 12 }}>
+                                                Will get paid in {finalData.cycledata[x].remainingMonths} days
+                                            </Text>
+                                        </Body>
+                                        <Right>
+                                            <Image style={{
+                                                height: 40, width: 40, alignSelf: "center", resizeMode: "contain"
+                                            }}
+                                                source={require('../imgs/countdown2.png')} />
+                                        </Right>
+                                    </CardItem>
+                                </Card>
+                            )
+                        }
+                        else {
+                            renderedCountDownItems.push(
+                                <Card key={x} style={{ borderRadius: 10 }}>
+                                    <CardItem>
+                                        <Body>
+                                            <Text style={{ color: "#9E1F64", fontSize: 13 }}>
+                                                cycle: {finalData.cycledata[x].cyclename}
+                                            </Text>
+                                            <Text style={{ fontSize: 12 }}>
+                                                Will get paid in {finalData.cycledata[x].remainingMonths} months
+                                            </Text>
+                                        </Body>
+                                        <Right>
+                                            <Image style={{ height: 40, width: 40, alignSelf: "center", resizeMode: "contain" }}
+                                                source={require('../imgs/countdown2.png')} />
+                                        </Right>
+                                    </CardItem>
+                                </Card>
+                            )
+                        }
 
-                        renderedCountDownItems.push(
-                            <Card key={x}>
-                            <CardItem>
-                              <Body>
-                                <Text>
-                                  cycle name : {finalData.cycledata[x].cyclename}
-                                </Text>
-                                <Text>
-                                  remaining months : {finalData.cycledata[x].remainingMonths}
-                                </Text>
-                              </Body>
-                            </CardItem>
-                          </Card>
-                        )
+
 
                     }
 
-                    this.setState({countDownItems:renderedCountDownItems},()=>{
+                    this.setState({ countDownItems: renderedCountDownItems }, () => {
                         this.refs.countDownModal.open();
                     })
-               
+
                 }
                 else {
                     alert("there's no reminders")
@@ -768,6 +798,63 @@ let renderedCountDownItems = [];
 
             })
 
+    }
+
+    _handleUsersToFollow = () => {
+        this.setState({ progressVisible: true });
+        let _UsersToFollow = [];
+
+        axios({
+            method: "POST",
+            url: config.GetCommonFollowersWithMe,
+            data: JSON.stringify({ Id: this.props.navigation.state.params.id }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                this.setState({ progressVisible: false });
+                let finalData = resp.data;
+                if (finalData.users.length > 0) {
+
+                    for (let x = 0; x < finalData.users.length; x++) {
+                        _UsersToFollow.push(
+                            <Card key={x} style={{ borderRadius: 10 }}>
+                                <CardItem>
+                                    <Body>
+                                        <Text style={{ color: "#9E1F64", fontSize: 13 }}>
+                                            {finalData.users[x].full_name}
+                                        </Text>
+                                        <Text style={{ fontSize: 10 }}>
+                                            {finalData.users[x].email}
+                                        </Text>
+                                    </Body>
+                                    <Right>
+                                        <Switch onValueChange={(val) => {
+                                            this.setState({ switchFlagToFollow: !this.state.remindersFlag })
+                                        }} value={this.state.switchFlagToFollow} />
+                                    </Right>
+                                </CardItem>
+                            </Card>
+                        )
+
+                    }
+
+                    this.setState({ UsersToFollow: _UsersToFollow }, () => {
+                        this.refs.FollowModal.open();
+                    })
+
+                }
+                else {
+                    alert("there's no common users to follow")
+                }
+
+            })
+            .catch((err) => {
+                this.setState({ progressVisible: false });
+                alert("Unexpected error");
+
+            })
     }
 
 
@@ -865,7 +952,7 @@ let renderedCountDownItems = [];
                                         <Thumbnail source={{ uri: 'https://www.flexygames.net/images/user/user-171302.png' }} />
                                     </View>
                                 </Col>
-                                <Col style={{width:"5%"}}></Col>
+                                <Col style={{ width: "5%" }}></Col>
                                 <Col style={{ width: "30%" }}>
                                     <View style={{ marginTop: 25, marginBottom: 12 }}>
                                         <Text style={{ fontSize: 18 }}>{this.state.username}</Text>
@@ -964,6 +1051,21 @@ let renderedCountDownItems = [];
                                 <Icon name="arrow-forward" />
                             </Right>
                         </ListItem>
+                        <ListItem icon onPress={() => {
+                            this._handleUsersToFollow();
+                        }}>
+                            <Left>
+                                <Image style={{ height: 30, width: 30, alignSelf: "center" }}
+                                    source={require('../imgs/follow.png')}
+                                />
+                            </Left>
+                            <Body>
+                                <Text>Follow</Text>
+                            </Body>
+                            <Right>
+                                <Icon name="arrow-forward" />
+                            </Right>
+                        </ListItem>
                         <ListItem itemDivider>
                             <Text style={{ fontWeight: "bold" }}>Timeline</Text>
                         </ListItem>
@@ -972,7 +1074,7 @@ let renderedCountDownItems = [];
                         }}>
                             <Left>
                                 <Image style={{ height: 30, width: 30, alignSelf: "center" }}
-                                    source={require('../imgs/invite.png')}
+                                    source={require('../imgs/countdown1.png')}
                                 />
                             </Left>
                             <Body>
@@ -1051,18 +1153,48 @@ let renderedCountDownItems = [];
                     </Container>
                 </Modal>
 
-                
+
                 <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"countDownModal"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
-                        <Header style={{ backgroundColor: "#262261" }}>
-                            <Body style={{ alignItems: "center", justifyContent: "center" }}>
-                                <Title>Countdown</Title>
-                            </Body>
-                        </Header>
                         <Content>
+                            <View style={{ width: "100%", flex: 1, flexDirection: "row", height: 50, marginBottom: 20 }}>
+                                <View style={{ flex: 0.1 }}>
+                                </View>
+                                <View style={{ flex: 0.8, borderBottomWidth: 1, borderBottomColor: "gray", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                                    <Image style={{ height: 30, width: 30, alignSelf: "center", resizeMode: "contain", marginRight: 10 }}
+                                        source={require('../imgs/countdown1.png')} />
+                                    <Text style={{ fontWeight: "bold", marginRight: 10 }}>Countdown</Text>
+                                </View>
+                                <View style={{ flex: 0.1 }}>
+                                </View>
+
+
+                            </View>
                             {this.state.countDownItems}
+                        </Content>
+                    </Container>
+                </Modal>
+
+
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"FollowModal"}
+                    swipeToClose={false}
+                    isDisabled={this.state.isDisabled}>
+                    <Container>
+                        <Content>
+                            <View style={{ width: "100%", flex: 1, flexDirection: "row", height: 50, marginBottom: 10 }}>
+                                <View style={{ flex: 0.1 }}>
+                                </View>
+                                <View style={{ flex: 0.8, borderBottomWidth: 1, borderBottomColor: "gray", flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                                    <Image style={{ height: 30, width: 30, alignSelf: "center", resizeMode: "contain", marginRight: 10 }}
+                                        source={require('../imgs/follow.png')} />
+                                    <Text style={{ fontWeight: "bold", marginRight: 10 }}>Follow</Text>
+                                </View>
+                                <View style={{ flex: 0.1 }}>
+                                </View>
+                            </View>
+                            {this.state.UsersToFollow}
                         </Content>
                     </Container>
                 </Modal>

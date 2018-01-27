@@ -84,7 +84,8 @@ export default class CycleMembers extends Component {
             AllFormatedCycleData: {},
             OriginalFormatedCycleData: {},
             TwoMembersToBeSwiped: [],
-            ActiveTab: ""
+            ActiveTab: "",
+            returnedProfileData: []
 
         }
 
@@ -244,19 +245,22 @@ export default class CycleMembers extends Component {
                 var step = (2 * Math.PI) / numberOfMembers;
 
                 for (var x = 0; x < numberOfMembers; x++) {
+                    let memberItSelf = {}
                     var findMemberByMonth = _.find(resp.data.months, (o) => {
                         return o.cyclE_MONTH === parseInt(moment(months[x]).format("M"))
                     })
 
                     if (findMemberByMonth) {
-                        var memberItSelf = _.find(resp.data.users, function (o) {
+                        memberItSelf = _.find(resp.data.users, function (o) {
                             return o.id === findMemberByMonth.useR_JOINED_ID
                         })
 
                     }
                     if (findMemberByMonth) {
                         renderedMembers.push(
-                            <TouchableOpacity onPress={() => { alert("open profile") }} key={x} style={{
+                            <TouchableOpacity onPress={() => {
+                                this.getUserProfile(memberItSelf.id)
+                            }} key={x} style={{
                                 borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
                                 left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
                                 top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
@@ -807,8 +811,8 @@ export default class CycleMembers extends Component {
         }
         if (value === "Group Message") {
 
-            const {navigate} = this.props.navigation;
-            navigate("GroupChat",{cycle: this.props.navigation.state.params.cycleid,userid: this.props.navigation.state.params.userid});
+            const { navigate } = this.props.navigation;
+            navigate("GroupChat", { cycle: this.props.navigation.state.params.cycleid, userid: this.props.navigation.state.params.userid });
 
         }
         if (value === "Delete cycle") {
@@ -882,7 +886,7 @@ export default class CycleMembers extends Component {
             }
         })
             .catch((err) => {
-                debugger;   
+                debugger;
                 alert("Unexpected error")
             })
     }
@@ -963,7 +967,7 @@ export default class CycleMembers extends Component {
                 this.setState({ progressVisible: false })
                 this.getDataToBeEdited();
                 this.renrederMembers();
-            
+
 
             }
         })
@@ -974,18 +978,18 @@ export default class CycleMembers extends Component {
     }
 
 
-    handleRemoveCycleMember=(userid,currentMonth)=>{
+    handleRemoveCycleMember = (userid, currentMonth) => {
         this.setState({ progressVisible: true })
-        let dataToBeSent= {
-            User_id:userid,
-            Cycle_id:this.props.navigation.state.params.cycleid.id,
-            Month:currentMonth
+        let dataToBeSent = {
+            User_id: userid,
+            Cycle_id: this.props.navigation.state.params.cycleid.id,
+            Month: currentMonth
         }
         axios({
             method: "POST",
             url: "http://www.elgameya.net/api/gamieya/AdminRemoveCycleMember",
             data: JSON.stringify(dataToBeSent),
-            headers: {  
+            headers: {
                 "Content-Type": "application/json"
             }
         }).then((resp) => {
@@ -999,6 +1003,79 @@ export default class CycleMembers extends Component {
         })
             .catch((err) => {
                 alert("Unexpected error")
+            })
+    }
+
+
+    getUserProfile = (userid) => {
+        debugger;
+        let renderedProfile = [];
+
+        this.setState({ RATEDUSERID: userid })
+        let userData = {
+            id: userid
+        }
+
+        this.setState({ progressVisible: true })
+
+        axios({
+            method: "POST",
+            url: "http://www.elgameya.net/api/gamieya/GetUserProfile",
+            data: JSON.stringify(userData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                this.setState({ progressVisible: false });
+                console.log(resp)
+                let response = resp.data;
+                renderedProfile.push(<View key={0} style={{ borderRadius: 12 }}>
+                    <View style={{ justifyContent: "center", alignItems: "center", marginTop: 20 }}>
+                        <Text style={{ fontWeight: "bold", fontSize: 15, color: "#9E1F64" }}>{response.user.full_name}</Text>
+                        <Text>Rating: {response.ratesTotal}</Text>
+                        <View style={{ flex: 1, flexDirection: "row", marginTop: 10 }}>
+                            <View style={{ flex: 0.1 }}></View>
+                            <View style={{ flex: 0.8, borderBottomWidth: 1, borderBottomColor: "gray" }}></View>
+                            <View style={{ flex: 0.1 }}></View>
+                        </View>
+                    </View>
+
+                    <Text style={{ marginTop: 10,marginLeft:10 }}>Email : {response.user.email}</Text>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                    <View style={{flex:0.1}}></View>
+                    <View style={{flex:0.4}}>
+                    <Button style={{ borderRadius: 12,width:"100%", marginTop: 10, backgroundColor: "#262261" }} onPress={() => {
+                            this.setState({ ReceiverId: response.user.id });
+                            this.handleSendPrivateMsg();
+                        }}><Text style={{ color: "white", fontSize: 10 }}>Send a message</Text></Button></View>
+                    <View style={{flex:0.2}}></View>
+                    <View style={{flex:0.4}}>
+                     
+                    <Button style={{ borderRadius: 12, marginTop: 10, width:"80%",  backgroundColor: "#262261" }} onPress={() => {
+                        
+                    }}><Text style={{ color: "white", fontSize: 10 }}>profile</Text></Button></View>
+               
+
+                    </View>
+                </View>);
+
+
+                this.setState({ profileResponse: response }, () => {
+                    this.setState({ showData: true, returnedProfileData: renderedProfile })
+                    this.refs.ModalProfile.open();
+
+                });
+
+
+                // this.setState({renderedUserProfile: renderedProfile});
+
+            })
+            .catch((err) => {
+                this.setState({ progressVisible: false }, () => {
+                    alert("Unexpected error");
+                });
+
             })
     }
 
@@ -1038,14 +1115,17 @@ export default class CycleMembers extends Component {
                     </View>
                 </PopupDialog>
 
-                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
+
+
+                <Modal style={[styles.modalProfile]} position={"center"} ref={"ModalProfile"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
                         <Content>
-                            {this.state.showData ? this.renderProfileData(this.state.profileResponse) : null}
+                            {this.state.returnedProfileData}
                         </Content>
                     </Container>
+
                 </Modal>
 
                 {/*   ////////////////////////////////////////////////    */}
@@ -1053,38 +1133,38 @@ export default class CycleMembers extends Component {
                 <Modal backButtonClose={true} style={[styles.modal, styles.ModalEditList]} position={"center"} ref={"ModalEditList"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
-                    <View style={{ height: 600, flex: 1,flexDirection:"column" }}>
-                    <Header ref="myheader" style={{ backgroundColor: "#9E1F64",marginBottom:10 }}>
-                    <Left>
-                    </Left>
-                    <Body>
-                        <Text style={{color:"white",fontSize:15}}>Cycle members</Text>
-                    </Body>
-                    <Right>
-                    </Right>
-                </Header>
+                    <View style={{ height: 600, flex: 1, flexDirection: "column" }}>
+                        <Header ref="myheader" style={{ backgroundColor: "#9E1F64", marginBottom: 10 }}>
+                            <Left>
+                            </Left>
+                            <Body>
+                                <Text style={{ color: "white", fontSize: 15 }}>Cycle members</Text>
+                            </Body>
+                            <Right>
+                            </Right>
+                        </Header>
                         <SortableList
                             style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignContent: "center" }}
                             contentContainerStyle={styles.contentContainer}
                             data={this.state.AllFormatedCycleData}
                             renderRow={(data, active) => {
                                 return (
-            
-                                    <View style={{backgroundColor:"white", height: 30,marginBottom:10, width:"75%",flex:1,flexDirection:"row", borderRadius: 5, borderWidth: 1, borderColor: "#262261" }}>
-                                    <View style={{flex:0.05}}></View>
-                                    <View style={{flex:0.5}}>
-                                    <Text style={{color:"#262261"}}>Name : {data.data.username} month : {data.data.month}</Text>
+
+                                    <View style={{ backgroundColor: "white", height: 30, marginBottom: 10, width: "75%", flex: 1, flexDirection: "row", borderRadius: 5, borderWidth: 1, borderColor: "#262261" }}>
+                                        <View style={{ flex: 0.05 }}></View>
+                                        <View style={{ flex: 0.5 }}>
+                                            <Text style={{ color: "#262261" }}>Name : {data.data.username} month : {data.data.month}</Text>
+                                        </View>
+                                        <View style={{ flex: 0.2 }}></View>
+                                        <View style={{ flex: 0.2 }}>
+                                            <Icon name='close' onPress={() => {
+                                                this.handleRemoveCycleMember(data.data.userid, data.data.month)
+                                            }} style={{ color: "#262261" }} />
+                                        </View>
+
                                     </View>
-                                    <View style={{flex:0.2}}></View>
-                                    <View style={{flex:0.2}}>
-                                    <Icon name='close' onPress={()=>{
-                                        this.handleRemoveCycleMember(data.data.userid,data.data.month)
-                                    }} style={{color:"#262261"}} />
-                                    </View>
-                    
-                                    </View>
-                               
-                            );
+
+                                );
 
                             }}
                             onReleaseRow={
@@ -1318,7 +1398,8 @@ const styles = StyleSheet.create({
     },
     modalProfile: {
         height: "35%",
-        width: "85%"
+        width: "85%",
+        borderRadius: 12
     },
     ModalEditList:
         {
@@ -1328,6 +1409,12 @@ const styles = StyleSheet.create({
     textBorder: {
         borderColor: 'black',
         borderWidth: 1
+    },
+    modal3: {
+        height: "85%",
+        width: "85%",
+        borderRadius: 12,
+
     },
     container: {
         flex: 1,
@@ -1462,6 +1549,6 @@ class RowComponent extends Component {
         const { data, active } = this.props;
 
 
-     
+
     }
 }
