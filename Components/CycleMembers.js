@@ -769,7 +769,7 @@ export default class CycleMembers extends Component {
 
     handlePopupMenuClick(value) {
         if (value === "Edit cycle") {
-            // get the list of members and months from BE : 
+            // get the list of members and months from BE :
             this.state.TwoMembersToBeSwiped = [];
 
             let dataToBeSent = {
@@ -826,7 +826,7 @@ export default class CycleMembers extends Component {
     }
 
     getDataToBeEdited() {
-        // get the list of members and months from BE : 
+        // get the list of members and months from BE :
         let dataToBeSent = {
             id: this.props.navigation.state.params.cycleid.id
         }
@@ -1051,11 +1051,11 @@ export default class CycleMembers extends Component {
                         }}><Text style={{ color: "white", fontSize: 10 }}>Send a message</Text></Button></View>
                     <View style={{flex:0.2}}></View>
                     <View style={{flex:0.4}}>
-                     
+
                     <Button style={{ borderRadius: 12, marginTop: 10, width:"80%",  backgroundColor: "#262261" }} onPress={() => {
-                        
-                    }}><Text style={{ color: "white", fontSize: 10 }}>profile</Text></Button></View>
-               
+
+                    }}><Text style={{ color: "white", fontSize: 10 }}>View profile</Text></Button></View>
+
 
                     </View>
                 </View>);
@@ -1099,20 +1099,27 @@ export default class CycleMembers extends Component {
 
                 <Spinner visible={this.state.visible} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
 
-                <PopupDialog width={width - 100} height={150}
+                <PopupDialog width={width - 100} height={200}
                     dialogTitle={<DialogTitle title="send private message" />}
                     ref={(popupDialog) => { this.popupDialog = popupDialog; }}
                 >
-                    <View>
-                        <Input style={{ borderColor: "black", fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.message}
+                    <View style={{flex:1,flexDirection:"column"}}>
+                        <Input style={{marginLeft:25,marginRight:15, borderColor: "gray",borderWidth:1, fontSize: 12, backgroundColor: "white", borderRadius: 10 }} value={this.state.message}
                             onChangeText={(text) => {
                                 this.setState({ message: text })
                             }} placeholder="enter message"
                         />
-                        <Button style={{ borderRadius: 12, width: "25%", height: "30%", backgroundColor: "#262261" }} onPress={() => {
+                        <View style={{flex:1,flexDirection:"row"}}>
+                        <View style={{flex:0.5}}></View>
+                            <View style={{flex:0.5}}>
+                            <Button style={{alignItems:"center",justifyContent:"center", borderRadius: 12, width: "100%", height: "50%", backgroundColor: "#262261",
+                            marginTop:10,marginRight:10
+                        }} onPress={() => {
                             this.sendMessage();
-                        }}><Text style={{ color: "white", fontSize: 10 }}>Send</Text></Button>
-                    </View>
+                        }}><Text style={{ color: "white", fontSize: 12 }}>Send</Text></Button>
+                            </View>
+                     </View>
+                     </View>
                 </PopupDialog>
 
 
@@ -1287,7 +1294,7 @@ export default class CycleMembers extends Component {
                         />
 
 
-                        <View style={{ flex: 1, flexDirection: "row" }}>
+                      <View style={{ flex: 1, flexDirection: "row" }}>
                             <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
                                 <Thumbnail source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/4195-200.png' }} />
                             </View>

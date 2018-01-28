@@ -1089,7 +1089,7 @@ export default class AllCycles extends Component {
                                     </Row>
                                     <Row style={{ marginTop: 10 }}>
                                         <Col>
-                                            <Input style={{ borderRadius: 10, borderColor: "black", borderWidth: 0.5 }} placeholder="enter amount ..." onChangeText={(text) => {
+                                            <Input style={{margin:10, borderRadius: 10, borderColor: "black", borderWidth: 0.5 }} placeholder="enter amount ..." onChangeText={(text) => {
                                                 this.setState({ selectedAmount: text });
                                             }} />
                                         </Col>

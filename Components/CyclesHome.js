@@ -1261,11 +1261,7 @@ class CyclesHome extends Component {
                                         ───────────────────
                                 </Text></Col>
                             </Row>
-                            <Row><Col><Input placeholder="Cycle Name" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
-                                onChangeText={(text) => {
-                                    this.setState({ cycleName: text })
-                                }}
-                            /></Col></Row>
+                          
                             <Row style={{ marginTop: 5 }} >
                                 <Col>
                                 </Col>
@@ -1277,7 +1273,7 @@ class CyclesHome extends Component {
                                             <Col style={{ width: "10%" }}></Col>
                                             <Col style={{ width: "30%" }}><Text>Amount</Text></Col>
                                             <Col style={{ width: "50%" }}></Col>
-                                            <Col style={{ width: "10%" }}><Icon name='md-close' style={{ color: "black" }} /></Col>
+                                            <Col style={{ width: "10%" }}></Col>
                                         </Row>
                                         <Row>
                                             <Col style={{ width: "3%" }}></Col>
@@ -1386,45 +1382,52 @@ class CyclesHome extends Component {
                                     }
                                 }}
                             /></Col></Row>
-                            <Row style={{ marginTop: 10 }} >
+                            <Row style={{ marginTop: 2 }} >
                                 <Col>
                                 </Col>
                             </Row>
                             <Row><Col style={{
-                                alignItems:"center",
-                                justifyContent:"center",
-                                alignContent:"center"
-                            }}>
-                                <View style={{
-                                    width: 80, height: 80, borderRadius: 80 / 2,
-                                    borderColor: '#262261',
-                                    borderStyle: "dotted",
-                                    alignContent: "center",
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 2,
-                                    backgroundColor:"white"
 
-                                }}>
-                                  {/*   <Input placeholder="Total" style={{ backgroundColor: 'transparent', fontSize: 14,marginTop:15,marginLeft:5, width: "100%", backgroundColor: "white",width:70, borderRadius: 10 }} value={this.state.totalAmountPerCycle}
-                                        onChangeText={(text) => {
-                                            this.setState({ totalAmountPerCycle: text })
-                                        }} disabled={true}
-                                    />  */}     
-                                    <View style={{height:30,marginBottom:-10}}>
-                                    <Text style={{ color: "#262261", fontSize: 12 }}>Total</Text>
-                                    </View> 
-                                    <View style={{height:30}}>
-{this.state.totalAmountPerCycle !="" ? <Text style={{ color: "#262261", fontSize: 12 }}>{this.state.totalAmountPerCycle}</Text>
-: <Text style={{ color: "#262261", fontSize: 14 }}>0000</Text>
-}
-                                    </View> 
-                                    <View style={{height:30}}>
-                                    <Text style={{ color: "#262261", fontSize: 12 }}>EGP</Text>
-                                    </View> 
-                                </View>
+                            }}>
+                                <Card>
+                                    <CardItem>
+                                        <View style={{ flex: 1, flexDirection: "column" }}>
+                                            <Text style={{marginBottom:10}}>Cycle Total Amount</Text>
+                                            <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+
+                                                <View style={{
+                                                    width: 80, height: 80, borderRadius: 80 / 2,
+                                                    borderColor: "#9E1F64",
+                                                    borderStyle: "dotted",
+                                                    alignContent: "center",
+                                                    flexDirection: "column",
+                                                    flex: 1,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    borderWidth: 3,
+                                                    backgroundColor: "white"
+
+                                                }}>
+                                                    <View style={{ height: 30, marginTop: 20 }}>
+                                                        {this.state.totalAmountPerCycle != "" ? <Text style={{ color: "#262261", fontSize: 12 }}>{this.state.totalAmountPerCycle}</Text>
+                                                            : <Text style={{ color: "#9E1F64", fontSize: 14, fontWeight: "bold" }}>0000</Text>
+                                                        }
+                                                    </View>
+                                                    <View style={{ height: 30 }}>
+                                                        <Text style={{ color: "#9E1F64", fontSize: 12, fontWeight: "bold" }}>EGP</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </CardItem>
+                                </Card>
+
                             </Col></Row>
+                            <Row><Col><Input placeholder="Cycle Name" style={{ fontSize: 14, width: "100%", backgroundColor: "white", borderRadius: 10 }} value={this.state.cycleName}
+                                onChangeText={(text) => {
+                                    this.setState({ cycleName: text })
+                                }}
+                            /></Col></Row>
                             <View style={{ flex: 1, flexDirection: "row", top: "5%" }}>
                                 <View style={{ flex: 0.5 }}>
                                     <Button style={{ backgroundColor: "#262261", borderRadius: 10 }} onPress={() => {

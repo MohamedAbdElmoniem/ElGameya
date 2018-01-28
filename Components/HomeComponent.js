@@ -89,7 +89,7 @@ export default class HomeComponent extends Component {
             renderedRequests: [],
             countDownItem: [],
             UsersToFollow: [],
-            switchFlagToFollow:false
+            switchFlagToFollow: false
 
         }
 
@@ -817,7 +817,10 @@ export default class HomeComponent extends Component {
                 let finalData = resp.data;
                 if (finalData.users.length > 0) {
 
+                    let states = {}
                     for (let x = 0; x < finalData.users.length; x++) {
+                        states[x] = false;
+                        this.setState({ states });
                         _UsersToFollow.push(
                             <Card key={x} style={{ borderRadius: 10 }}>
                                 <CardItem>
@@ -831,8 +834,12 @@ export default class HomeComponent extends Component {
                                     </Body>
                                     <Right>
                                         <Switch onValueChange={(val) => {
-                                            this.setState({ switchFlagToFollow: !this.state.remindersFlag })
-                                        }} value={this.state.switchFlagToFollow} />
+                                            states[x] = true;
+                                            this.setState(states);
+                                            this.handleFollowSuggestedUser(finalData.users[x].id)
+                                            debugger;
+
+                                        }} value={this.state.states[x]} />
                                     </Right>
                                 </CardItem>
                             </Card>
@@ -857,6 +864,37 @@ export default class HomeComponent extends Component {
             })
     }
 
+
+    handleFollowSuggestedUser = (followingid) => {
+        this.setState({ progressVisible: true });
+        let dataToBeSent = {
+            Userid: this.props.navigation.state.params.id,
+            Followerid: followingid
+        }
+
+        axios({
+            method: "POST",
+            url: config.FollowSuggestedUsers,
+            data: JSON.stringify(dataToBeSent),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((resp) => {
+                this.setState({ progressVisible: false });
+                let finalData = resp.data;
+                this.setState({ UsersToFollow: [] }, () => {
+                    this._handleUsersToFollow();
+                })
+
+
+            })
+            .catch((err) => {
+                this.setState({ progressVisible: false });
+                alert("Unexpected error");
+
+            })
+    }
 
 
     render() {

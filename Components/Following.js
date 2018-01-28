@@ -301,8 +301,9 @@ export default class Following extends Component {
             this.currentUserId = result;
 
         let userData={
-            Userid:profileuserid,
-            Followerid:this.currentUserId
+            Userid:this.currentUserId,
+            Followerid:profileuserid
+            
         }
 
         axios({
