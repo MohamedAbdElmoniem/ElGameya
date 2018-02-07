@@ -263,6 +263,9 @@ export default class Followers extends Component {
                         <Body>
                         <Title>Followers</Title>
                         </Body>
+                        <Right>
+                            
+                            </Right>
                     </Header>
 
                     <List>

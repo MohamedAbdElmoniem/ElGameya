@@ -209,7 +209,7 @@ export default class GroupChat extends Component {
       })
         .then(resp => {
           let data = resp.data;
-          this.setState({msg:""})
+          this.setState({ msg: "" })
           this.renderGroupMessages();
         })
         .catch(err => {
@@ -230,20 +230,19 @@ export default class GroupChat extends Component {
               <Button
                 transparent
                 onPress={() => {
-                  if(this.props.navigation.state.params.page==="NormalCycleView")
-                  {
+                  if (this.props.navigation.state.params.page === "NormalCycleView") {
                     navigate("NormalCycleView", {
                       cycleid: this.props.navigation.state.params.cycle,
                       userid: this.props.navigation.state.params.userid
                     });
                   }
-                  else{
+                  else {
                     navigate("CycleMembers", {
                       cycleid: this.props.navigation.state.params.cycle,
                       userid: this.props.navigation.state.params.userid
                     });
                   }
-               
+
                 }}
               >
                 <Icon name="arrow-back" />
@@ -254,24 +253,23 @@ export default class GroupChat extends Component {
                 {this.props.navigation.state.params.cycle.cyclE_NAME} group chat
               </Title>
             </Body>
+            <Right>
+            </Right>
           </Header>
-          <ScrollView
+          <Content
             style={{ marginBottom: 45 }}
             ref="scrollView"
             onContentSizeChange={(contentWidth, contentHeight) => {
-              this.refs.scrollView.scrollTo({
-                x: contentWidth,
-                y: contentHeight,
-                animated: true
-              });
+              y: contentHeight,
+                this.refs.scrollView._root.scrollToPosition(contentWidth, contentHeight)
             }}
           >
             <Grid style={{ marginTop: 5 }}>{this.state.renderedMsgs}</Grid>
-          </ScrollView>
+          </Content>
           <Grid style={{ position: "absolute", bottom: 0 }}>
             <Row style={{ backgroundColor: "#262261" }}>
               <Col style={{ width: "5%" }} />
-              <Col style={{ width: "65%" }}>
+              <Col style={{ width: "60%" }}>
                 <Input
                   onChangeText={text => {
                     this.setState({ msg: text });
@@ -282,8 +280,8 @@ export default class GroupChat extends Component {
                   style={{ backgroundColor: "#262261", color: "white" }}
                 />
               </Col>
-              <Col style={{ width: "5%" }} />
-              <Col style={{ width: "25%" }}>
+              <Col style={{ width: "7%" }} />
+              <Col style={{ width: "28%" }}>
                 <Button
                   small
                   rounded
@@ -296,7 +294,7 @@ export default class GroupChat extends Component {
                     this.sendMessage();
                   }}
                 >
-                  <Text style={{ color: "#262261" }}>Send</Text>
+                  <Text style={{ fontSize: 11, color: "#262261" }}>Send</Text>
                 </Button>
               </Col>
             </Row>

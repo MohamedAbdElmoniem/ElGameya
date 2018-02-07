@@ -57,9 +57,9 @@ export default class Messages extends Component {
   static navigationOptions = {
     header: null,
     tabBarLabel: "Messages",
-    tabBarIcon: ({ tintColor }) => (
-      <Icon name="ios-chatboxes-outline" style={{ color: "white" }} />
-    )
+    tabBarIcon: ({ tintColor }) => {
+      return <Icon name="ios-chatboxes-outline" style={{ color: "white" }} />
+    }
   };
 
   constructor(props) {
@@ -74,7 +74,7 @@ export default class Messages extends Component {
       followersList: [],
       MSG: "",
       ReceiverId: "",
-      message:""
+      message: ""
     };
 
     this.currentUserId = "";
@@ -373,13 +373,13 @@ export default class Messages extends Component {
         })
           .then((resp) => {
             console.log(resp);
-            
+
             let status = resp.data.status;
             this.popupDialog.hide();
             this.refs.ModalChatList.close();
             this.ReloadMessages();
             this.setState({ message: "" })
-           
+
 
           })
           .catch((err) => {
@@ -494,8 +494,8 @@ export default class Messages extends Component {
             console.log(resp);
 
             let status = resp.data.status;
-          //  this.reloadChatBox();
-           
+            //  this.reloadChatBox();
+
             this.ReloadMessages();
 
             this.setState({ message: "" });

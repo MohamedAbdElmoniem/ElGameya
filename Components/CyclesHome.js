@@ -57,9 +57,9 @@ class CyclesHome extends Component {
         header: null,
         drawerLabel: 'Home',
         tabBarLabel: 'Home',
-        tabBarIcon: ({ tintColor }) => (
-            <Icon name="ios-home-outline" style={{ color: "white" }} />
-        ),
+        tabBarIcon: ({ tintColor }) => {
+            return <Icon name="ios-home-outline" style={{ color: "white"}} />
+        },
     }
 
     _showDateTimePicker = (type) => this.setState({ isDateTimePickerVisible: true, StartOrEnd: type });
@@ -177,12 +177,12 @@ class CyclesHome extends Component {
             if (x <= 5) {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{ width: "16%", marginLeft: 1 }} key={x}>
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width: 32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -191,8 +191,8 @@ class CyclesHome extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#262261", fontSize: 8 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 8 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -201,13 +201,13 @@ class CyclesHome extends Component {
                 }
                 else {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{ width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width: 32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -216,8 +216,8 @@ class CyclesHome extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 8 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 8 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -228,13 +228,13 @@ class CyclesHome extends Component {
             else {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col key={x} style={{ width: "16%", marginLeft: 1 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width: 32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -243,8 +243,8 @@ class CyclesHome extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#262261", fontSize: 8 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 8 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -253,13 +253,13 @@ class CyclesHome extends Component {
                 }
                 else {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col key={x} style={{ width: "16%", marginLeft: 1 }}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width: 32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -267,8 +267,8 @@ class CyclesHome extends Component {
                                     alignContent: "center",
                                     borderWidth: 2
                                 }}>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 8 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 8 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -389,7 +389,7 @@ class CyclesHome extends Component {
                             }
                             else {
                                 if (flag === false) {
-                                    alert("you have joined the cycle successfully")
+                                    alert("your request has been submitted successfully")
                                     flag = true;
 
                                 }
@@ -1261,7 +1261,7 @@ class CyclesHome extends Component {
                                         ───────────────────
                                 </Text></Col>
                             </Row>
-                          
+
                             <Row style={{ marginTop: 5 }} >
                                 <Col>
                                 </Col>
@@ -1275,6 +1275,7 @@ class CyclesHome extends Component {
                                             <Col style={{ width: "50%" }}></Col>
                                             <Col style={{ width: "10%" }}></Col>
                                         </Row>
+                                        <Row style={{marginTop:10}}></Row>
                                         <Row>
                                             <Col style={{ width: "3%" }}></Col>
                                             {this.state.renderedAmountsInCircles[0]}
@@ -1392,7 +1393,7 @@ class CyclesHome extends Component {
                                 <Card>
                                     <CardItem>
                                         <View style={{ flex: 1, flexDirection: "column" }}>
-                                            <Text style={{marginBottom:10}}>Cycle Total Amount</Text>
+                                            <Text style={{ marginBottom: 10 }}>Cycle Total Amount</Text>
                                             <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
 
                                                 <View style={{
@@ -1447,10 +1448,10 @@ class CyclesHome extends Component {
                                         </View>
                                     </Button>
                                 </View>
-                                <View style={{ flex: 0.2 }}></View>
-                                <View style={{ flex: 0.3, marginTop: 10 }}>
+                                <View style={{ flex: 0.1 }}></View>
+                                <View style={{ flex: 0.4, marginTop: 10 }}>
                                     {this.state.selectedStartDate != "" ? <Badge style={{ backgroundColor: "#A4A4A4", width: "100%", alignItems: "center", justifyContent: "center" }}>
-                                        <Text style={{ color: "black" }}>{this.state.selectedStartDate}</Text>
+                                        <Text style={{ fontSize: 11, color: "black" }}>{this.state.selectedStartDate}</Text>
                                     </Badge> : <View></View>}
 
                                 </View>
@@ -1655,9 +1656,6 @@ class CyclesHome extends Component {
                     }}
                     onCancel={this._hideDateTimePicker}
                 />
-
-
-
             </Container>
         );
     }

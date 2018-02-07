@@ -567,12 +567,12 @@ export default class AllCycles extends Component {
             if (x <= 5) {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -581,8 +581,8 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#262261", fontSize: 9 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 9 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -591,13 +591,13 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedAmounts[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -606,8 +606,8 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 9 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 9 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -618,13 +618,13 @@ export default class AllCycles extends Component {
             else {
                 if (this.state.Amounts[x].status === "unselected") {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -633,8 +633,8 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#262261", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#262261", fontSize: 9 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#262261", fontSize: 9 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -643,13 +643,13 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedAmounts[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectAmount(this.state.Amounts[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -657,8 +657,8 @@ export default class AllCycles extends Component {
                                     alignContent: "center",
                                     borderWidth: 2
                                 }}>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>{this.state.Amounts[x].value}</Text>
-                                    <Text style={{ color: "#9E1F64", fontSize: 10 }}>EGP</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 9 }}>{this.state.Amounts[x].value}</Text>
+                                    <Text style={{ color: "#9E1F64", fontSize: 9 }}>EGP</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -703,12 +703,12 @@ export default class AllCycles extends Component {
             if (x <= 5) {
                 if (this.state.Positions[x].status === "unselected") {
                     renderedPositions[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     backgroundColor: "#262261",
                                     alignItems: 'center',
@@ -718,7 +718,7 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                    <Text style={{ color: "white", fontSize: 9 }}>{this.state.Positions[x].value}</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -726,13 +726,13 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedPositions[0].push(
-                        <Col style={{ width: "15%", marginRight: 3 }} key={x}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     backgroundColor: '#9E1F64',
                                     alignItems: 'center',
@@ -742,7 +742,7 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                    <Text style={{ color: "white", fontSize: 9 }}>{this.state.Positions[x].value}</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -753,13 +753,13 @@ export default class AllCycles extends Component {
             else {
                 if (this.state.Positions[x].status === "unselected") {
                     renderedPositions[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "unselected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#262261',
                                     backgroundColor: "#262261",
                                     alignItems: 'center',
@@ -769,7 +769,7 @@ export default class AllCycles extends Component {
                                     borderWidth: 2
 
                                 }}>
-                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                    <Text style={{ color: "white", fontSize: 9 }}>{this.state.Positions[x].value}</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -778,13 +778,13 @@ export default class AllCycles extends Component {
                 }
                 else {
                     renderedPositions[1].push(
-                        <Col key={x} style={{ width: "15%", marginRight: 3 }}>
+                        <Col style={{width: "16%", marginLeft: 1 }} key={x}>
 
                             <TouchableOpacity onPress={() => {
                                 this.handleSelectPosition(this.state.Positions[x], "selected")
                             }}>
                                 <View style={{
-                                    width: 45, height: 45, borderRadius: 45 / 2,
+                                    width:32, height: 32, borderRadius: 32 / 2,
                                     borderColor: '#9E1F64',
                                     alignItems: 'center',
                                     borderStyle: "dotted",
@@ -793,7 +793,7 @@ export default class AllCycles extends Component {
                                     alignContent: "center",
                                     borderWidth: 2
                                 }}>
-                                    <Text style={{ color: "white", fontSize: 10 }}>{this.state.Positions[x].value}</Text>
+                                    <Text style={{ color: "white", fontSize: 9 }}>{this.state.Positions[x].value}</Text>
                                 </View>
                             </TouchableOpacity>
                         </Col>
@@ -954,13 +954,16 @@ export default class AllCycles extends Component {
                         <Body>
                             <Title>Cycles to Join</Title>
                         </Body>
+                        <Right>
+                            
+                        </Right>
                     </Header>
                     <View style={{ height: 15 }}></View>
 
                     <Grid>
                         <Row>
                             <Col style={{ width: "5%" }}></Col>
-                            <Col style={{ width: "70%" }}>
+                            <Col style={{ width: "65%" }}>
                                 <Item rounded style={{ borderRadius: 10, backgroundColor: "#CBCAD9" }}>
                                     <Icon active name='search' />
                                     <Input onChangeText={(text) => {
@@ -977,7 +980,7 @@ export default class AllCycles extends Component {
                                 </Item>
                             </Col>
                             <Col style={{ width: "5%" }}></Col>
-                            <Col style={{ width: "20%" }}>
+                            <Col style={{ width: "25%" }}>
                                 <Button onPress={() => {
                                     this.renderAmountsInCircles();
                                     this.renderPositionsInCircles();
@@ -1000,9 +1003,9 @@ export default class AllCycles extends Component {
                             <Header style={{ backgroundColor: "#9E1F64" }}>
                                 <Grid>
                                     <Row>
-                                        <Col style={{ width: "28%" }}></Col>
-                                        <Col style={{ width: "50%" }}><Text style={styles.MonthsHeader}>Cycle Months</Text></Col>
-                                        <Col style={{ width: "22%" }}></Col>
+                                       <Col style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                                       <Text style={styles.MonthsHeader}>Cycle Months</Text>
+                                       </Col>
                                     </Row>
                                 </Grid>
                             </Header>
@@ -1265,8 +1268,9 @@ const styles = StyleSheet.create({
     },
     MonthsHeader: {
         color: "white",
-        fontSize: 20,
-        marginTop: 10
+        fontSize: 17,
+        marginTop: 10,
+        marginBottom:5
     },
     SearchBox: {
         borderRadius: 12,

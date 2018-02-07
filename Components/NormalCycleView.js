@@ -161,7 +161,7 @@ export default class NormalCycleView extends Component {
 
     let component = this;
     var angle = 0;
-    var width = Dimensions.get("window").width * 80 / 100;
+    var width = Dimensions.get("window").width * 76 / 100;
     var radius = width / 2;
 
     var height = parseInt(Dimensions.get("window").height) * 60 / 100;
@@ -210,8 +210,8 @@ export default class NormalCycleView extends Component {
                 style={{
                   borderRadius: 100 / 2,
                   backgroundColor: "#262261",
-                  width: 60,
-                  height: 60,
+                  width: 55,
+                  height: 55,
                   left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
                   top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
                   position: "absolute",
@@ -253,8 +253,8 @@ export default class NormalCycleView extends Component {
                   borderRadius: 100 / 2,
                   borderColor: "#262261",
                   borderWidth: 1,
-                  width: 60,
-                  height: 60,
+                  width: 55,
+                  height: 55,
                   left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
                   top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
                   position: "absolute",
@@ -1069,7 +1069,7 @@ export default class NormalCycleView extends Component {
               <Row>
                 <Col style={{ width: "5%" }} />
                 <Col
-                  style={{ position: "relative", width: "80%", height: 400 }}
+                  style={{ position: "relative", width: "80%", height: 350 }}
                 >
                   {this.state.renderedMembers}
                 </Col>

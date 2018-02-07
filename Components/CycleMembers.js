@@ -216,7 +216,7 @@ export default class CycleMembers extends Component {
 
         let component = this;
         var angle = 0;
-        var width = Dimensions.get('window').width * 80 / 100;
+        var width = Dimensions.get('window').width * 76 / 100;
         var radius = width / 2;
 
         var height = parseInt(Dimensions.get('window').height) * 60 / 100;
@@ -261,7 +261,7 @@ export default class CycleMembers extends Component {
                             <TouchableOpacity onPress={() => {
                                 this.getUserProfile(memberItSelf.id)
                             }} key={x} style={{
-                                borderRadius: 100 / 2, backgroundColor: '#262261', width: 60, height: 60,
+                                borderRadius: 100 / 2, backgroundColor: '#262261', width: 55, height: 55,
                                 left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
                                 top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
                                 position: "absolute",
@@ -287,7 +287,7 @@ export default class CycleMembers extends Component {
                         };
                         renderedMembers.push(
                             <TouchableOpacity onPress={() => { Share.open(shareOptions); }} key={x} style={{
-                                borderRadius: 100 / 2, borderColor: '#262261', borderWidth: 1, width: 60, height: 60,
+                                borderRadius: 100 / 2, borderColor: '#262261', borderWidth: 1, width: 55, height: 55,
                                 left: Math.round(width / 2 + radius * Math.cos(angle) - 4),
                                 top: Math.round(height / 2 + radius * Math.sin(angle) - 4),
                                 position: "absolute",
@@ -1041,20 +1041,20 @@ export default class CycleMembers extends Component {
                         </View>
                     </View>
 
-                    <Text style={{ marginTop: 10,marginLeft:10 }}>Email : {response.user.email}</Text>
+                    <Text style={{ marginTop: 10, marginLeft: 10 }}>Email : {response.user.email}</Text>
                     <View style={{ flex: 1, flexDirection: "row" }}>
-                    <View style={{flex:0.1}}></View>
-                    <View style={{flex:0.4}}>
-                    <Button style={{ borderRadius: 12,width:"100%", marginTop: 10, backgroundColor: "#262261" }} onPress={() => {
-                            this.setState({ ReceiverId: response.user.id });
-                            this.handleSendPrivateMsg();
-                        }}><Text style={{ color: "white", fontSize: 10 }}>Send a message</Text></Button></View>
-                    <View style={{flex:0.2}}></View>
-                    <View style={{flex:0.4}}>
+                        <View style={{ flex: 0.1 }}></View>
+                        <View style={{ flex: 0.4 }}>
+                            <Button style={{ borderRadius: 12, width: "100%", marginTop: 10, backgroundColor: "#262261" }} onPress={() => {
+                                this.setState({ ReceiverId: response.user.id });
+                                this.handleSendPrivateMsg();
+                            }}><Text style={{ color: "white", fontSize: 10 }}>Send a message</Text></Button></View>
+                        <View style={{ flex: 0.2 }}></View>
+                        <View style={{ flex: 0.4 }}>
 
-                    <Button style={{ borderRadius: 12, marginTop: 10, width:"80%",  backgroundColor: "#262261" }} onPress={() => {
+                            <Button style={{ borderRadius: 12, marginTop: 10, width: "80%", backgroundColor: "#262261" }} onPress={() => {
 
-                    }}><Text style={{ color: "white", fontSize: 10 }}>View profile</Text></Button></View>
+                            }}><Text style={{ color: "white", fontSize: 10 }}>View profile</Text></Button></View>
 
 
                     </View>
@@ -1103,23 +1103,24 @@ export default class CycleMembers extends Component {
                     dialogTitle={<DialogTitle title="send private message" />}
                     ref={(popupDialog) => { this.popupDialog = popupDialog; }}
                 >
-                    <View style={{flex:1,flexDirection:"column"}}>
-                        <Input style={{marginLeft:25,marginRight:15, borderColor: "gray",borderWidth:1, fontSize: 12, backgroundColor: "white", borderRadius: 10 }} value={this.state.message}
+                    <View style={{ flex: 1, flexDirection: "column" }}>
+                        <Input style={{ marginLeft: 25, marginRight: 15, borderColor: "gray", borderWidth: 1, fontSize: 12, backgroundColor: "white", borderRadius: 10 }} value={this.state.message}
                             onChangeText={(text) => {
                                 this.setState({ message: text })
                             }} placeholder="enter message"
                         />
-                        <View style={{flex:1,flexDirection:"row"}}>
-                        <View style={{flex:0.5}}></View>
-                            <View style={{flex:0.5}}>
-                            <Button style={{alignItems:"center",justifyContent:"center", borderRadius: 12, width: "100%", height: "50%", backgroundColor: "#262261",
-                            marginTop:10,marginRight:10
-                        }} onPress={() => {
-                            this.sendMessage();
-                        }}><Text style={{ color: "white", fontSize: 12 }}>Send</Text></Button>
+                        <View style={{ flex: 1, flexDirection: "row" }}>
+                            <View style={{ flex: 0.5 }}></View>
+                            <View style={{ flex: 0.5 }}>
+                                <Button style={{
+                                    alignItems: "center", justifyContent: "center", borderRadius: 12, width: "100%", height: "50%", backgroundColor: "#262261",
+                                    marginTop: 10, marginRight: 10
+                                }} onPress={() => {
+                                    this.sendMessage();
+                                }}><Text style={{ color: "white", fontSize: 12 }}>Send</Text></Button>
                             </View>
-                     </View>
-                     </View>
+                        </View>
+                    </View>
                 </PopupDialog>
 
 
@@ -1237,13 +1238,13 @@ export default class CycleMembers extends Component {
                                     }} value={this.state.remindersFlag} /></View>
                             </View>
                             <View style={{ flex: 1, flexDirection: "row", marginLeft: 10, marginTop: 10 }}>
-                                <View style={{ flex: 0.3 }}>
+                                <View style={{ flex: 0.4 }}>
                                     <Button style={{ borderRadius: 10, backgroundColor: "#262261" }} onPress={() => {
                                         this.refs.ModalReminder.close();
                                     }}><Text style={{ color: "white" }}>cancel</Text></Button>
                                 </View>
-                                <View style={{ flex: 0.4 }}></View>
-                                <View style={{ flex: 0.3 }}>
+                                <View style={{ flex: 0.2 }}></View>
+                                <View style={{ flex: 0.4 }}>
                                     <Button style={{ borderRadius: 10, backgroundColor: "#262261" }} onPress={() => {
                                         this.handleSaveReminders()
                                     }}><Text style={{ color: "white" }}>save</Text></Button></View>
@@ -1294,7 +1295,7 @@ export default class CycleMembers extends Component {
                         />
 
 
-                      <View style={{ flex: 1, flexDirection: "row" }}>
+                        <View style={{ flex: 1, flexDirection: "row" }}>
                             <View style={{ marginLeft: 20, marginTop: 12, marginBottom: 12 }}>
                                 <Thumbnail source={{ uri: 'https://d30y9cdsu7xlg0.cloudfront.net/png/4195-200.png' }} />
                             </View>
@@ -1328,10 +1329,10 @@ export default class CycleMembers extends Component {
                                 component: <Grid>
                                     <Row>
                                         <Col style={{ width: "5%" }}></Col>
-                                        <Col style={{ position: 'relative', width: "80%", height: 400 }}>
+                                        <Col style={{ position: 'relative', width: "75%", height: 350 }}>
                                             {this.state.renderedMembers}
                                         </Col>
-                                        <Col style={{ width: "15%" }}></Col>
+                                        <Col style={{ width: "20%" }}></Col>
                                     </Row>
                                 </Grid>
                             }, {
@@ -1389,7 +1390,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     modalReminder: {
-        height: "22%",
+        height: "30%",
         width: "85%",
         borderRadius: 12
     },

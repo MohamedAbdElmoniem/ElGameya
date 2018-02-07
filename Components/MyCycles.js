@@ -363,7 +363,9 @@ export default class MyCycles extends Component {
                         <Body>
                             <Title>My Cycles</Title>
                         </Body>
+                        <Right>
 
+                        </Right>
                     </Header>
 
                     <ProgressDialog
@@ -376,7 +378,7 @@ export default class MyCycles extends Component {
 
                 </Content>
 
-                <Modal backButtonClose={true}   style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalMembers"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modal3]} position={"center"} ref={"ModalMembers"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>
@@ -389,7 +391,7 @@ export default class MyCycles extends Component {
 
                 </Modal>
 
-                <Modal backButtonClose={true}   style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
+                <Modal backButtonClose={true} style={[styles.modal, styles.modalProfile]} position={"center"} ref={"ModalProfile"}
                     swipeToClose={false}
                     isDisabled={this.state.isDisabled}>
                     <Container>

@@ -55,9 +55,9 @@ export default class HomeComponent extends Component {
         header: null,
         drawerLabel: 'Profile',
         tabBarLabel: 'Profile',
-        tabBarIcon: ({ tintColor }) => (
-            <Icon name="person" style={{ color: "white" }} />
-        ),
+        tabBarIcon: ({ tintColor }) => {
+            return <Icon name="person" style={{ color: "white" }} />
+        }
     }
 
 
