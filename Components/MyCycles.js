@@ -24,7 +24,7 @@ import {
     Body,
     Grid,
     Col, CheckBox,
-    Row,
+    Row, Tabs, Tab, TabHeading,
     Right,
     Form,
     Item,
@@ -39,10 +39,11 @@ import Modal from 'react-native-modalbox';
 import StarRating from 'react-native-star-rating';
 import Toast, { DURATION } from 'react-native-easy-toast'
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
-
+import { config } from './Config/Config'
 import PopupDialog, { SlideAnimation } from 'react-native-popup-dialog';
 import { ProgressDialog } from 'react-native-simple-dialogs';
-
+import Accordion from 'react-native-collapsible/Accordion';
+var moment = require('moment');
 export default class MyCycles extends Component {
 
     static navigationOptions = {
@@ -61,7 +62,10 @@ export default class MyCycles extends Component {
             showData: false,
             currentCycleId: "",
             RATEDUSERID: "",
-            progressVisible: false
+            progressVisible: false,
+            renderedCycles: [
+                [], [], []
+            ]
         };
         this.handleBackButton = this.handleBackButton.bind(this);
 
@@ -98,68 +102,196 @@ export default class MyCycles extends Component {
     }
 
     componentWillMount() {
-
+        this.state.tabheading1 = <TabHeading style={{ flex: 1, backgroundColor: "yellow" }}>
+        <View style={{ flex: 1, backgroundColor: "yellow" }}>
+            <Text>fsdfsdfsdfsdf</Text>
+        </View>
+    </TabHeading>
         OneSignal.addEventListener('received', this.onReceived);
         OneSignal.addEventListener('opened', this.onOpened);
         OneSignal.addEventListener('registered', this.onRegistered);
         OneSignal.addEventListener('ids', this.onIds);
+        let header = [];
+        let content = [];
 
         this.setState({ progressVisible: true })
         let renderedCycles = []
         axios({
             method: "POST",
-            url: "http://www.elgameya.net/api/gamieya/GetCyclesCreatedByMe",
-            data: JSON.stringify({ id: this.props.navigation.state.params.userid }),
+            url: config.GetAllMyCycles,
+            data: JSON.stringify({ Id: this.props.navigation.state.params.userid }),
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then((resp) => {
+
                 this.setState({ progressVisible: false });
                 console.log(resp)
                 const { navigate } = this.props.navigation;
 
-                if (resp.data.cycles.length > 0) {
-                    for (let x = 0; x < resp.data.cycles.length; x++) {
-                        renderedCycles.push(
-                            <Card key={x}>
-                                <CardItem header>
-                                    <Text style={{ fontSize: 25 }}>cycle : {resp.data.cycles[x].cyclE_NAME}</Text>
-                                </CardItem>
-                                <CardItem>
-                                    <Body>
-                                        <Text>
-                                            startDate : {resp.data.cycles[x].startDate}
-                                        </Text>
-                                        <Text>endDate : {resp.data.cycles[x].endDate}</Text>
-                                        <Text>Number of members : {resp.data.cycles[x].numbeR_OF_MEMBERS}</Text>
-                                        <Text>amount : {resp.data.cycles[x].totaL_AMOUNT}</Text>
-                                    </Body>
-                                </CardItem>
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <TouchableHighlight style={{ backgroundColor: "#262261", width: "40%", height: 40, alignItems: "center", justifyContent: "center", borderRadius: 12 }} onPress={() => {
-                                        navigate("CycleMembers", { cycleid: resp.data.cycles[x], userid: this.props.navigation.state.params.userid });
+                if (resp.data.status == "success") {
+                    if (resp.data.activeCycles.length > 0) {
+                        let currentData = resp.data.activeCycles;
 
-                                    }}>
-                                        <View>
-                                            <Text style={{ color: "white" }}>show cycle</Text>
-                                        </View>
-                                    </TouchableHighlight>
+                        for (let x = 0; x < resp.data.activeCycles.length; x++) {
+
+                            let endData = moment(currentData[x].endDate);
+                            let formatedEndDate = endData.format("MMMM") + ", " + endData.format("YYYY")
+
+                            this.state.renderedCycles[0].push(
+                                <View key={x} style={{ marginBottom: 20 }}>
+                                    <Accordion
+                                        sections={['Section' + x]}
+                                        renderHeader={() => {
+                                            return <View style={{ flex: 1, backgroundColor: "white" }}>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                                <View style={{ flex: 0.6, backgroundColor: "white", borderRadius: 10, borderWidth: 0.5 }}>
+                                                    <Text style={{ fontWeight: "bold", color: "#9E1F64", marginLeft: 5 }}>{currentData[x].cyclE_NAME}</Text>
+                                                </View>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                            </View>
+                                        }}
+                                        renderContent={() => {
+                                            return <TouchableOpacity>
+                                                <Grid style={{ backgroundColor: "gray", borderRadius: 10 }}>
+                                                    <Row>
+                                                        <Col style={{ width: "5%" }}></Col>
+                                                        <Col style={{ width: "70%" }}>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Ends on {formatedEndDate}</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Total amount is {currentData[x].totaL_AMOUNT} LE</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>{currentData[x].numbeR_OF_MEMBERS} Members</Text></Col>
+                                                            </Row>
+                                                        </Col>
+                                                        <Col style={{ width: "25%" }}></Col>
+                                                    </Row>
+                                                </Grid>
+                                            </TouchableOpacity>
+                                        }}
+                                    />
                                 </View>
-                            </Card>
-                        )
+                            )
+                        }
+
                     }
-                    this.setState({ renderedCycles: renderedCycles }, () => {
+                    else {
 
-                        this.setState({ progressVisible: false }, () => {
-                            if (this.props.navigation.state.params.option === "create") {
+                    }
+                    if (resp.data.notStartedCycles.length > 0) {
+                        let currentData = resp.data.notStartedCycles;
 
-                                navigate("CycleMembers", { cycleid: resp.data.cycles[resp.data.cycles.length - 1], userid: this.props.navigation.state.params.userid });
-                            }
-                        });
+                        for (let x = 0; x < resp.data.notStartedCycles.length; x++) {
 
-                    })
+                            let endData = moment(currentData[x].endDate);
+                            let formatedEndDate = endData.format("MMMM") + ", " + endData.format("YYYY")
+
+                            this.state.renderedCycles[1].push(
+                                <View key={x} style={{ marginBottom: 20 }}>
+                                    <Accordion
+                                        sections={['Section' + x]}
+                                        renderHeader={() => {
+                                            return <View style={{ flex: 1, backgroundColor: "white" }}>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                                <View style={{ flex: 0.6, backgroundColor: "white", borderRadius: 10, borderWidth: 0.5 }}>
+                                                    <Text style={{ fontWeight: "bold", color: "#9E1F64", marginLeft: 5 }}>{currentData[x].cyclE_NAME}</Text>
+                                                </View>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                            </View>
+                                        }}
+                                        renderContent={() => {
+                                            return <TouchableOpacity>
+                                                <Grid style={{ backgroundColor: "gray", borderRadius: 10 }}>
+                                                    <Row>
+                                                        <Col style={{ width: "5%" }}></Col>
+                                                        <Col style={{ width: "70%" }}>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Ends on {formatedEndDate}</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Total amount is {currentData[x].totaL_AMOUNT} LE</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>{currentData[x].numbeR_OF_MEMBERS} Members</Text></Col>
+                                                            </Row>
+                                                        </Col>
+                                                        <Col style={{ width: "25%" }}></Col>
+                                                    </Row>
+                                                </Grid>
+                                            </TouchableOpacity>
+                                        }}
+                                    />
+                                </View>
+                            )
+                        }
+                    }
+                    else {
+
+                    }
+                    if (resp.data.completedCycles.length > 0) {
+                        let currentData = resp.data.completedCycles;
+
+                        for (let x = 0; x < resp.data.completedCycles.length; x++) {
+
+                            let endData = moment(currentData[x].endDate);
+                            let formatedEndDate = endData.format("MMMM") + ", " + endData.format("YYYY")
+
+                            this.state.renderedCycles[2].push(
+                                <View key={x} style={{ marginBottom: 20 }}>
+                                    <Accordion
+                                        sections={['Section' + x]}
+                                        renderHeader={() => {
+                                            return <View style={{ flex: 1, backgroundColor: "white" }}>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                                <View style={{ flex: 0.6, backgroundColor: "white", borderRadius: 10, borderWidth: 0.5 }}>
+                                                    <Text style={{ fontWeight: "bold", color: "#9E1F64", marginLeft: 5 }}>{currentData[x].cyclE_NAME}</Text>
+                                                </View>
+                                                <View style={{ flex: 0.2 }}>
+                                                </View>
+                                            </View>
+                                        }}
+                                        renderContent={() => {
+                                            return <TouchableOpacity>
+                                                <Grid style={{ backgroundColor: "gray", borderRadius: 10 }}>
+                                                    <Row>
+                                                        <Col style={{ width: "5%" }}></Col>
+                                                        <Col style={{ width: "70%" }}>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Ends on {formatedEndDate}</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>Total amount is {currentData[x].totaL_AMOUNT} LE</Text></Col>
+                                                            </Row>
+                                                            <Row>
+                                                                <Col><Text style={{ color: "white", fontSize: 12 }}>{currentData[x].numbeR_OF_MEMBERS} Members</Text></Col>
+                                                            </Row>
+                                                        </Col>
+                                                        <Col style={{ width: "25%" }}></Col>
+                                                    </Row>
+                                                </Grid>
+                                            </TouchableOpacity>
+                                        }}
+                                    />
+                                </View>
+                            )
+                        }
+                    }
+                    else {
+
+                    }
+
+
                 }
+                this.setState({})
 
             })
             .catch((err) => {
@@ -343,8 +475,9 @@ export default class MyCycles extends Component {
 
 
     render() {
-
+        debugger;
         const { navigate } = this.props.navigation;
+     
 
         return (
             <Container>
@@ -374,7 +507,57 @@ export default class MyCycles extends Component {
                         message="Please, wait..."
                     />
 
-                    {this.state.renderedCycles}
+
+
+                    <Tabs style={{ height: "100%" }} ref={(tabsref)=>{
+                        this.tabsref=tabsref;
+                    }} onChangeTab={(i, ref) => {
+
+                        this.setState({tabheading1:
+                            (<TabHeading style={{ flex: 1, backgroundColor: "yellow" }}>
+                            <View style={{ flex: 1, backgroundColor: "yellow" }}>
+                                <Text>ffffffffffffff</Text>
+                            </View>
+                        </TabHeading>
+                            )
+                        })
+                        debugger;
+          
+                    }}>
+                        <Tab heading={this.state.tabheading1} style={{ height: "100%" }}>
+                            <Grid style={{ height: "100%", marginTop: 20 }}>
+                                <Row>
+                                    <Col style={{ width: "10%" }}></Col>
+                                    <Col style={{ width: "80%" }}>
+                                        {this.state.renderedCycles[0]}
+                                    </Col>
+                                    <Col style={{ width: "10%" }}></Col>
+                                </Row>
+                            </Grid>
+                        </Tab>
+                        <Tab heading="Not started" style={{ height: "100%" }}>
+                            <Grid style={{ height: "100%", marginTop: 20 }}>
+                                <Row>
+                                    <Col style={{ width: "10%" }}></Col>
+                                    <Col style={{ width: "80%" }}>
+                                        {this.state.renderedCycles[1]}
+                                    </Col>
+                                    <Col style={{ width: "10%" }}></Col>
+                                </Row>
+                            </Grid>
+                        </Tab>
+                        <Tab heading="Completd" style={{ height: "100%" }}>
+                            <Grid style={{ height: "100%", marginTop: 20 }}>
+                                <Row>
+                                    <Col style={{ width: "10%" }}></Col>
+                                    <Col style={{ width: "80%" }}>
+                                        {this.state.renderedCycles[2]}
+                                    </Col>
+                                    <Col style={{ width: "10%" }}></Col>
+                                </Row>
+                            </Grid>
+                        </Tab>
+                    </Tabs>
 
                 </Content>
 
@@ -408,7 +591,7 @@ export default class MyCycles extends Component {
                     position='center'
                 />
 
-            </Container>
+            </Container >
         )
     }
 
